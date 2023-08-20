@@ -9,7 +9,17 @@ namespace _Scripts.Controller
         public static MechaController Instance { get; private set; }
         
         private InputManager _inputManager;
+
+        private CharacterController _characterController;
         
+        //TODO adicionar lista de partes, provavelmente scriptable objects, porque vai determinar velocidade e peso e HP
+
+        public const float MedianWeight = 200;
+        
+        public float speed = 6;
+        public float weight = 100;
+        
+
         private void Awake()
         {
             if (Instance != null)
@@ -33,6 +43,7 @@ namespace _Scripts.Controller
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
             _inputManager.OnCrouchAction += OnCrouchAction;
             _inputManager.OnCrouchActionReleased += OnCrouchActionReleased;
+            _characterController = GetComponent<CharacterController>();
         }
 
         private void OnDestroy()
@@ -52,7 +63,14 @@ namespace _Scripts.Controller
 
         private void HandleMovement()
         {
-            Vector3 inputVector = _inputManager.GetPlayerMovement();
+            Vector2 inputVector = _inputManager.GetPlayerMovement();
+            Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y).normalized;
+
+            if (direction.magnitude >= 0.01f)
+            {
+                
+            }
+
         }
 
         private void OnInteractAction(object sender, EventArgs e)
