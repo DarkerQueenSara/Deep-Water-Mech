@@ -10,7 +10,6 @@ namespace _Scripts.Controller
     {
         public static MechaController Instance { get; private set; }
 
-        [SerializeField] private float jumpHeight = 1.0f;
         [SerializeField] private float gravityValue = -9.81f;
         [SerializeField] private float interactDistance = 2f;
         [SerializeField] private Transform cameraTransform;
@@ -21,7 +20,7 @@ namespace _Scripts.Controller
         private Vector3 _mechaVelocity, _move;
         private bool _groundedMecha;
         
-        public float medianWeight = 200.0f;
+        public float medianWeight;
 
         private int _maxHp;
         private int _currentHp;
@@ -62,6 +61,11 @@ namespace _Scripts.Controller
             _inputManager.OnCrouchAction += OnCrouchAction;
             _inputManager.OnCrouchActionReleased += OnCrouchActionReleased;
             _controller = GetComponent<CharacterController>();
+            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP +
+                     legsPart.HP;
+            _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
+            _currentHp = _maxHp;
+            UpdateMech();
         }
 
         private void OnDestroy()
@@ -88,6 +92,7 @@ namespace _Scripts.Controller
             _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
 
             _currentHp = Mathf.RoundToInt(_maxHp * hpLoss);
+            Debug.Log("The mech weighs " + _currentWeight + "kg, and has " + _currentHp + "/" + _maxHp + ".");
         }
         
         private void Update()
@@ -103,13 +108,12 @@ namespace _Scripts.Controller
 
             Vector3 cameraForward = cameraTransform.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
-            Debug.Log(inputVector);
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
             _move = cameraForward * _move.z + cameraTransform.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
-            float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
-            _controller.Move(_move * (Time.deltaTime * moveSpeed));
+            float moveSpeed = legsPart.speed * (medianWeight / _currentWeight) * Time.deltaTime;
+            _controller.Move(_move * moveSpeed);
             _mechaVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_mechaVelocity * Time.deltaTime);
         }
@@ -133,7 +137,7 @@ namespace _Scripts.Controller
         private void OnJumpAction(object sender, EventArgs e)
         {
             if (_groundedMecha)
-                _mechaVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravityValue);
+                _mechaVelocity.y = Mathf.Sqrt(legsPart.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
         }
         
         private void OnJumpActionReleased(object sender, EventArgs e)
