@@ -13,7 +13,11 @@ namespace _Scripts.Controller
 
         private CharacterController _characterController;
         
-        public const float MedianWeight = 200.0f;
+        public float medianWeight = 200.0f;
+
+        private int _maxHp;
+        private int _currentHp;
+        private int _currentWeight;
         
         [Header("Mech Parts SO")] 
         public Head headPart;
@@ -59,6 +63,22 @@ namespace _Scripts.Controller
             _inputManager.OnCrouchActionReleased -= OnCrouchActionReleased;
         }
 
+        //call when mech parts are changed out
+        public void UpdateMech()
+        {
+            _currentWeight = headPart.weight + torsoPart.weight + leftArmPart.weight + rightArmPart.weight +
+                                          legsPart.weight;
+            _currentWeight = bonusPart != null ? _currentWeight + bonusPart.weight : _currentWeight;
+
+            float hpLoss = 1.0f * _currentHp / _maxHp;
+            
+            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP +
+                                      legsPart.HP;
+            _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
+
+            _currentHp = Mathf.RoundToInt(_maxHp * hpLoss);
+        }
+        
         private void Update()
         {
             HandleMovement();
@@ -71,18 +91,11 @@ namespace _Scripts.Controller
 
             if (direction.magnitude >= 0.01f)
             {
-                
+                float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
             }
 
         }
 
-        private int GetWeight()
-        {
-            int weight = headPart.weight + torsoPart.weight + leftArmPart.weight + rightArmPart.weight +
-                         legsPart.weight;
-            return bonusPart != null ? weight + bonusPart.weight : weight;
-        }
-        
         private void OnInteractAction(object sender, EventArgs e)
         {
         }
