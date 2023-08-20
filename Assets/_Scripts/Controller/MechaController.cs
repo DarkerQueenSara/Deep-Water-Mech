@@ -13,36 +13,36 @@ namespace _Scripts.Controller
 
         [SerializeField] private float gravityValue = -9.81f;
         [SerializeField] private float interactDistance = 2f;
-        [SerializeField] private Camera gameCamera;
+        [SerializeField] private Transform gameCamera;
+        [SerializeField] private Transform raycastOrigin;
         [SerializeField] private LayerMask interactLayerMask;
+        [SerializeField] private LayerMask raycastLayerMask;
+
+        [SerializeField] private float medianWeight;
+
+        [Header("Mech Parts SO")] 
+        [SerializeField] private Head headPart;
+        [SerializeField] private Torso torsoPart;
+        [SerializeField] private Arm leftArmPart;
+        [SerializeField] private Arm rightArmPart;
+        [SerializeField] private Legs legsPart;
+        [SerializeField] private BonusPart bonusPart;
+
+        [Header("Attack Spawn Points")] 
+        [SerializeField] private Transform leftArmRangedSpawn;
+        [SerializeField] private Transform rightArmRangedSpawn;
+        [SerializeField] private Transform leftArmMeleeSpawn;
+        [SerializeField] private Transform rightArmMeleeSpawn;
+        
+        [SerializeField] private GameObject projectilePrefab;
         
         private CharacterController _controller;
         private InputManager _inputManager;
         private Vector3 _mechaVelocity, _move;
-        private bool _groundedMecha;
-        
-        public float medianWeight;
-
+        private bool _groundedMecha, _leftFiring, _rightFiring;
         private int _maxHp;
         private int _currentHp;
         private int _currentWeight;
-
-        [Header("Mech Parts SO")] 
-        public Head headPart;
-        public Torso torsoPart;
-        public Arm leftArmPart;
-        public Arm rightArmPart;
-        public Legs legsPart;
-        public BonusPart bonusPart;
-
-        [Header("Attack Spawn Points")] 
-        public Transform leftArmRangedSpawn;
-        public Transform rightArmRangedSpawn;
-        public Transform leftArmMeleeSpawn;
-        public Transform rightArmMeleeSpawn;
-
-        
-        public GameObject projectilePrefab;
 
         private void Awake()
         {
@@ -63,12 +63,13 @@ namespace _Scripts.Controller
         {
             _inputManager = InputManager.Instance;
             _inputManager.OnLeftAction += OnLeftAction;
+            _inputManager.OnLeftActionReleased += OnLeftActionReleased;
             _inputManager.OnRightAction += OnRightAction;
+            _inputManager.OnRightActionReleased += OnRightActionReleased;
             _inputManager.OnJumpAction += OnJumpAction;
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
             _controller = GetComponent<CharacterController>();
-            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP +
-                     legsPart.HP;
+            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP + legsPart.HP;
             _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
             _currentHp = _maxHp;
             UpdateMech();
@@ -77,7 +78,9 @@ namespace _Scripts.Controller
         private void OnDestroy()
         {
             _inputManager.OnLeftAction -= OnLeftAction;
+            _inputManager.OnLeftActionReleased -= OnLeftActionReleased;
             _inputManager.OnRightAction -= OnRightAction;
+            _inputManager.OnRightActionReleased -= OnRightActionReleased;
             _inputManager.OnJumpAction -= OnJumpAction;
             _inputManager.OnJumpActionReleased -= OnJumpActionReleased;
         }
@@ -85,14 +88,12 @@ namespace _Scripts.Controller
         //call when mech parts are changed out
         public void UpdateMech()
         {
-            _currentWeight = headPart.weight + torsoPart.weight + leftArmPart.weight + rightArmPart.weight +
-                                          legsPart.weight;
+            _currentWeight = headPart.weight + torsoPart.weight + leftArmPart.weight + rightArmPart.weight + legsPart.weight;
             _currentWeight = bonusPart != null ? _currentWeight + bonusPart.weight : _currentWeight;
 
             float hpLoss = 1.0f * _currentHp / _maxHp;
             
-            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP +
-                                      legsPart.HP;
+            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP + legsPart.HP;
             _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
 
             _currentHp = Mathf.RoundToInt(_maxHp * hpLoss);
@@ -110,10 +111,10 @@ namespace _Scripts.Controller
             if (_groundedMecha && _mechaVelocity.y < 0)
                 _mechaVelocity.y = 0f;
 
-            Vector3 cameraForward = gameCamera.transform.forward;
+            Vector3 cameraForward = gameCamera.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
-            _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
+            _move = cameraForward * _move.z + gameCamera.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
             float moveSpeed = legsPart.speed * (medianWeight / _currentWeight) * Time.deltaTime;
@@ -125,6 +126,7 @@ namespace _Scripts.Controller
         
         private void OnLeftAction(object sender, EventArgs e)
         {
+            _leftFiring = true;
             switch (leftArmPart.type)
             {
                 case ArmType.PROJECTILE:
@@ -141,8 +143,14 @@ namespace _Scripts.Controller
             }
         }
         
+        private void OnLeftActionReleased(object sender, EventArgs e)
+        {
+            _leftFiring = false;
+        }
+        
         private void OnRightAction(object sender, EventArgs e)
         {
+            _rightFiring = true;
             switch (rightArmPart.type)
             {
                 case ArmType.PROJECTILE:
@@ -158,26 +166,26 @@ namespace _Scripts.Controller
                     throw new ArgumentOutOfRangeException();
             }
         }
+        
+        private void OnRightActionReleased(object sender, EventArgs e)
+        {
+            _rightFiring = false;
+        }
 
         private void UseProjectile(Vector3 spawnPoint)
         {
-            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
-            Vector3 destination = Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(1000);
-            GameObject instantiated = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity);
-            Projectile projectile = instantiated.GetComponent<Projectile>();
-            projectile.body.velocity = (destination - spawnPoint).normalized * -1 * projectile.projectileSpeed;
+            // Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
+            // Vector3 destination = Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(1000);
+
+            Ray ray = new(raycastOrigin.position, raycastOrigin.forward);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, raycastLayerMask))
+            {
+                Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
+                Projectile projectile = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity).GetComponent<Projectile>();
+                projectile.body.AddForce((hitInfo.transform.position - spawnPoint).normalized * 20, ForceMode.Impulse);
+            }
         }
 
-        private void OnDrawGizmos()
-        {
-            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
-            Gizmos.color = Color.green;
-            Gizmos.DrawRay(ray.origin, ray.direction);
-            Vector3 destination = Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(1000);
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(leftArmRangedSpawn.position, (destination - leftArmRangedSpawn.position).normalized * -1);
-        }
-        
         private void UseHitscan(Transform spawnPoint)
         {
         }

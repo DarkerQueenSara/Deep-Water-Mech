@@ -45,12 +45,12 @@ namespace _Scripts.Controller
         {
             _inputManager = InputManager.Instance;
             _inputManager.OnLeftAction += OnLeftAction;
-            _inputManager.OnInteractActionReleased += OnInteractActionReleased;
+            _inputManager.OnLeftActionReleased += OnLeftActionReleased;
             _inputManager.OnRightAction += OnRightAction;
-            _inputManager.OnInteractAlternateActionReleased += OnInteractAlternateActionReleased;
+            _inputManager.OnRightActionReleased += OnRightActionReleased;
             _inputManager.OnJumpAction += OnJumpAction;
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
-            _inputManager.OnLeaveAction += OnLeaveAction;
+            _inputManager.OnCrouchAction += OnCrouchAction;
             _inputManager.OnCrouchActionReleased += OnCrouchActionReleased;
         }
 
@@ -60,7 +60,7 @@ namespace _Scripts.Controller
             _inputManager.OnRightAction -= OnRightAction;
             _inputManager.OnJumpAction -= OnJumpAction;
             _inputManager.OnJumpActionReleased -= OnJumpActionReleased;
-            _inputManager.OnLeaveAction -= OnLeaveAction;
+            _inputManager.OnCrouchAction -= OnCrouchAction;
             _inputManager.OnCrouchActionReleased -= OnCrouchActionReleased;
         }
 
@@ -94,7 +94,7 @@ namespace _Scripts.Controller
             }
         }
         
-        private void OnInteractActionReleased(object sender, EventArgs e)
+        private void OnLeftActionReleased(object sender, EventArgs e)
         {
         }
         
@@ -102,7 +102,7 @@ namespace _Scripts.Controller
         {
         }
         
-        private void OnInteractAlternateActionReleased(object sender, EventArgs e)
+        private void OnRightActionReleased(object sender, EventArgs e)
         {
         }
         
@@ -116,7 +116,7 @@ namespace _Scripts.Controller
             _swimHeightChangeRate = 0.0f;
         }
 
-        private void OnLeaveAction(object sender, EventArgs e)
+        private void OnCrouchAction(object sender, EventArgs e)
         {
             _swimHeightChangeRate = -swimRate;
         }
