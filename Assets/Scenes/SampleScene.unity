@@ -901,9 +901,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8512096189500485920, guid: a828c50b33d09324aba9c0ba6add79fa,
         type: 3}
+      propertyPath: gameCamera
+      value: 
+      objectReference: {fileID: 330585545}
+    - target: {fileID: 8512096189500485920, guid: a828c50b33d09324aba9c0ba6add79fa,
+        type: 3}
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 330585546}
+    - target: {fileID: 8512096189500485920, guid: a828c50b33d09324aba9c0ba6add79fa,
+        type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 4622888774966995618, guid: 518bf046f977ac5459d1341c62913855,
+        type: 3}
+    - target: {fileID: 8512096189500485920, guid: a828c50b33d09324aba9c0ba6add79fa,
+        type: 3}
+      propertyPath: leftArmRangedSpawn
+      value: 
+      objectReference: {fileID: 1279272800}
+    - target: {fileID: 8512096189500485920, guid: a828c50b33d09324aba9c0ba6add79fa,
+        type: 3}
+      propertyPath: rightArmRangedSpawn
+      value: 
+      objectReference: {fileID: 279971586}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -953,12 +974,12 @@ PrefabInstance:
     - target: {fileID: 4826714668623898080, guid: de1ca3a44625d294e9410ff86fafeebf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000187227
+      value: -0.0000000187227
       objectReference: {fileID: 0}
     - target: {fileID: 4826714668623898080, guid: de1ca3a44625d294e9410ff86fafeebf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000044198294
+      value: 0.0000000044198294
       objectReference: {fileID: 0}
     - target: {fileID: 7182001927710936146, guid: de1ca3a44625d294e9410ff86fafeebf,
         type: 3}

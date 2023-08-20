@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Scripts.Combat;
+using UnityEngine;
 
 namespace _Scripts.MechaParts
 {

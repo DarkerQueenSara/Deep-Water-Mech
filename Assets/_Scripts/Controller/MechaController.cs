@@ -1,4 +1,5 @@
 using System;
+using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace _Scripts.Controller
 
         [SerializeField] private float gravityValue = -9.81f;
         [SerializeField] private float interactDistance = 2f;
-        [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Camera gameCamera;
         [SerializeField] private LayerMask interactLayerMask;
         
         private CharacterController _controller;
@@ -25,7 +26,7 @@ namespace _Scripts.Controller
         private int _maxHp;
         private int _currentHp;
         private int _currentWeight;
-        
+
         [Header("Mech Parts SO")] 
         public Head headPart;
         public Torso torsoPart;
@@ -39,6 +40,9 @@ namespace _Scripts.Controller
         public Transform rightArmRangedSpawn;
         public Transform leftArmMeleeSpawn;
         public Transform rightArmMeleeSpawn;
+
+        
+        public GameObject projectilePrefab;
 
         private void Awake()
         {
@@ -106,10 +110,10 @@ namespace _Scripts.Controller
             if (_groundedMecha && _mechaVelocity.y < 0)
                 _mechaVelocity.y = 0f;
 
-            Vector3 cameraForward = cameraTransform.forward;
+            Vector3 cameraForward = gameCamera.transform.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
-            _move = cameraForward * _move.z + cameraTransform.right * _move.x;
+            _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
             float moveSpeed = legsPart.speed * (medianWeight / _currentWeight) * Time.deltaTime;
@@ -124,7 +128,7 @@ namespace _Scripts.Controller
             switch (leftArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(leftArmRangedSpawn);
+                    UseProjectile(leftArmRangedSpawn.position);
                     break;
                 case ArmType.HITSCAN:
                     UseHitscan(leftArmRangedSpawn);
@@ -142,7 +146,7 @@ namespace _Scripts.Controller
             switch (rightArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(rightArmRangedSpawn);
+                    UseProjectile(rightArmRangedSpawn.position);
                     break;
                 case ArmType.HITSCAN:
                     UseHitscan(rightArmRangedSpawn);
@@ -155,15 +159,27 @@ namespace _Scripts.Controller
             }
         }
 
-        private void UseProjectile(Transform spawnPoint)
+        private void UseProjectile(Vector3 spawnPoint)
         {
-            Vector3 cameraForward = cameraTransform.forward;
+            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
+            Vector3 destination = Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(1000);
+            GameObject instantiated = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity);
+            Projectile projectile = instantiated.GetComponent<Projectile>();
+            projectile.body.velocity = (destination - spawnPoint).normalized * -1 * projectile.projectileSpeed;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(ray.origin, ray.direction);
+            Vector3 destination = Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(1000);
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(leftArmRangedSpawn.position, (destination - leftArmRangedSpawn.position).normalized * -1);
         }
         
         private void UseHitscan(Transform spawnPoint)
         {
-            Vector3 cameraForward = cameraTransform.forward;
-
         }
         
         private void UseMelee(Transform spawnPoint)
