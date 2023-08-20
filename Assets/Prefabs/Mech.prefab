@@ -177,7 +177,6 @@ GameObject:
   - component: {fileID: 2750853829307549295}
   - component: {fileID: 1626521948726442015}
   - component: {fileID: 8984050570233259680}
-  - component: {fileID: 6989148695615593077}
   - component: {fileID: 8512096189500485920}
   m_Layer: 0
   m_Name: Mech
@@ -255,20 +254,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6989148695615593077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6335918607513793888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 446da67d7def0994fa7cd3dc41ff01a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8512096189500485920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +268,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d30a063c49aa4a6ab5e65f1c520cde65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpHeight: 1
+  gravityValue: -9.81
+  interactDistance: 2
+  cameraTransform: {fileID: 0}
+  interactLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  medianWeight: 200
   headPart: {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
   torsoPart: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}
   leftArmPart: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}

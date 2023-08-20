@@ -17,9 +17,9 @@ MonoBehaviour:
   heads: []
   legs: []
   torsos: []
-  defaultLeftArm: {fileID: 0}
-  defaultRightArm: {fileID: 0}
+  defaultLeftArm: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
+  defaultRightArm: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
   defaultBonusPart: {fileID: 0}
-  defaultHead: {fileID: 0}
-  defaultLegs: {fileID: 0}
-  defaultTorso: {fileID: 0}
+  defaultHead: {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
+  defaultLegs: {fileID: 11400000, guid: f213e765de7fe264d9f7a455751668d0, type: 2}
+  defaultTorso: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}

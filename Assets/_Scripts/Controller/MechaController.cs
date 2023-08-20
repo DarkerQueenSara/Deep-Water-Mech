@@ -10,7 +10,6 @@ namespace _Scripts.Controller
     {
         public static MechaController Instance { get; private set; }
 
-        [SerializeField] private float mechaSpeed = 2.0f;
         [SerializeField] private float jumpHeight = 1.0f;
         [SerializeField] private float gravityValue = -9.81f;
         [SerializeField] private float interactDistance = 2f;
@@ -104,20 +103,15 @@ namespace _Scripts.Controller
 
             Vector3 cameraForward = cameraTransform.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
+            Debug.Log(inputVector);
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
             _move = cameraForward * _move.z + cameraTransform.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
-            _controller.Move(_move * (Time.deltaTime * mechaSpeed));
+            float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
+            _controller.Move(_move * (Time.deltaTime * moveSpeed));
             _mechaVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_mechaVelocity * Time.deltaTime);
-            
-            // Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y).normalized;
-            //
-            // if (direction.magnitude >= 0.01f)
-            // {
-            //     float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
-            // }
         }
 
         private void OnInteractAction(object sender, EventArgs e)
