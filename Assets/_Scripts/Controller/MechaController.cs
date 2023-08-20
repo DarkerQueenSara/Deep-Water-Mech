@@ -112,13 +112,12 @@ namespace _Scripts.Controller
             _mechaVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_mechaVelocity * Time.deltaTime);
             
-            Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y).normalized;
-
-            if (direction.magnitude >= 0.01f)
-            {
-                float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
-            }
-
+            // Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y).normalized;
+            //
+            // if (direction.magnitude >= 0.01f)
+            // {
+            //     float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
+            // }
         }
 
         private void OnInteractAction(object sender, EventArgs e)
