@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "LeftArm",
                     "type": "Button",
                     "id": "58e73157-8e45-4773-a7b6-4428f9190890",
                     "expectedControlType": "Button",
@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InteractAlternate",
+                    "name": "RightArm",
                     "type": "Button",
                     "id": "ce377e90-d035-44b9-b87f-739065056d79",
                     "expectedControlType": "Button",
@@ -60,7 +60,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "bbc68d87-ffb2-44c0-af26-6be0194c6909",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LeaveMech",
                     "type": "Button",
                     "id": "18599d7e-fc99-483c-b5af-beebed93ea1c",
                     "expectedControlType": "Button",
@@ -205,22 +214,22 @@
                 {
                     "name": "",
                     "id": "03191f01-f276-4dcb-a017-70bcd8c39a6a",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Interact",
+                    "action": "LeftArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "bd7fb670-312e-4a83-9aaa-a4619fb5f036",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "InteractAlternate",
+                    "action": "RightArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -231,7 +240,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "InteractAlternate",
+                    "action": "RightArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -264,7 +273,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "Interact",
+                    "action": "LeftArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -274,7 +283,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -285,7 +294,18 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72e931a4-db6b-47bc-b136-546ab0e7d4de",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -297,18 +317,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Crouch",
+                    "action": "LeaveMech",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "9aa031c2-7acb-4430-b22e-94cfb3681d44",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Crouch",
+                    "action": "LeaveMech",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "938b6135-498c-4b47-b790-87739681e605",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fdf38027-8b5e-4be4-a39f-cb3814b76b6a",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b0999d6-4be3-4f59-af14-7576556087a1",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

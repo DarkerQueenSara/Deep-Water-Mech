@@ -46,7 +46,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""LeftArm"",
                     ""type"": ""Button"",
                     ""id"": ""58e73157-8e45-4773-a7b6-4428f9190890"",
                     ""expectedControlType"": ""Button"",
@@ -55,7 +55,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""InteractAlternate"",
+                    ""name"": ""RightArm"",
                     ""type"": ""Button"",
                     ""id"": ""ce377e90-d035-44b9-b87f-739065056d79"",
                     ""expectedControlType"": ""Button"",
@@ -82,7 +82,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Crouch"",
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""bbc68d87-ffb2-44c0-af26-6be0194c6909"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeaveMech"",
                     ""type"": ""Button"",
                     ""id"": ""18599d7e-fc99-483c-b5af-beebed93ea1c"",
                     ""expectedControlType"": ""Button"",
@@ -227,22 +236,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""03191f01-f276-4dcb-a017-70bcd8c39a6a"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Interact"",
+                    ""action"": ""LeftArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""bd7fb670-312e-4a83-9aaa-a4619fb5f036"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""InteractAlternate"",
+                    ""action"": ""RightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -253,7 +262,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""InteractAlternate"",
+                    ""action"": ""RightArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -286,7 +295,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""Interact"",
+                    ""action"": ""LeftArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -296,7 +305,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -307,7 +316,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72e931a4-db6b-47bc-b136-546ab0e7d4de"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -319,18 +339,51 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Crouch"",
+                    ""action"": ""LeaveMech"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""9aa031c2-7acb-4430-b22e-94cfb3681d44"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Crouch"",
+                    ""action"": ""LeaveMech"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""938b6135-498c-4b47-b790-87739681e605"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdf38027-8b5e-4be4-a39f-cb3814b76b6a"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b0999d6-4be3-4f59-af14-7576556087a1"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -366,11 +419,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_InteractAlternate = m_Player.FindAction("InteractAlternate", throwIfNotFound: true);
+        m_Player_LeftArm = m_Player.FindAction("LeftArm", throwIfNotFound: true);
+        m_Player_RightArm = m_Player.FindAction("RightArm", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_LeaveMech = m_Player.FindAction("LeaveMech", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -434,22 +488,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_InteractAlternate;
+    private readonly InputAction m_Player_LeftArm;
+    private readonly InputAction m_Player_RightArm;
     private readonly InputAction m_Player_Menu;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_LeaveMech;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @InteractAlternate => m_Wrapper.m_Player_InteractAlternate;
+        public InputAction @LeftArm => m_Wrapper.m_Player_LeftArm;
+        public InputAction @RightArm => m_Wrapper.m_Player_RightArm;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @LeaveMech => m_Wrapper.m_Player_LeaveMech;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -465,21 +521,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
-            @InteractAlternate.started += instance.OnInteractAlternate;
-            @InteractAlternate.performed += instance.OnInteractAlternate;
-            @InteractAlternate.canceled += instance.OnInteractAlternate;
+            @LeftArm.started += instance.OnLeftArm;
+            @LeftArm.performed += instance.OnLeftArm;
+            @LeftArm.canceled += instance.OnLeftArm;
+            @RightArm.started += instance.OnRightArm;
+            @RightArm.performed += instance.OnRightArm;
+            @RightArm.canceled += instance.OnRightArm;
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Crouch.started += instance.OnCrouch;
-            @Crouch.performed += instance.OnCrouch;
-            @Crouch.canceled += instance.OnCrouch;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @LeaveMech.started += instance.OnLeaveMech;
+            @LeaveMech.performed += instance.OnLeaveMech;
+            @LeaveMech.canceled += instance.OnLeaveMech;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -490,21 +549,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
-            @InteractAlternate.started -= instance.OnInteractAlternate;
-            @InteractAlternate.performed -= instance.OnInteractAlternate;
-            @InteractAlternate.canceled -= instance.OnInteractAlternate;
+            @LeftArm.started -= instance.OnLeftArm;
+            @LeftArm.performed -= instance.OnLeftArm;
+            @LeftArm.canceled -= instance.OnLeftArm;
+            @RightArm.started -= instance.OnRightArm;
+            @RightArm.performed -= instance.OnRightArm;
+            @RightArm.canceled -= instance.OnRightArm;
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @LeaveMech.started -= instance.OnLeaveMech;
+            @LeaveMech.performed -= instance.OnLeaveMech;
+            @LeaveMech.canceled -= instance.OnLeaveMech;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -544,10 +606,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnInteract(InputAction.CallbackContext context);
-        void OnInteractAlternate(InputAction.CallbackContext context);
+        void OnLeftArm(InputAction.CallbackContext context);
+        void OnRightArm(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnCrouch(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnLeaveMech(InputAction.CallbackContext context);
     }
 }

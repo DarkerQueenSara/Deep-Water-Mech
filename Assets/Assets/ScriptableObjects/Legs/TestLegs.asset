@@ -15,5 +15,6 @@ MonoBehaviour:
   HP: 50
   weight: 50
   part: {fileID: 0}
+  jumpPower: 5
   speed: 6
   type: 0

@@ -34,6 +34,12 @@ namespace _Scripts.Controller
         public Legs legsPart;
         public BonusPart bonusPart;
 
+        [Header("Attack Spawn Points")] 
+        public Transform leftArmRangedSpawn;
+        public Transform rightArmRangedSpawn;
+        public Transform leftArmMeleeSpawn;
+        public Transform rightArmMeleeSpawn;
+
         private void Awake()
         {
             if (Instance != null)
@@ -52,14 +58,10 @@ namespace _Scripts.Controller
         private void Start()
         {
             _inputManager = InputManager.Instance;
-            _inputManager.OnInteractAction += OnInteractAction;
-            _inputManager.OnInteractActionReleased += OnInteractActionReleased;
-            _inputManager.OnInteractAlternateAction += OnInteractAlternateAction;
-            _inputManager.OnInteractAlternateActionReleased += OnInteractAlternateActionReleased;
+            _inputManager.OnLeftAction += OnLeftAction;
+            _inputManager.OnRightAction += OnRightAction;
             _inputManager.OnJumpAction += OnJumpAction;
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
-            _inputManager.OnCrouchAction += OnCrouchAction;
-            _inputManager.OnCrouchActionReleased += OnCrouchActionReleased;
             _controller = GetComponent<CharacterController>();
             _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP +
                      legsPart.HP;
@@ -70,12 +72,10 @@ namespace _Scripts.Controller
 
         private void OnDestroy()
         {
-            _inputManager.OnInteractAction -= OnInteractAction;
-            _inputManager.OnInteractAlternateAction -= OnInteractAlternateAction;
+            _inputManager.OnLeftAction -= OnLeftAction;
+            _inputManager.OnRightAction -= OnRightAction;
             _inputManager.OnJumpAction -= OnJumpAction;
             _inputManager.OnJumpActionReleased -= OnJumpActionReleased;
-            _inputManager.OnCrouchAction -= OnCrouchAction;
-            _inputManager.OnCrouchActionReleased -= OnCrouchActionReleased;
         }
 
         //call when mech parts are changed out
@@ -92,7 +92,7 @@ namespace _Scripts.Controller
             _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
 
             _currentHp = Mathf.RoundToInt(_maxHp * hpLoss);
-            Debug.Log("The mech weighs " + _currentWeight + "kg, and has " + _currentHp + "/" + _maxHp + ".");
+            Debug.Log("The mech weighs " + _currentWeight + "kg, and has " + _currentHp + "/" + _maxHp + " HP.");
         }
         
         private void Update()
@@ -118,20 +118,57 @@ namespace _Scripts.Controller
             _controller.Move(_mechaVelocity * Time.deltaTime);
         }
 
-        private void OnInteractAction(object sender, EventArgs e)
+        
+        private void OnLeftAction(object sender, EventArgs e)
         {
+            switch (leftArmPart.type)
+            {
+                case ArmType.PROJECTILE:
+                    UseProjectile(leftArmRangedSpawn);
+                    break;
+                case ArmType.HITSCAN:
+                    UseHitscan(leftArmRangedSpawn);
+                    break;
+                case ArmType.MELEE:
+                    UseMelee(leftArmMeleeSpawn);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
-        private void OnInteractActionReleased(object sender, EventArgs e)
+        private void OnRightAction(object sender, EventArgs e)
         {
+            switch (rightArmPart.type)
+            {
+                case ArmType.PROJECTILE:
+                    UseProjectile(rightArmRangedSpawn);
+                    break;
+                case ArmType.HITSCAN:
+                    UseHitscan(rightArmRangedSpawn);
+                    break;
+                case ArmType.MELEE:
+                    UseMelee(rightArmMeleeSpawn);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void UseProjectile(Transform spawnPoint)
+        {
+            Vector3 cameraForward = cameraTransform.forward;
         }
         
-        private void OnInteractAlternateAction(object sender, EventArgs e)
+        private void UseHitscan(Transform spawnPoint)
         {
+            Vector3 cameraForward = cameraTransform.forward;
+
         }
         
-        private void OnInteractAlternateActionReleased(object sender, EventArgs e)
+        private void UseMelee(Transform spawnPoint)
         {
+            
         }
         
         private void OnJumpAction(object sender, EventArgs e)
@@ -144,12 +181,6 @@ namespace _Scripts.Controller
         {
         }
 
-        private void OnCrouchAction(object sender, EventArgs e)
-        {
-        }
         
-        private void OnCrouchActionReleased(object sender, EventArgs e)
-        {
-        }
     }
 }

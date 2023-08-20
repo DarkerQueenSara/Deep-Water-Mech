@@ -7,22 +7,22 @@ namespace _Scripts.Managers
     public class InputManager : MonoBehaviour
     {
         public static InputManager Instance { get; private set; }
-        public event EventHandler OnInteractAction;
+        public event EventHandler OnLeftAction;
         public event EventHandler OnInteractActionReleased;
-        public event EventHandler OnInteractAlternateAction;
+        public event EventHandler OnRightAction;
         public event EventHandler OnInteractAlternateActionReleased;
         public event EventHandler OnJumpAction;
         public event EventHandler OnJumpActionReleased;
-        public event EventHandler OnCrouchAction;
+        public event EventHandler OnLeaveAction;
         public event EventHandler OnCrouchActionReleased;
         public event EventHandler OnMenuAction;
 
         private const string PlayerPrefsBindings = "InputBindings";
         private PlayerControls _playerControls;
-        private bool _wasInteractPressed;
-        private bool _wasInteractAlternatePressed;
+        private bool _wasLeftPressed;
+        private bool _wasRightPressed;
         private bool _wasJumpPressed;
-        private bool _wasCrouchPressed;
+        private bool _wasLeavePressed;
 
         private void Awake()
         {
@@ -43,36 +43,36 @@ namespace _Scripts.Managers
         private void Start()
         {
             _playerControls.Enable();
-            _playerControls.Player.Interact.performed += OnInteractPerformed;
-            _playerControls.Player.InteractAlternate.performed += OnInteractAlternatePerformed;
+            _playerControls.Player.LeftArm.performed += OnLeftPerformed;
+            _playerControls.Player.RightArm.performed += OnRightPerformed;
             _playerControls.Player.Jump.performed += OnJumpPerformed;
-            _playerControls.Player.Crouch.performed += OnCrouchPerformed;
+            _playerControls.Player.LeaveMech.performed += OnLeavePerformed;
             _playerControls.Player.Menu.performed += OnMenuActionPerformed;
         }
 
         private void OnDestroy()
         {
             _playerControls.Disable();
-            _playerControls.Player.Interact.performed -= OnInteractPerformed;
-            _playerControls.Player.InteractAlternate.performed -= OnInteractAlternatePerformed;
+            _playerControls.Player.LeftArm.performed -= OnLeftPerformed;
+            _playerControls.Player.RightArm.performed -= OnRightPerformed;
             _playerControls.Player.Jump.performed -= OnJumpPerformed;
-            _playerControls.Player.Crouch.performed -= OnCrouchPerformed;
+            _playerControls.Player.LeaveMech.performed -= OnLeavePerformed;
             _playerControls.Player.Menu.performed -= OnMenuActionPerformed;
             _playerControls.Dispose();
         }
 
         private void Update()
         {
-            if (_wasInteractPressed && _playerControls.Player.Interact.WasReleasedThisFrame())
+            if (_wasLeftPressed && _playerControls.Player.LeftArm.WasReleasedThisFrame())
             {
                 OnInteractActionReleased?.Invoke(this, EventArgs.Empty);
-                _wasInteractPressed = false;
+                _wasLeftPressed = false;
             }
             
-            if (_wasInteractAlternatePressed && _playerControls.Player.InteractAlternate.WasReleasedThisFrame())
+            if (_wasRightPressed && _playerControls.Player.RightArm.WasReleasedThisFrame())
             {
                 OnInteractAlternateActionReleased?.Invoke(this, EventArgs.Empty);
-                _wasInteractAlternatePressed = false;
+                _wasRightPressed = false;
             }
             
             if (_wasJumpPressed && _playerControls.Player.Jump.WasReleasedThisFrame())
@@ -81,10 +81,10 @@ namespace _Scripts.Managers
                 _wasJumpPressed = false;
             }
             
-            if (_wasCrouchPressed && _playerControls.Player.Crouch.WasReleasedThisFrame())
+            if (_wasLeavePressed && _playerControls.Player.LeaveMech.WasReleasedThisFrame())
             {
                 OnCrouchActionReleased?.Invoke(this, EventArgs.Empty);
-                _wasCrouchPressed = false;
+                _wasLeavePressed = false;
             }
         }
 
@@ -92,16 +92,16 @@ namespace _Scripts.Managers
 
         public Vector2 GetLookDelta() => _playerControls.Player.Look.ReadValue<Vector2>();
 
-        private void OnInteractPerformed(InputAction.CallbackContext obj)
+        private void OnLeftPerformed(InputAction.CallbackContext obj)
         {
-            OnInteractAction?.Invoke(this, EventArgs.Empty);
-            _wasInteractPressed = true;
+            OnLeftAction?.Invoke(this, EventArgs.Empty);
+            _wasLeftPressed = true;
         }
 
-        private void OnInteractAlternatePerformed(InputAction.CallbackContext obj)
+        private void OnRightPerformed(InputAction.CallbackContext obj)
         {
-            OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
-            _wasInteractAlternatePressed = true;
+            OnRightAction?.Invoke(this, EventArgs.Empty);
+            _wasRightPressed = true;
         } 
         
         private void OnJumpPerformed(InputAction.CallbackContext obj)
@@ -110,10 +110,10 @@ namespace _Scripts.Managers
             _wasJumpPressed = true;
         }
         
-        private void OnCrouchPerformed(InputAction.CallbackContext obj)
+        private void OnLeavePerformed(InputAction.CallbackContext obj)
         {
-            OnCrouchAction?.Invoke(this, EventArgs.Empty);
-            _wasCrouchPressed = true;
+            OnLeaveAction?.Invoke(this, EventArgs.Empty);
+            _wasLeavePressed = true;
         }
 
         private void OnMenuActionPerformed(InputAction.CallbackContext obj) => OnMenuAction?.Invoke(this, EventArgs.Empty);
