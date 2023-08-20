@@ -9,9 +9,10 @@ namespace _Scripts.MechaParts
         MELEE
     }
     
-    [CreateAssetMenu(fileName = "Mech Parts/Arm")]
+    [CreateAssetMenu(menuName = "Mech Parts/Arm")]
     public class Arm : MechPart
     {
+        public int damage;
         public ArmType type;
     }
 }

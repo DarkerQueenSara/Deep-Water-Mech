@@ -1,5 +1,6 @@
 using System;
 using _Scripts.Managers;
+using _Scripts.MechaParts;
 using UnityEngine;
 
 namespace _Scripts.Controller
@@ -12,13 +13,15 @@ namespace _Scripts.Controller
 
         private CharacterController _characterController;
         
-        //TODO adicionar lista de partes, provavelmente scriptable objects, porque vai determinar velocidade e peso e HP
-
-        public const float MedianWeight = 200;
+        public const float MedianWeight = 200.0f;
         
-        public float speed = 6;
-        public float weight = 100;
-        
+        [Header("Mech Parts SO")] 
+        public Head headPart;
+        public Torso torsoPart;
+        public Arm leftArmPart;
+        public Arm rightArmPart;
+        public Legs legsPart;
+        public BonusPart bonusPart;
 
         private void Awake()
         {
@@ -73,6 +76,13 @@ namespace _Scripts.Controller
 
         }
 
+        private int GetWeight()
+        {
+            int weight = headPart.weight + torsoPart.weight + leftArmPart.weight + rightArmPart.weight +
+                         legsPart.weight;
+            return bonusPart != null ? weight + bonusPart.weight : weight;
+        }
+        
         private void OnInteractAction(object sender, EventArgs e)
         {
         }
