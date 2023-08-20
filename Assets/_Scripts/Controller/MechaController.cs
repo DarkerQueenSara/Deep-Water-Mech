@@ -26,13 +26,23 @@ namespace _Scripts.Controller
         {
             _inputManager = InputManager.Instance;
             _inputManager.OnInteractAction += OnInteractAction;
+            _inputManager.OnInteractActionReleased += OnInteractActionReleased;
             _inputManager.OnInteractAlternateAction += OnInteractAlternateAction;
+            _inputManager.OnInteractAlternateActionReleased += OnInteractAlternateActionReleased;
+            _inputManager.OnJumpAction += OnJumpAction;
+            _inputManager.OnJumpActionReleased += OnJumpActionReleased;
+            _inputManager.OnCrouchAction += OnCrouchAction;
+            _inputManager.OnCrouchActionReleased += OnCrouchActionReleased;
         }
-        
+
         private void OnDestroy()
         {
             _inputManager.OnInteractAction -= OnInteractAction;
             _inputManager.OnInteractAlternateAction -= OnInteractAlternateAction;
+            _inputManager.OnJumpAction -= OnJumpAction;
+            _inputManager.OnJumpActionReleased -= OnJumpActionReleased;
+            _inputManager.OnCrouchAction -= OnCrouchAction;
+            _inputManager.OnCrouchActionReleased -= OnCrouchActionReleased;
         }
 
         private void Update()
@@ -49,7 +59,31 @@ namespace _Scripts.Controller
         {
         }
         
+        private void OnInteractActionReleased(object sender, EventArgs e)
+        {
+        }
+        
         private void OnInteractAlternateAction(object sender, EventArgs e)
+        {
+        }
+        
+        private void OnInteractAlternateActionReleased(object sender, EventArgs e)
+        {
+        }
+        
+        private void OnJumpAction(object sender, EventArgs e)
+        {
+        }
+        
+        private void OnJumpActionReleased(object sender, EventArgs e)
+        {
+        }
+
+        private void OnCrouchAction(object sender, EventArgs e)
+        {
+        }
+        
+        private void OnCrouchActionReleased(object sender, EventArgs e)
         {
         }
     }
