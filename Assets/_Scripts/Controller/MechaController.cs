@@ -1,5 +1,6 @@
 using System;
 using _Scripts.Managers;
+using _Scripts.MechaParts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,6 +22,20 @@ namespace _Scripts.Controller
         private Vector3 _mechaVelocity, _move;
         private bool _groundedMecha;
         
+        public float medianWeight = 200.0f;
+
+        private int _maxHp;
+        private int _currentHp;
+        private int _currentWeight;
+        
+        [Header("Mech Parts SO")] 
+        public Head headPart;
+        public Torso torsoPart;
+        public Arm leftArmPart;
+        public Arm rightArmPart;
+        public Legs legsPart;
+        public BonusPart bonusPart;
+
         private void Awake()
         {
             if (Instance != null)
@@ -47,6 +62,7 @@ namespace _Scripts.Controller
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
             _inputManager.OnCrouchAction += OnCrouchAction;
             _inputManager.OnCrouchActionReleased += OnCrouchActionReleased;
+            _controller = GetComponent<CharacterController>();
         }
 
         private void OnDestroy()
@@ -59,6 +75,22 @@ namespace _Scripts.Controller
             _inputManager.OnCrouchActionReleased -= OnCrouchActionReleased;
         }
 
+        //call when mech parts are changed out
+        public void UpdateMech()
+        {
+            _currentWeight = headPart.weight + torsoPart.weight + leftArmPart.weight + rightArmPart.weight +
+                                          legsPart.weight;
+            _currentWeight = bonusPart != null ? _currentWeight + bonusPart.weight : _currentWeight;
+
+            float hpLoss = 1.0f * _currentHp / _maxHp;
+            
+            _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP +
+                                      legsPart.HP;
+            _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
+
+            _currentHp = Mathf.RoundToInt(_maxHp * hpLoss);
+        }
+        
         private void Update()
         {
             HandleMovement();
@@ -79,6 +111,14 @@ namespace _Scripts.Controller
             _controller.Move(_move * (Time.deltaTime * mechaSpeed));
             _mechaVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_mechaVelocity * Time.deltaTime);
+            
+            Vector3 direction = new Vector3(inputVector.x, 0f, inputVector.y).normalized;
+
+            if (direction.magnitude >= 0.01f)
+            {
+                float moveSpeed = legsPart.speed * medianWeight / _currentWeight * Time.deltaTime;
+            }
+
         }
 
         private void OnInteractAction(object sender, EventArgs e)
