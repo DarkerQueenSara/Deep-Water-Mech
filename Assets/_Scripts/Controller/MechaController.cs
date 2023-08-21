@@ -13,7 +13,7 @@ namespace _Scripts.Controller
 
         [SerializeField] private float gravityValue = -9.81f;
         [SerializeField] private float interactDistance = 2f;
-        [SerializeField] private Transform gameCamera;
+        [SerializeField] private Camera gameCamera;
         [SerializeField] private Transform raycastOrigin;
         [SerializeField] private LayerMask interactLayerMask;
         [SerializeField] private LayerMask raycastLayerMask;
@@ -111,10 +111,10 @@ namespace _Scripts.Controller
             if (_groundedMecha && _mechaVelocity.y < 0)
                 _mechaVelocity.y = 0f;
 
-            Vector3 cameraForward = gameCamera.forward;
+            Vector3 cameraForward = gameCamera.transform.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
-            _move = cameraForward * _move.z + gameCamera.right * _move.x;
+            _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
             float moveSpeed = legsPart.speed * (medianWeight / _currentWeight) * Time.deltaTime;
@@ -130,7 +130,7 @@ namespace _Scripts.Controller
             switch (leftArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(leftArmRangedSpawn.position);
+                    UseProjectile(leftArmRangedSpawn);
                     break;
                 case ArmType.HITSCAN:
                     UseHitscan(leftArmRangedSpawn);
@@ -154,7 +154,7 @@ namespace _Scripts.Controller
             switch (rightArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(rightArmRangedSpawn.position);
+                    UseProjectile(rightArmRangedSpawn);
                     break;
                 case ArmType.HITSCAN:
                     UseHitscan(rightArmRangedSpawn);
@@ -172,18 +172,17 @@ namespace _Scripts.Controller
             _rightFiring = false;
         }
 
-        private void UseProjectile(Vector3 spawnPoint)
+        private void UseProjectile(Transform spawnPoint)
         {
-            // Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
-            // Vector3 destination = Physics.Raycast(ray, out var hit) ? hit.point : ray.GetPoint(1000);
-
-            Ray ray = new(raycastOrigin.position, raycastOrigin.forward);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, raycastLayerMask))
-            {
-                Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
-                Projectile projectile = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity).GetComponent<Projectile>();
-                projectile.body.AddForce((hitInfo.transform.position - spawnPoint).normalized * 20, ForceMode.Impulse);
-            }
+            Debug.Log("Spawn point position: " + spawnPoint.position);
+            Debug.Log("Left point position: " + leftArmRangedSpawn.position);
+            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
+            Vector3 targetPoint = Physics.Raycast(ray, out var hit, raycastLayerMask) ? hit.point : ray.GetPoint(75);
+            Vector3 position = spawnPoint.position;
+            Vector3 direction = targetPoint - position;
+            Projectile projectile = Instantiate(projectilePrefab, position, Quaternion.identity).GetComponent<Projectile>();
+            projectile.gameObject.transform.forward = direction.normalized;
+            projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
         }
 
         private void UseHitscan(Transform spawnPoint)
