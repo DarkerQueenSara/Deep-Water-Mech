@@ -2,6 +2,7 @@ using System;
 using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
+using Extensions;
 using UnityEngine;
 
 namespace _Scripts.Controller
@@ -11,14 +12,13 @@ namespace _Scripts.Controller
         public static MechaController Instance { get; private set; }
 
         [SerializeField] private float gravityValue = -9.81f;
-        [SerializeField] private float interactDistance = 2f;
         [SerializeField] private Camera gameCamera;
-        [SerializeField] private Transform raycastOrigin;
-        [SerializeField] private LayerMask interactLayerMask;
         [SerializeField] private LayerMask raycastLayerMask;
+        [SerializeField] private LayerMask hittableLayerMask;
 
         [SerializeField] private float medianWeight;
-
+        [SerializeField] private float meleeAttackRange;
+        
         [Header("Mech Parts SO")] 
         [SerializeField] private Head headPart;
         [SerializeField] private Torso torsoPart;
@@ -103,7 +103,7 @@ namespace _Scripts.Controller
         
         private void Update()
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             HandleMovement();
         }
 
@@ -128,18 +128,18 @@ namespace _Scripts.Controller
         
         private void OnLeftAction(object sender, EventArgs e)
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             _leftFiring = true;
             switch (leftArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(leftArmRangedSpawn.position);
+                    UseProjectile(leftArmRangedSpawn.position, true);
                     break;
                 case ArmType.HITSCAN:
-                    UseHitscan(leftArmRangedSpawn.position);
+                    UseHitscan(leftArmRangedSpawn.position, true);
                     break;
                 case ArmType.MELEE:
-                    UseMelee(leftArmMeleeSpawn.position);
+                    UseMelee(leftArmMeleeSpawn.position, true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -148,24 +148,24 @@ namespace _Scripts.Controller
         
         private void OnLeftActionReleased(object sender, EventArgs e)
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             _leftFiring = false;
         }
         
         private void OnRightAction(object sender, EventArgs e)
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             _rightFiring = true;
             switch (rightArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(rightArmRangedSpawn.position);
+                    UseProjectile(rightArmRangedSpawn.position, false);
                     break;
                 case ArmType.HITSCAN:
-                    UseHitscan(rightArmRangedSpawn.position);
+                    UseHitscan(rightArmRangedSpawn.position, false);
                     break;
                 case ArmType.MELEE:
-                    UseMelee(rightArmMeleeSpawn.position);
+                    UseMelee(rightArmMeleeSpawn.position, false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -174,11 +174,11 @@ namespace _Scripts.Controller
         
         private void OnRightActionReleased(object sender, EventArgs e)
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             _rightFiring = false;
         }
 
-        private void UseProjectile(Vector3 spawnPoint)
+        private void UseProjectile(Vector3 spawnPoint, bool left)
         {
             Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
             Vector3 targetPoint = Physics.Raycast(ray, out var hit, raycastLayerMask) ? hit.point : ray.GetPoint(75);
@@ -186,26 +186,38 @@ namespace _Scripts.Controller
             Projectile projectile = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity).GetComponent<Projectile>();
             projectile.gameObject.transform.forward = direction.normalized;
             projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
+            projectile.projectileDamage = left ? leftArmPart.damage : rightArmPart.damage;
         }
 
-        private void UseHitscan(Vector3 spawnPoint)
+        private void UseHitscan(Vector3 spawnPoint, bool left)
         {
             Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
-            if (Physics.Raycast(ray, out var hit, raycastLayerMask))
+            if (Physics.Raycast(ray, out var hit, hittableLayerMask))
             {
-                //do damage according to what was hit
+                int damage = left ? leftArmPart.damage : rightArmPart.damage;
+                hit.collider.gameObject.GetComponent<Hittable>().DoDamage(damage);
             }
             //display muzzle at spawnPoint
         }
         
-        private void UseMelee(Vector3 spawnPoint)
+        private void UseMelee(Vector3 spawnPoint, bool left)
         {
+            Collider[] cols = Physics.OverlapSphere(spawnPoint, meleeAttackRange, raycastLayerMask);
+
+            foreach (Collider col in cols)
+            {
+                if (hittableLayerMask.HasLayer(col.gameObject.layer))
+                {
+                    int damage = left ? leftArmPart.damage : rightArmPart.damage;
+                    col.gameObject.GetComponent<Hittable>().DoDamage(damage);
+                }
+            }
             
         }
         
         private void OnJumpAction(object sender, EventArgs e)
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             if (_groundedMecha)
                 _mechaVelocity.y = Mathf.Sqrt(legsPart.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
         }
@@ -216,7 +228,7 @@ namespace _Scripts.Controller
 
         private void OnInteractAction(object sender, EventArgs e)
         {
-            if (!GameManager.Instance.IsInsideMecha) return;
+            //if (!GameManager.Instance.IsInsideMecha) return;
             //GameManager.Instance.ExitMecha();
         }
     }
