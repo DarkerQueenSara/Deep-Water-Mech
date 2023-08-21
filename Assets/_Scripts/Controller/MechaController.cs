@@ -3,7 +3,6 @@ using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Scripts.Controller
 {
@@ -130,13 +129,13 @@ namespace _Scripts.Controller
             switch (leftArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(leftArmRangedSpawn);
+                    UseProjectile(leftArmRangedSpawn.position);
                     break;
                 case ArmType.HITSCAN:
-                    UseHitscan(leftArmRangedSpawn);
+                    UseHitscan(leftArmRangedSpawn.position);
                     break;
                 case ArmType.MELEE:
-                    UseMelee(leftArmMeleeSpawn);
+                    UseMelee(leftArmMeleeSpawn.position);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -154,13 +153,13 @@ namespace _Scripts.Controller
             switch (rightArmPart.type)
             {
                 case ArmType.PROJECTILE:
-                    UseProjectile(rightArmRangedSpawn);
+                    UseProjectile(rightArmRangedSpawn.position);
                     break;
                 case ArmType.HITSCAN:
-                    UseHitscan(rightArmRangedSpawn);
+                    UseHitscan(rightArmRangedSpawn.position);
                     break;
                 case ArmType.MELEE:
-                    UseMelee(rightArmMeleeSpawn);
+                    UseMelee(rightArmMeleeSpawn.position);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -172,24 +171,27 @@ namespace _Scripts.Controller
             _rightFiring = false;
         }
 
-        private void UseProjectile(Transform spawnPoint)
+        private void UseProjectile(Vector3 spawnPoint)
         {
-            Debug.Log("Spawn point position: " + spawnPoint.position);
-            Debug.Log("Left point position: " + leftArmRangedSpawn.position);
             Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
             Vector3 targetPoint = Physics.Raycast(ray, out var hit, raycastLayerMask) ? hit.point : ray.GetPoint(75);
-            Vector3 position = spawnPoint.position;
-            Vector3 direction = targetPoint - position;
-            Projectile projectile = Instantiate(projectilePrefab, position, Quaternion.identity).GetComponent<Projectile>();
+            Vector3 direction = targetPoint - spawnPoint;
+            Projectile projectile = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity).GetComponent<Projectile>();
             projectile.gameObject.transform.forward = direction.normalized;
             projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
         }
 
-        private void UseHitscan(Transform spawnPoint)
+        private void UseHitscan(Vector3 spawnPoint)
         {
+            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
+            if (Physics.Raycast(ray, out var hit, raycastLayerMask))
+            {
+                //do damage according to what was hit
+            }
+            //display muzzle at spawnPoint
         }
         
-        private void UseMelee(Transform spawnPoint)
+        private void UseMelee(Vector3 spawnPoint)
         {
             
         }
