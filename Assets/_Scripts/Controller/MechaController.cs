@@ -18,6 +18,9 @@ namespace _Scripts.Controller
 
         [SerializeField] private float medianWeight;
         [SerializeField] private float meleeAttackRange;
+        [SerializeField] private float dashForce;
+        [SerializeField] private float dashJumpForce;
+        [SerializeField] [Range(0,1)]private float dashControlLoss;
         
         [Header("Mech Parts SO")] 
         [SerializeField] private Head headPart;
@@ -38,7 +41,7 @@ namespace _Scripts.Controller
         private CharacterController _controller;
         private InputManager _inputManager;
         private Vector3 _mechaVelocity, _move;
-        private bool _groundedMecha, _leftFiring, _rightFiring;
+        private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         private int _maxHp;
         private int _currentHp;
         private int _currentWeight;
@@ -68,6 +71,8 @@ namespace _Scripts.Controller
             _inputManager.OnJumpAction += OnJumpAction;
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
             _inputManager.OnInteractAction += OnInteractAction;
+            _inputManager.OnDashAction += OnDashAction;
+            _inputManager.OnDashActionReleased += OnDashActionReleased;
             _controller = GetComponent<CharacterController>();
             _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP + legsPart.HP;
             _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
@@ -84,6 +89,8 @@ namespace _Scripts.Controller
             _inputManager.OnJumpAction -= OnJumpAction;
             _inputManager.OnJumpActionReleased -= OnJumpActionReleased;
             _inputManager.OnInteractAction -= OnInteractAction;
+            _inputManager.OnDashAction -= OnDashAction;
+            _inputManager.OnDashActionReleased -= OnDashActionReleased;
         }
 
         //call when mech parts are changed out
@@ -110,7 +117,7 @@ namespace _Scripts.Controller
         private void HandleMovement()
         {
             _groundedMecha = _controller.isGrounded;
-            if (_groundedMecha && _mechaVelocity.y < 0)
+            if (_groundedMecha && _mechaVelocity.y < 0 && !_dashing)
                 _mechaVelocity.y = 0f;
 
             Vector3 cameraForward = gameCamera.transform.forward;
@@ -120,6 +127,7 @@ namespace _Scripts.Controller
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
             float moveSpeed = legsPart.speed * (medianWeight / _currentWeight) * Time.deltaTime;
+            if (_dashing) moveSpeed *= dashForce;
             _controller.Move(_move * moveSpeed);
             _mechaVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_mechaVelocity * Time.deltaTime);
@@ -219,7 +227,10 @@ namespace _Scripts.Controller
         {
             //if (!GameManager.Instance.IsInsideMecha) return;
             if (_groundedMecha)
-                _mechaVelocity.y = Mathf.Sqrt(legsPart.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
+                if (_dashing)
+                   _mechaVelocity.y = Mathf.Sqrt(legsPart.jumpPower * dashJumpForce * (medianWeight / _currentWeight) * -2f * gravityValue);
+                else
+                    _mechaVelocity.y = Mathf.Sqrt(legsPart.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
         }
         
         private void OnJumpActionReleased(object sender, EventArgs e)
@@ -231,5 +242,17 @@ namespace _Scripts.Controller
             //if (!GameManager.Instance.IsInsideMecha) return;
             //GameManager.Instance.ExitMecha();
         }
+
+        private void OnDashAction(object sender, EventArgs e)
+        {
+            //if (!GameManager.Instance.IsInsideMecha) return;
+            _dashing = true;
+        } 
+        
+        private void OnDashActionReleased(object sender, EventArgs e)
+        {
+            //if (!GameManager.Instance.IsInsideMecha) return;
+            _dashing = false;
+        } 
     }
 }

@@ -585,7 +585,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   medianWeight: 350
-  meleeAttackRange: 0
+  meleeAttackRange: 3
+  dashForce: 2
+  dashJumpForce: 4
+  dashControlLoss: 0.5
   headPart: {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
   torsoPart: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}
   leftArmPart: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
