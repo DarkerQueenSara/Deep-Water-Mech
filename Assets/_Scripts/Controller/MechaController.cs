@@ -68,6 +68,7 @@ namespace _Scripts.Controller
             _inputManager.OnRightActionReleased += OnRightActionReleased;
             _inputManager.OnJumpAction += OnJumpAction;
             _inputManager.OnJumpActionReleased += OnJumpActionReleased;
+            _inputManager.OnInteractAction += OnInteractAction;
             _controller = GetComponent<CharacterController>();
             _maxHp = headPart.HP + torsoPart.HP + leftArmPart.HP + rightArmPart.HP + legsPart.HP;
             _maxHp = bonusPart != null ? _maxHp + bonusPart.HP : _maxHp;
@@ -83,6 +84,7 @@ namespace _Scripts.Controller
             _inputManager.OnRightActionReleased -= OnRightActionReleased;
             _inputManager.OnJumpAction -= OnJumpAction;
             _inputManager.OnJumpActionReleased -= OnJumpActionReleased;
+            _inputManager.OnInteractAction -= OnInteractAction;
         }
 
         //call when mech parts are changed out
@@ -102,6 +104,7 @@ namespace _Scripts.Controller
         
         private void Update()
         {
+            if (!GameManager.Instance.IsInsideMecha) return;
             HandleMovement();
         }
 
@@ -126,6 +129,7 @@ namespace _Scripts.Controller
         
         private void OnLeftAction(object sender, EventArgs e)
         {
+            if (!GameManager.Instance.IsInsideMecha) return;
             _leftFiring = true;
             switch (leftArmPart.type)
             {
@@ -145,11 +149,13 @@ namespace _Scripts.Controller
         
         private void OnLeftActionReleased(object sender, EventArgs e)
         {
+            if (!GameManager.Instance.IsInsideMecha) return;
             _leftFiring = false;
         }
         
         private void OnRightAction(object sender, EventArgs e)
         {
+            if (!GameManager.Instance.IsInsideMecha) return;
             _rightFiring = true;
             switch (rightArmPart.type)
             {
@@ -169,6 +175,7 @@ namespace _Scripts.Controller
         
         private void OnRightActionReleased(object sender, EventArgs e)
         {
+            if (!GameManager.Instance.IsInsideMecha) return;
             _rightFiring = false;
         }
 
@@ -196,6 +203,7 @@ namespace _Scripts.Controller
         
         private void OnJumpAction(object sender, EventArgs e)
         {
+            if (!GameManager.Instance.IsInsideMecha) return;
             if (_groundedMecha)
                 _mechaVelocity.y = Mathf.Sqrt(legsPart.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
         }
@@ -204,6 +212,10 @@ namespace _Scripts.Controller
         {
         }
 
-        
+        private void OnInteractAction(object sender, EventArgs e)
+        {
+            if (!GameManager.Instance.IsInsideMecha) return;
+            //GameManager.Instance.ExitMecha();
+        }
     }
 }

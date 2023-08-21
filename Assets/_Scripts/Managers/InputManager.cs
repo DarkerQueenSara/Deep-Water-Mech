@@ -19,6 +19,28 @@ namespace _Scripts.Managers
         public event EventHandler OnDashActionReleased;
         public event EventHandler OnInteractAction;
         public event EventHandler OnMenuAction;
+        
+        public enum Binding
+        {
+            MoveUp,
+            MoveDown,
+            MoveLeft,
+            MoveRight,
+            LeftArm,
+            RightArm,
+            Jump,
+            Dash,
+            Crouch,
+            Interact,
+            Menu,
+            GamepadLeftArm,
+            GamepadRightArm,
+            GamepadJump,
+            GamepadDash,
+            GamepadCrouch,
+            GamepadInteract,
+            GamepadMenu
+        }
 
         private const string PlayerPrefsBindings = "InputBindings";
         private PlayerControls _playerControls;
@@ -133,5 +155,124 @@ namespace _Scripts.Managers
         private void OnInteractPerformed(InputAction.CallbackContext obj) => OnInteractAction?.Invoke(this, EventArgs.Empty);
 
         private void OnMenuActionPerformed(InputAction.CallbackContext obj) => OnMenuAction?.Invoke(this, EventArgs.Empty);
+        
+        public void RebindBinding(Binding binding, Action onActionRebound)
+        {
+            InputAction inputAction;
+            int bindingIndex;
+            switch (binding)
+            {
+                case Binding.MoveUp:
+                    inputAction = _playerControls.Player.Movement;
+                    bindingIndex = 1;
+                    break;
+                case Binding.MoveDown:
+                    inputAction = _playerControls.Player.Movement;
+                    bindingIndex = 2;
+                    break;
+                case Binding.MoveLeft:
+                    inputAction = _playerControls.Player.Movement;
+                    bindingIndex = 3;
+                    break;
+                case Binding.MoveRight:
+                    inputAction = _playerControls.Player.Movement;
+                    bindingIndex = 4;
+                    break;
+                case Binding.LeftArm:
+                    inputAction = _playerControls.Player.Interact;
+                    bindingIndex = 0;
+                    break;
+                case Binding.RightArm:
+                    inputAction = _playerControls.Player.LeftArm;
+                    bindingIndex = 0;
+                    break;
+                case Binding.Jump:
+                    inputAction = _playerControls.Player.Jump;
+                    bindingIndex = 0;
+                    break;
+                case Binding.Dash:
+                    inputAction = _playerControls.Player.Dash;
+                    bindingIndex = 0;
+                    break;
+                case Binding.Crouch:
+                    inputAction = _playerControls.Player.Crouch;
+                    bindingIndex = 0;
+                    break;
+                case Binding.Interact:
+                    inputAction = _playerControls.Player.Interact;
+                    bindingIndex = 0;
+                    break;
+                case Binding.Menu:
+                    inputAction = _playerControls.Player.Menu;
+                    bindingIndex = 0;
+                    break;
+                case Binding.GamepadLeftArm:
+                    inputAction = _playerControls.Player.LeftArm;
+                    bindingIndex = 1;
+                    break;
+                case Binding.GamepadRightArm:
+                    inputAction = _playerControls.Player.RightArm;
+                    bindingIndex = 1;
+                    break;
+                case Binding.GamepadJump:
+                    inputAction = _playerControls.Player.Jump;
+                    bindingIndex = 1;
+                    break;
+                case Binding.GamepadDash:
+                    inputAction = _playerControls.Player.Dash;
+                    bindingIndex = 1;
+                    break;
+                case Binding.GamepadCrouch:
+                    inputAction = _playerControls.Player.Crouch;
+                    bindingIndex = 1;
+                    break;
+                case Binding.GamepadInteract:
+                    inputAction = _playerControls.Player.Interact;
+                    bindingIndex = 1;
+                    break;
+                case Binding.GamepadMenu:
+                    inputAction = _playerControls.Player.Menu;
+                    bindingIndex = 1;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(binding), binding, null);
+            }
+
+            _playerControls.Player.Disable();
+            inputAction.PerformInteractiveRebinding(bindingIndex).OnComplete(callback =>
+            {
+                callback.Dispose();
+                _playerControls.Player.Enable();
+                onActionRebound();
+                PlayerPrefs.SetString(PlayerPrefsBindings, _playerControls.SaveBindingOverridesAsJson());
+                PlayerPrefs.Save();
+            }).Start();
+        }
+
+        public string GetBindingText(Binding binding)
+        {
+            return binding switch
+            {
+                Binding.MoveUp => _playerControls.Player.Movement.bindings[1].ToDisplayString(),
+                Binding.MoveDown => _playerControls.Player.Movement.bindings[2].ToDisplayString(),
+                Binding.MoveLeft => _playerControls.Player.Movement.bindings[3].ToDisplayString(),
+                Binding.MoveRight => _playerControls.Player.Movement.bindings[4].ToDisplayString(),
+                Binding.LeftArm => _playerControls.Player.LeftArm.bindings[0].ToDisplayString(),
+                Binding.RightArm => _playerControls.Player.RightArm.bindings[0].ToDisplayString(),
+                Binding.Jump => _playerControls.Player.Jump.bindings[0].ToDisplayString(),
+                Binding.Dash => _playerControls.Player.Dash.bindings[0].ToDisplayString(),
+                Binding.Crouch => _playerControls.Player.Crouch.bindings[0].ToDisplayString(),
+                Binding.Interact => _playerControls.Player.Interact.bindings[0].ToDisplayString(),
+                Binding.Menu => _playerControls.Player.Menu.bindings[0].ToDisplayString(),
+                Binding.GamepadLeftArm => _playerControls.Player.LeftArm.bindings[1].ToDisplayString(),
+                Binding.GamepadRightArm => _playerControls.Player.RightArm.bindings[1].ToDisplayString(),
+                Binding.GamepadMenu => _playerControls.Player.Menu.bindings[1].ToDisplayString(),
+                Binding.GamepadJump => _playerControls.Player.Jump.bindings[1].ToDisplayString(),
+                Binding.GamepadDash => _playerControls.Player.Dash.bindings[1].ToDisplayString(),
+                Binding.GamepadCrouch => _playerControls.Player.Crouch.bindings[1].ToDisplayString(),
+                Binding.GamepadInteract => _playerControls.Player.Interact.bindings[1].ToDisplayString(),
+                _ => throw new ArgumentOutOfRangeException(nameof(binding), binding, null)
+            };
+        }
     }
 }
