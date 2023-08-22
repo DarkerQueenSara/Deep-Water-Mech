@@ -13,6 +13,7 @@ namespace _Scripts.MechaParts
     [CreateAssetMenu(menuName = "Mech Parts/Arm", order = 0)]
     public class Arm : MechPart
     {
+        public bool isLeftArm;
         public int damage;
         public ArmType type;
     }

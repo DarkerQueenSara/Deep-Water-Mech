@@ -6,6 +6,6 @@ namespace _Scripts.MechaParts
     {
         public int HP;
         public int weight;
-        public Mesh part;
+        public GameObject prefab;
     }
 }
