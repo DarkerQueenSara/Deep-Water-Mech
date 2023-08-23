@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Scripts.MechaParts
+namespace _Scripts.MechaParts.SO
 {
     public enum TorsoType {DEFAULT}
     

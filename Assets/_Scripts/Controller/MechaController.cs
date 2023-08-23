@@ -2,6 +2,7 @@ using System;
 using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
+using _Scripts.MechaParts.SO;
 using Extensions;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace _Scripts.Controller
     public class MechaController : MonoBehaviour
     {
         public static MechaController Instance { get; private set; }
+
+        public Head Head;
         public Arm LeftArm { get; set; }
         public Arm RightArm { get; set; }
         public Torso Torso { get; set; }
@@ -23,11 +26,11 @@ namespace _Scripts.Controller
 
         [SerializeField] private float medianWeight;
         [SerializeField] private float meleeAttackRange;
-        [SerializeField] private float dashForce;
-        [SerializeField] private float dashJumpForce;
-        [SerializeField] [Range(0,1)] private float dashControlLoss;
         
-        [Header("Mech Parts SO")] 
+        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private Animator mechaAnimator;
+        
+        [Header("Inventory SO")] 
         [SerializeField] private Inventory inventory;
 
         [Header("Mech Parts Positions")] 
@@ -35,9 +38,7 @@ namespace _Scripts.Controller
         [SerializeField] private Transform rightArmTransform;
         [SerializeField] private Transform torsoTransform;
         [SerializeField] private Transform legsTransform;
-        
-        [SerializeField] private GameObject projectilePrefab;
-        [SerializeField] private Animator mechaAnimator;
+        [SerializeField] private Transform bonusPartTransform;
         
         private CharacterController _controller;
         private InputManager _inputManager;
@@ -45,6 +46,7 @@ namespace _Scripts.Controller
         private Vector3 _mechaVelocity, _move;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         private int _maxHp, _currentHp, _currentWeight;
+        private float _leftArmCooldownLeft, _rightArmCooldownLeft;
         private static readonly int Moving = Animator.StringToHash("Moving");
 
         private void Awake()
@@ -76,14 +78,18 @@ namespace _Scripts.Controller
             _inputManager.OnDashActionReleased += OnDashActionReleased;
             _controller = GetComponent<CharacterController>();
 
-            LeftArm = inventory.defaultLeftArm;
-            RightArm = inventory.defaultRightArm;
-            Torso = inventory.defaultTorso;
-            Legs = inventory.defaultLegs;
-            BonusPart = inventory.defaultBonusPart;
+            Head = inventory.equippedHead;
+            LeftArm = inventory.equippedLeftArm;
+            RightArm = inventory.equippedRightArm;
+            Torso = inventory.equippedTorso;
+            Legs = inventory.equippedLegs;
+            BonusPart = inventory.equippedBonusPart;
+
+            _leftArmCooldownLeft = 0;
+            _rightArmCooldownLeft = 0;
+            
             _maxHp = GetMaxHp();
             _currentHp = _maxHp;
-            _currentWeight = GetWeight();
             UpdateMech();
         }
 
@@ -105,28 +111,42 @@ namespace _Scripts.Controller
         {
             //if (!GameManager.Instance.IsInsideMecha) return;
             HandleMovement();
+            HandleAttack();
         }
 
         public void UpdateMech()
         {
+            //Assemble the mech
+            /*
+            Instantiate(LeftArm.prefab, leftArmTransform.position, Quaternion.identity);
+            Instantiate(RightArm.prefab, rightArmTransform.position, Quaternion.identity);
+            Instantiate(Torso.prefab, torsoTransform.position, Quaternion.identity);
+            Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
+            if (BonusPart != null)
+               Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
+            */
+            
             _leftArmSpawnPoint = LeftArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
             _rightArmSpawnPoint = RightArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
             float hpLoss = 1.0f * _currentHp / _maxHp;
-            _currentHp = Mathf.RoundToInt(_maxHp * hpLoss);
-            Debug.Log("The mech weighs " + GetWeight() + "kg, and has " + _currentHp + "/" + _maxHp + " HP.");
+            int newMaxHp = GetMaxHp();
+            _currentHp = Mathf.RoundToInt(newMaxHp * hpLoss);
+            _maxHp = newMaxHp;
+            _currentWeight = GetWeight();
+            Debug.Log("The mech weighs " + _currentWeight + "kg, and has " + _currentHp + "/" + _maxHp + " HP.");
         }
 
         private int GetWeight()
         {
-            int currentWeight = Torso.weight + LeftArm.weight + RightArm.weight + Legs.weight;
+            int currentWeight = Head.weight + Torso.weight + LeftArm.weight + RightArm.weight + Legs.weight;
             currentWeight = BonusPart != null ? currentWeight + BonusPart.weight : currentWeight;
             return currentWeight;
         }
 
         private int GetMaxHp()
         {
-            int maxHp = Torso.HP + LeftArm.HP + RightArm.HP + Legs.HP;
-            maxHp = BonusPart != null ? maxHp + BonusPart.HP : maxHp;
+            int maxHp = Head.hp + Torso.hp + LeftArm.hp + RightArm.hp + Legs.hp;
+            maxHp = BonusPart != null ? maxHp + BonusPart.hp : maxHp;
             return maxHp;
         }
 
@@ -143,7 +163,7 @@ namespace _Scripts.Controller
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
             float moveSpeed = Legs.speed * (medianWeight / _currentWeight) * Time.deltaTime;
-            if (_dashing) moveSpeed *= dashForce;
+            if (_dashing) moveSpeed *= ((BoostPart)BonusPart).boostForce;
             _controller.Move(_move * moveSpeed);
             _mechaVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_mechaVelocity * Time.deltaTime);
@@ -151,25 +171,51 @@ namespace _Scripts.Controller
             mechaAnimator.SetBool(Moving, inputVector.magnitude != 0);
         }
 
+        private void HandleAttack()
+        {
+            _leftArmCooldownLeft -= Time.deltaTime;
+            _rightArmCooldownLeft -= Time.deltaTime;
+            if (_leftFiring)
+            {
+                switch (LeftArm.type)
+                {
+                    case ArmType.PROJECTILE:
+                        UseProjectile(_leftArmSpawnPoint.position, true);
+                        break;
+                    case ArmType.HITSCAN:
+                        UseHitscan(_leftArmSpawnPoint.position, true);
+                        break;
+                    case ArmType.MELEE:
+                        UseMelee(_leftArmSpawnPoint.position, true);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            if (_rightFiring)
+            {
+                switch (RightArm.type)
+                {
+                    case ArmType.PROJECTILE:
+                        UseProjectile(_rightArmSpawnPoint.position, false);
+                        break;
+                    case ArmType.HITSCAN:
+                        UseHitscan(_rightArmSpawnPoint.position, false);
+                        break;
+                    case ArmType.MELEE:
+                        UseMelee(_rightArmSpawnPoint.position, false);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
         
         private void OnLeftAction(object sender, EventArgs e)
         {
             //if (!GameManager.Instance.IsInsideMecha) return;
             _leftFiring = true;
-            switch (LeftArm.type)
-            {
-                case ArmType.PROJECTILE:
-                    UseProjectile(_leftArmSpawnPoint.position, true);
-                    break;
-                case ArmType.HITSCAN:
-                    UseHitscan(_leftArmSpawnPoint.position, true);
-                    break;
-                case ArmType.MELEE:
-                    UseMelee(_leftArmSpawnPoint.position, true);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
         
         private void OnLeftActionReleased(object sender, EventArgs e)
@@ -182,20 +228,6 @@ namespace _Scripts.Controller
         {
             //if (!GameManager.Instance.IsInsideMecha) return;
             _rightFiring = true;
-            switch (RightArm.type)
-            {
-                case ArmType.PROJECTILE:
-                    UseProjectile(_rightArmSpawnPoint.position, false);
-                    break;
-                case ArmType.HITSCAN:
-                    UseHitscan(_rightArmSpawnPoint.position, false);
-                    break;
-                case ArmType.MELEE:
-                    UseMelee(_rightArmSpawnPoint.position, false);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
         
         private void OnRightActionReleased(object sender, EventArgs e)
@@ -206,6 +238,13 @@ namespace _Scripts.Controller
 
         private void UseProjectile(Vector3 spawnPoint, bool left)
         {
+            switch (left)
+            {
+                case true when _leftArmCooldownLeft > 0:
+                case false when _rightArmCooldownLeft > 0:
+                    return;
+            }
+
             Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
             Vector3 targetPoint = Physics.Raycast(ray, out var hit, raycastLayerMask) ? hit.point : ray.GetPoint(75);
             Vector3 direction = targetPoint - spawnPoint;
@@ -213,10 +252,20 @@ namespace _Scripts.Controller
             projectile.gameObject.transform.forward = direction.normalized;
             projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
             projectile.projectileDamage = left ? LeftArm.damage : RightArm.damage;
+
+            if (left) _leftArmCooldownLeft = LeftArm.cooldown;
+            else _rightArmCooldownLeft = RightArm.cooldown;
         }
 
         private void UseHitscan(Vector3 spawnPoint, bool left)
         {
+            switch (left)
+            {
+                case true when _leftArmCooldownLeft > 0:
+                case false when _rightArmCooldownLeft > 0:
+                    return;
+            }
+            
             Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
             if (Physics.Raycast(ray, out var hit, hittableLayerMask))
             {
@@ -224,10 +273,20 @@ namespace _Scripts.Controller
                 hit.collider.gameObject.GetComponent<Hittable>().DoDamage(damage);
             }
             //display muzzle at spawnPoint
+            
+            if (left) _leftArmCooldownLeft = LeftArm.cooldown;
+            else _rightArmCooldownLeft = RightArm.cooldown;
         }
         
         private void UseMelee(Vector3 spawnPoint, bool left)
         {
+            switch (left)
+            {
+                case true when _leftArmCooldownLeft > 0:
+                case false when _rightArmCooldownLeft > 0:
+                    return;
+            }            
+            
             Collider[] cols = Physics.OverlapSphere(spawnPoint, meleeAttackRange, raycastLayerMask);
 
             foreach (Collider col in cols)
@@ -239,6 +298,9 @@ namespace _Scripts.Controller
                 }
             }
             
+            if (left) _leftArmCooldownLeft = LeftArm.cooldown;
+            else _rightArmCooldownLeft = RightArm.cooldown;
+            
         }
         
         private void OnJumpAction(object sender, EventArgs e)
@@ -246,7 +308,7 @@ namespace _Scripts.Controller
             //if (!GameManager.Instance.IsInsideMecha) return;
             if (_groundedMecha)
                 if (_dashing)
-                   _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * dashJumpForce * (medianWeight / _currentWeight) * -2f * gravityValue);
+                    _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * ((BoostPart)BonusPart).boostJumpForce * (medianWeight / _currentWeight) * -2f * gravityValue);
                 else
                     _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
         }
@@ -264,7 +326,8 @@ namespace _Scripts.Controller
         private void OnDashAction(object sender, EventArgs e)
         {
             //if (!GameManager.Instance.IsInsideMecha) return;
-            _dashing = true;
+            if (BonusPart != null && BonusPart is BoostPart)
+               _dashing = true;
         } 
         
         private void OnDashActionReleased(object sender, EventArgs e)

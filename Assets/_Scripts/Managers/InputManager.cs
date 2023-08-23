@@ -68,7 +68,7 @@ namespace _Scripts.Managers
             _playerControls.Player.LeftArm.performed += OnLeftPerformed;
             _playerControls.Player.RightArm.performed += OnRightPerformed;
             _playerControls.Player.Jump.performed += OnJumpPerformed;
-            _playerControls.Player.Dash.performed += OnDashPerformed;
+            _playerControls.Player.Boost.performed += OnDashPerformed;
             _playerControls.Player.Crouch.performed += OnCrouchPerformed;
             _playerControls.Player.Interact.performed += OnInteractPerformed;
             _playerControls.Player.Menu.performed += OnMenuActionPerformed;
@@ -80,7 +80,7 @@ namespace _Scripts.Managers
             _playerControls.Player.LeftArm.performed -= OnLeftPerformed;
             _playerControls.Player.RightArm.performed -= OnRightPerformed;
             _playerControls.Player.Jump.performed -= OnJumpPerformed;
-            _playerControls.Player.Dash.performed -= OnDashPerformed;
+            _playerControls.Player.Boost.performed -= OnDashPerformed;
             _playerControls.Player.Menu.performed -= OnMenuActionPerformed;
             _playerControls.Dispose();
         }
@@ -105,7 +105,7 @@ namespace _Scripts.Managers
                 _wasJumpPressed = false;
             }
             
-            if (_wasDashPressed && _playerControls.Player.Dash.WasReleasedThisFrame())
+            if (_wasDashPressed && _playerControls.Player.Boost.WasReleasedThisFrame())
             {
                 OnDashActionReleased?.Invoke(this, EventArgs.Empty);
                 _wasDashPressed = false;
@@ -191,7 +191,7 @@ namespace _Scripts.Managers
                     bindingIndex = 0;
                     break;
                 case Binding.Dash:
-                    inputAction = _playerControls.Player.Dash;
+                    inputAction = _playerControls.Player.Boost;
                     bindingIndex = 0;
                     break;
                 case Binding.Crouch:
@@ -219,7 +219,7 @@ namespace _Scripts.Managers
                     bindingIndex = 1;
                     break;
                 case Binding.GamepadDash:
-                    inputAction = _playerControls.Player.Dash;
+                    inputAction = _playerControls.Player.Boost;
                     bindingIndex = 1;
                     break;
                 case Binding.GamepadCrouch:
@@ -260,7 +260,7 @@ namespace _Scripts.Managers
                 Binding.LeftArm => _playerControls.Player.LeftArm.bindings[0].ToDisplayString(),
                 Binding.RightArm => _playerControls.Player.RightArm.bindings[0].ToDisplayString(),
                 Binding.Jump => _playerControls.Player.Jump.bindings[0].ToDisplayString(),
-                Binding.Dash => _playerControls.Player.Dash.bindings[0].ToDisplayString(),
+                Binding.Dash => _playerControls.Player.Boost.bindings[0].ToDisplayString(),
                 Binding.Crouch => _playerControls.Player.Crouch.bindings[0].ToDisplayString(),
                 Binding.Interact => _playerControls.Player.Interact.bindings[0].ToDisplayString(),
                 Binding.Menu => _playerControls.Player.Menu.bindings[0].ToDisplayString(),
@@ -268,7 +268,7 @@ namespace _Scripts.Managers
                 Binding.GamepadRightArm => _playerControls.Player.RightArm.bindings[1].ToDisplayString(),
                 Binding.GamepadMenu => _playerControls.Player.Menu.bindings[1].ToDisplayString(),
                 Binding.GamepadJump => _playerControls.Player.Jump.bindings[1].ToDisplayString(),
-                Binding.GamepadDash => _playerControls.Player.Dash.bindings[1].ToDisplayString(),
+                Binding.GamepadDash => _playerControls.Player.Boost.bindings[1].ToDisplayString(),
                 Binding.GamepadCrouch => _playerControls.Player.Crouch.bindings[1].ToDisplayString(),
                 Binding.GamepadInteract => _playerControls.Player.Interact.bindings[1].ToDisplayString(),
                 _ => throw new ArgumentOutOfRangeException(nameof(binding), binding, null)

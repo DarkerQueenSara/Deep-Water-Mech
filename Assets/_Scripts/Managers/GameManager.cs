@@ -12,6 +12,8 @@ namespace _Scripts.Managers
         [SerializeField] private GameObject playerCam;
         [SerializeField] private MechaController mecha;
         [SerializeField] private GameObject mechaCam;
+        [SerializeField] public Inventory inventory;
+
         
         private void Awake()
         {
@@ -23,7 +25,9 @@ namespace _Scripts.Managers
             }
 
             Instance = this;
+            inventory.InitiateInventory();
         }
+        
 
         public void EnterMecha()
         {

@@ -1,7 +1,6 @@
-﻿using _Scripts.Combat;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _Scripts.MechaParts
+namespace _Scripts.MechaParts.SO
 {
     public enum ArmType
     {
@@ -13,8 +12,8 @@ namespace _Scripts.MechaParts
     [CreateAssetMenu(menuName = "Mech Parts/Arm", order = 0)]
     public class Arm : MechPart
     {
-        public bool isLeftArm;
         public int damage;
+        public float cooldown;
         public ArmType type;
     }
 }
