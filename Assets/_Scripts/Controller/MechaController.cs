@@ -12,7 +12,7 @@ namespace _Scripts.Controller
     {
         public static MechaController Instance { get; private set; }
 
-        public Head Head;
+        public Head Head { get; set; }
         public Arm LeftArm { get; set; }
         public Arm RightArm { get; set; }
         public Torso Torso { get; set; }
@@ -45,7 +45,8 @@ namespace _Scripts.Controller
         private Transform _leftArmSpawnPoint, _rightArmSpawnPoint;
         private Vector3 _mechaVelocity, _move;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
-        private int _maxHp, _currentHp, _currentWeight;
+        [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
+        [HideInInspector] public float currentBoost;
         private float _leftArmCooldownLeft, _rightArmCooldownLeft;
         private static readonly int Moving = Animator.StringToHash("Moving");
 
@@ -78,6 +79,9 @@ namespace _Scripts.Controller
             _inputManager.OnDashActionReleased += OnDashActionReleased;
             _controller = GetComponent<CharacterController>();
 
+            //TODO remove this later as it should happen in the game manager
+            inventory.InitiateInventory();
+            
             Head = inventory.equippedHead;
             LeftArm = inventory.equippedLeftArm;
             RightArm = inventory.equippedRightArm;
@@ -88,8 +92,10 @@ namespace _Scripts.Controller
             _leftArmCooldownLeft = 0;
             _rightArmCooldownLeft = 0;
             
-            _maxHp = GetMaxHp();
-            _currentHp = _maxHp;
+            maxHp = GetMaxHp();
+            currentHp = maxHp;
+            maxBoost = 100;
+            currentBoost = maxBoost;
             UpdateMech();
         }
 
@@ -112,6 +118,12 @@ namespace _Scripts.Controller
             //if (!GameManager.Instance.IsInsideMecha) return;
             HandleMovement();
             HandleAttack();
+            
+            if (_dashing)
+                currentBoost = Math.Clamp(currentBoost - ((BoostPart)BonusPart).boostConsumption * Time.deltaTime, 0, maxBoost);
+            else
+                currentBoost =  Math.Clamp(currentBoost + ((BoostPart)BonusPart).boostRecovery * Time.deltaTime, 0, maxBoost);
+            
         }
 
         public void UpdateMech()
@@ -128,12 +140,12 @@ namespace _Scripts.Controller
             
             _leftArmSpawnPoint = LeftArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
             _rightArmSpawnPoint = RightArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
-            float hpLoss = 1.0f * _currentHp / _maxHp;
+            float hpLoss = 1.0f * currentHp / maxHp;
             int newMaxHp = GetMaxHp();
-            _currentHp = Mathf.RoundToInt(newMaxHp * hpLoss);
-            _maxHp = newMaxHp;
-            _currentWeight = GetWeight();
-            Debug.Log("The mech weighs " + _currentWeight + "kg, and has " + _currentHp + "/" + _maxHp + " HP.");
+            currentHp = Mathf.RoundToInt(newMaxHp * hpLoss);
+            maxHp = newMaxHp;
+            currentWeight = GetWeight();
+            Debug.Log("The mech weighs " + currentWeight + "kg, and has " + currentHp + "/" + maxHp + " HP.");
         }
 
         private int GetWeight()
@@ -162,7 +174,7 @@ namespace _Scripts.Controller
             _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
-            float moveSpeed = Legs.speed * (medianWeight / _currentWeight) * Time.deltaTime;
+            float moveSpeed = Legs.speed * (medianWeight / currentWeight) * Time.deltaTime;
             if (_dashing) moveSpeed *= ((BoostPart)BonusPart).boostForce;
             _controller.Move(_move * moveSpeed);
             _mechaVelocity.y += gravityValue * Time.deltaTime;
@@ -308,9 +320,9 @@ namespace _Scripts.Controller
             //if (!GameManager.Instance.IsInsideMecha) return;
             if (_groundedMecha)
                 if (_dashing)
-                    _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * ((BoostPart)BonusPart).boostJumpForce * (medianWeight / _currentWeight) * -2f * gravityValue);
+                    _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * ((BoostPart)BonusPart).boostJumpForce * (medianWeight / currentWeight) * -2f * gravityValue);
                 else
-                    _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * (medianWeight / _currentWeight) * -2f * gravityValue);
+                    _mechaVelocity.y = Mathf.Sqrt(Legs.jumpPower * (medianWeight / currentWeight) * -2f * gravityValue);
         }
         
         private void OnJumpActionReleased(object sender, EventArgs e)
@@ -326,7 +338,7 @@ namespace _Scripts.Controller
         private void OnDashAction(object sender, EventArgs e)
         {
             //if (!GameManager.Instance.IsInsideMecha) return;
-            if (BonusPart != null && BonusPart is BoostPart)
+            if (BonusPart != null && BonusPart is BoostPart && currentBoost > 0)
                _dashing = true;
         } 
         

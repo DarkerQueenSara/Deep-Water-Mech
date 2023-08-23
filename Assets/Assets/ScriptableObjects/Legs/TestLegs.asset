@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539e1c82a315442481e5c1513cc6d856, type: 3}
   m_Name: TestLegs
   m_EditorClassIdentifier: 
-  HP: 50
+  partName: TestLegs
+  hp: 50
   weight: 50
-  part: {fileID: 0}
+  prefab: {fileID: 0}
   jumpPower: 5
   speed: 6
   type: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7233beeb9644e7b88a1d824f962dab, type: 3}
   m_Name: TestTorso
   m_EditorClassIdentifier: 
-  HP: 50
+  partName: TestTorso
+  hp: 50
   weight: 50
-  part: {fileID: 0}
+  prefab: {fileID: 0}
   type: 0
