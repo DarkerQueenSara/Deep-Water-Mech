@@ -15,6 +15,9 @@ namespace _Scripts.UI
         public TextMeshProUGUI hpText;
         public TextMeshProUGUI boostText;
 
+        public TextMeshProUGUI weightText;
+        public TextMeshProUGUI speedText;
+
         private void Update()
         {
             healthBar.fillAmount = 1.0f * MechaController.Instance.currentHp / MechaController.Instance.maxHp;
@@ -29,6 +32,13 @@ namespace _Scripts.UI
                 boostBar.fillAmount = MechaController.Instance.currentBoost / MechaController.Instance.maxBoost;
                 boostText.text = Mathf.Round(boostBar.fillAmount * 100 * 10.0f) * 0.1f + "%";
             }
+
+            int currentWeight = MechaController.Instance.currentWeight;
+            int medianWeight = MechaController.Instance.GetMedianWeight();
+            weightText.text = currentWeight + "/" + medianWeight + " KG";
+            weightText.color = currentWeight <= medianWeight ? Color.white : Color.red;
+
+            speedText.text = Mathf.RoundToInt(MechaController.Instance.currentSpeed) + " KPH";
 
         }
     }

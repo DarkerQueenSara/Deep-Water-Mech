@@ -24,9 +24,9 @@ namespace _Scripts.Controller
         [SerializeField] private LayerMask raycastLayerMask;
         [SerializeField] private LayerMask hittableLayerMask;
 
-        [SerializeField] private float medianWeight;
-        [SerializeField] private float meleeAttackRange;
-        
+        [SerializeField] private int medianWeight;
+        [SerializeField] private int meleeAttackRange;
+
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Animator mechaAnimator;
         
@@ -43,10 +43,10 @@ namespace _Scripts.Controller
         private CharacterController _controller;
         private InputManager _inputManager;
         private Transform _leftArmSpawnPoint, _rightArmSpawnPoint;
-        private Vector3 _mechaVelocity, _move;
+        private Vector3 _mechaVelocity, _move, _lastPos;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
-        [HideInInspector] public float currentBoost;
+        [HideInInspector] public float currentBoost, currentSpeed;
         private float _leftArmCooldownLeft, _rightArmCooldownLeft;
         private static readonly int Moving = Animator.StringToHash("Moving");
 
@@ -92,6 +92,8 @@ namespace _Scripts.Controller
             _leftArmCooldownLeft = 0;
             _rightArmCooldownLeft = 0;
             
+            _lastPos = transform.position;
+
             maxHp = GetMaxHp();
             currentHp = maxHp;
             maxBoost = 100;
@@ -123,7 +125,9 @@ namespace _Scripts.Controller
                 currentBoost = Math.Clamp(currentBoost - ((BoostPart)BonusPart).boostConsumption * Time.deltaTime, 0, maxBoost);
             else
                 currentBoost =  Math.Clamp(currentBoost + ((BoostPart)BonusPart).boostRecovery * Time.deltaTime, 0, maxBoost);
-            
+
+            currentSpeed = Vector3.Distance(_lastPos, transform.position) / Time.deltaTime * 3.6f;
+            _lastPos = transform.position;
         }
 
         public void UpdateMech()
@@ -150,16 +154,22 @@ namespace _Scripts.Controller
 
         private int GetWeight()
         {
-            int currentWeight = Head.weight + Torso.weight + LeftArm.weight + RightArm.weight + Legs.weight;
-            currentWeight = BonusPart != null ? currentWeight + BonusPart.weight : currentWeight;
-            return currentWeight;
+            int aux = Head.weight + Torso.weight + LeftArm.weight + RightArm.weight + Legs.weight;
+            aux = BonusPart != null ? aux + BonusPart.weight : aux;
+            return aux;
         }
 
         private int GetMaxHp()
         {
-            int maxHp = Head.hp + Torso.hp + LeftArm.hp + RightArm.hp + Legs.hp;
-            maxHp = BonusPart != null ? maxHp + BonusPart.hp : maxHp;
-            return maxHp;
+            int aux = Head.hp + Torso.hp + LeftArm.hp + RightArm.hp + Legs.hp;
+            aux = BonusPart != null ? aux + BonusPart.hp : aux;
+            return aux;
+        }
+
+        public int GetMedianWeight()
+        {
+            //TODO have a bonus part that increases this value and return value accordinglys
+            return medianWeight;
         }
 
         private void HandleMovement()
