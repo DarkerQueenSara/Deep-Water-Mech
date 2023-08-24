@@ -9,21 +9,23 @@ namespace _Scripts.UI
 {
     public class MechaHUD : MonoBehaviour
     {
-        public Image healthBar;
-        public Image boostBar;
+        [SerializeField] private Image healthBar;
+        [SerializeField] private Image boostBar;
 
-        public TextMeshProUGUI hpText;
-        public TextMeshProUGUI boostText;
+        [SerializeField] private TextMeshProUGUI hpText;
+        [SerializeField] private TextMeshProUGUI boostText;
 
-        public TextMeshProUGUI weightText;
-        public TextMeshProUGUI speedText;
+        [SerializeField] private TextMeshProUGUI weightText;
+        [SerializeField] private TextMeshProUGUI speedText;
+
+        [SerializeField] private Inventory inventory;
 
         private void Update()
         {
             healthBar.fillAmount = 1.0f * MechaController.Instance.currentHp / MechaController.Instance.maxHp;
             hpText.text = MechaController.Instance.currentHp + "/" + MechaController.Instance.maxHp;
 
-            BonusPart part = MechaController.Instance.BonusPart;
+            BonusPart part = inventory.equippedBonusPart;
             boostBar.gameObject.SetActive(part != null && part is BoostPart);
             boostText.gameObject.SetActive(part != null && part is BoostPart);
 
