@@ -17,5 +17,5 @@ MonoBehaviour:
   weight: 50
   prefab: {fileID: 0}
   jumpPower: 5
-  speed: 6
+  speed: 30
   type: 0

@@ -108,7 +108,10 @@ namespace _Scripts.Controller
             HandleMovement();
             HandleAttack();
 
-            if (_dashing)
+            currentSpeed = Vector3.Distance(_lastPos, transform.position) / Time.deltaTime * 3.6f;
+            _lastPos = transform.position;
+            
+            if (_dashing && currentSpeed > 0)
                 currentBoost =
                     Math.Clamp(currentBoost - ((BoostPart)inventory.equippedBonusPart).boostConsumption * Time.deltaTime, 0,
                         maxBoost);
@@ -116,8 +119,6 @@ namespace _Scripts.Controller
                 currentBoost = Math.Clamp(currentBoost + ((BoostPart)inventory.equippedBonusPart).boostRecovery * Time.deltaTime,
                     0, maxBoost);
 
-            currentSpeed = Vector3.Distance(_lastPos, transform.position) / Time.deltaTime * 3.6f;
-            _lastPos = transform.position;
         }
 
         public void UpdateMech()
@@ -177,7 +178,8 @@ namespace _Scripts.Controller
             _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
             _move.y = 0;
             transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
-            float moveSpeed = inventory.equippedLegs.speed * (medianWeight / currentWeight) * Time.deltaTime;
+            float weightModifier = currentWeight <= medianWeight ? 1 : 1.0f * medianWeight / currentWeight;
+            float moveSpeed = inventory.equippedLegs.speed / 3.6f * weightModifier * Time.deltaTime;
             if (_dashing) moveSpeed *= ((BoostPart)inventory.equippedBonusPart).boostForce;
             _controller.Move(_move * moveSpeed);
             _mechaVelocity.y += gravityValue * Time.deltaTime;
