@@ -1,3 +1,4 @@
+using System;
 using _Scripts.Controller;
 using UnityEngine;
 
@@ -10,10 +11,13 @@ namespace _Scripts.Managers
 
         [SerializeField] private PlayerController player;
         [SerializeField] private GameObject playerCam;
+        [SerializeField] private GameObject playerMesh;
+        [SerializeField] private Transform exitMechaPos;
         [SerializeField] private MechaController mecha;
         [SerializeField] private GameObject mechaCam;
         [SerializeField] public Inventory inventory;
 
+        private CharacterController _playerController;
         
         private void Awake()
         {
@@ -25,15 +29,21 @@ namespace _Scripts.Managers
             }
 
             Instance = this;
+            IsInsideMecha = true;
             inventory.InitiateInventory();
         }
-        
+
+        private void Start()
+        {
+            _playerController = player.GetComponent<CharacterController>();
+        }
 
         public void EnterMecha()
         {
             IsInsideMecha = true;
             mechaCam.SetActive(true);
             player.gameObject.SetActive(false);
+            playerMesh.SetActive(false);
             playerCam.SetActive(false);
         }
 
@@ -41,6 +51,10 @@ namespace _Scripts.Managers
         {
             IsInsideMecha = false;
             player.gameObject.SetActive(true);
+            _playerController.enabled = false;
+            player.transform.position = exitMechaPos.position;
+            _playerController.enabled = true;
+            playerMesh.SetActive(true);
             playerCam.SetActive(true);
             mechaCam.SetActive(false);
         }

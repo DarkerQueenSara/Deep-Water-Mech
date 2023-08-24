@@ -546,6 +546,7 @@ MonoBehaviour:
   boostText: {fileID: 2877813089631697923}
   weightText: {fileID: 3920190980683461897}
   speedText: {fileID: 4879618169535049845}
+  inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
 --- !u!1 &5880243750781960002
 GameObject:
   m_ObjectHideFlags: 0
