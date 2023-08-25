@@ -28,17 +28,16 @@ namespace _Scripts.Controller
         [Header("Inventory SO")] [SerializeField]
         private Inventory inventory;
 
-        [Header("Mech Parts Positions")] [SerializeField]
-        private Transform leftArmTransform;
-
+        [Header("Mech Parts Positions")] 
+        [SerializeField] private Transform leftArmTransform;
         [SerializeField] private Transform rightArmTransform;
-        [SerializeField] private Transform torsoTransform;
-        [SerializeField] private Transform legsTransform;
-        [SerializeField] private Transform bonusPartTransform;
+
+        [Header("Mech Projectiles Spawns")]
+        [SerializeField] private Transform rightArmSpawnPoint;
+        [SerializeField] private Transform leftArmSpawnPoint;
 
         private CharacterController _controller;
         private InputManager _inputManager;
-        private Transform _leftArmSpawnPoint, _rightArmSpawnPoint;
         private Vector3 _mechaVelocity, _move, _lastPos;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
@@ -127,17 +126,15 @@ namespace _Scripts.Controller
         public void UpdateMech()
         {
             //Assemble the mech
-            /*
-            Instantiate(LeftArm.prefab, leftArmTransform.position, Quaternion.identity);
-            Instantiate(RightArm.prefab, rightArmTransform.position, Quaternion.identity);
-            Instantiate(Torso.prefab, torsoTransform.position, Quaternion.identity);
-            Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
-            if (BonusPart != null)
-               Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
-            */
+            
+            // Instantiate(inventory.equippedLeftArm.prefab, transform.position, Quaternion.identity, transform);
+            // Instantiate(RightArm.prefab, rightArmTransform.position, Quaternion.identity);
+            // Instantiate(Torso.prefab, torsoTransform.position, Quaternion.identity);
+            // Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
+            // if (BonusPart != null)
+            //    Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
+            //
 
-            _leftArmSpawnPoint = inventory.equippedLeftArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
-            _rightArmSpawnPoint = inventory.equippedRightArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
             float hpLoss = 1.0f * currentHp / maxHp;
             int newMaxHp = GetMaxHp();
             currentHp = Mathf.RoundToInt(newMaxHp * hpLoss);
@@ -198,13 +195,13 @@ namespace _Scripts.Controller
                 switch (inventory.equippedLeftArm.type)
                 {
                     case ArmType.PROJECTILE:
-                        UseProjectile(_leftArmSpawnPoint.position, true);
+                        UseProjectile(leftArmSpawnPoint.position, true);
                         break;
                     case ArmType.HITSCAN:
-                        UseHitscan(_leftArmSpawnPoint.position, true);
+                        UseHitscan(leftArmSpawnPoint.position, true);
                         break;
                     case ArmType.MELEE:
-                        UseMelee(_leftArmSpawnPoint.position, true);
+                        UseMelee(leftArmSpawnPoint.position, true);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -216,13 +213,13 @@ namespace _Scripts.Controller
                 switch (inventory.equippedRightArm.type)
                 {
                     case ArmType.PROJECTILE:
-                        UseProjectile(_rightArmSpawnPoint.position, false);
+                        UseProjectile(rightArmSpawnPoint.position, false);
                         break;
                     case ArmType.HITSCAN:
-                        UseHitscan(_rightArmSpawnPoint.position, false);
+                        UseHitscan(rightArmSpawnPoint.position, false);
                         break;
                     case ArmType.MELEE:
-                        UseMelee(_rightArmSpawnPoint.position, false);
+                        UseMelee(rightArmSpawnPoint.position, false);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
