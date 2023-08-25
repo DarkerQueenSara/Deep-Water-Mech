@@ -20,7 +20,8 @@ namespace _Scripts.Controller
         [SerializeField] private int medianWeight;
         [SerializeField] private int meleeAttackRange;
 
-        [SerializeField] private float rotationSpeed = 1;
+        [SerializeField] private AnimationCurve rotationCurve;
+        [SerializeField] private float maxRotationSpeed = 180f;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Animator mechaAnimator;
 
@@ -174,18 +175,16 @@ namespace _Scripts.Controller
             if (_groundedMecha && _mechaVelocity.y < 0 && !_dashing)
                 _mechaVelocity.y = 0f;
 
-            Vector3 cameraForward = gameCamera.transform.forward;
+            Vector3 currentRotation = transform.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
-            _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
+            _move = currentRotation * _move.z + gameCamera.transform.right * _move.x;
             _move.y = 0;
-            transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
+            transform.forward = new Vector3(currentRotation.x, 0f, currentRotation.z);
             float weightModifier = currentWeight <= medianWeight ? 1 : 1.0f * medianWeight / currentWeight;
             float moveSpeed = inventory.equippedLegs.speed / 3.6f * weightModifier * Time.deltaTime;
             if (_dashing) moveSpeed *= ((BoostPart)inventory.equippedBonusPart).boostForce;
             _controller.Move(_move * moveSpeed);
-            _mechaVelocity.y += gravityValue * Time.deltaTime;
-            _controller.Move(_mechaVelocity * Time.deltaTime);
 
             mechaAnimator.SetBool(Moving, inputVector.magnitude != 0);
         }
@@ -233,9 +232,18 @@ namespace _Scripts.Controller
 
         private void RotateTowardsCamera()
         {
-            Vector3 targetDirection = gameCamera.transform.position - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Vector3 forward = transform.forward;
+            Vector3 directionToCamera = gameCamera.transform.forward - forward;
+            directionToCamera.y = 0.0f;
+            Quaternion targetRotation = Quaternion.LookRotation(gameCamera.transform.forward, Vector3.up);
+            float angleToCamera = Vector3.Angle(forward, directionToCamera) - 180f;
+            float curveTime = Mathf.Clamp01(angleToCamera / maxRotationSpeed);
+            float rotationSpeed = maxRotationSpeed * rotationCurve.Evaluate(curveTime);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
         }
 
         private void OnLeftAction(object sender, EventArgs e)
