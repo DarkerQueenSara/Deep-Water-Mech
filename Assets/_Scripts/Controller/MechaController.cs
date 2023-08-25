@@ -20,24 +20,24 @@ namespace _Scripts.Controller
         [SerializeField] private int medianWeight;
         [SerializeField] private int meleeAttackRange;
 
-        [SerializeField] private float rotationSpeed = 1;
+        [SerializeField] private AnimationCurve rotationCurve;
+        [SerializeField] private float maxRotationSpeed = 180f;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Animator mechaAnimator;
 
         [Header("Inventory SO")] [SerializeField]
         private Inventory inventory;
 
-        [Header("Mech Parts Positions")] [SerializeField]
-        private Transform leftArmTransform;
-
+        [Header("Mech Parts Positions")] 
+        [SerializeField] private Transform leftArmTransform;
         [SerializeField] private Transform rightArmTransform;
-        [SerializeField] private Transform torsoTransform;
-        [SerializeField] private Transform legsTransform;
-        [SerializeField] private Transform bonusPartTransform;
+
+        [Header("Mech Projectiles Spawns")]
+        [SerializeField] private Transform rightArmSpawnPoint;
+        [SerializeField] private Transform leftArmSpawnPoint;
 
         private CharacterController _controller;
         private InputManager _inputManager;
-        private Transform _leftArmSpawnPoint, _rightArmSpawnPoint;
         private Vector3 _mechaVelocity, _move, _lastPos;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
@@ -126,17 +126,15 @@ namespace _Scripts.Controller
         public void UpdateMech()
         {
             //Assemble the mech
-            /*
-            Instantiate(LeftArm.prefab, leftArmTransform.position, Quaternion.identity);
-            Instantiate(RightArm.prefab, rightArmTransform.position, Quaternion.identity);
-            Instantiate(Torso.prefab, torsoTransform.position, Quaternion.identity);
-            Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
-            if (BonusPart != null)
-               Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
-            */
+            
+            // Instantiate(inventory.equippedLeftArm.prefab, transform.position, Quaternion.identity, transform);
+            // Instantiate(RightArm.prefab, rightArmTransform.position, Quaternion.identity);
+            // Instantiate(Torso.prefab, torsoTransform.position, Quaternion.identity);
+            // Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
+            // if (BonusPart != null)
+            //    Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
+            //
 
-            _leftArmSpawnPoint = inventory.equippedLeftArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
-            _rightArmSpawnPoint = inventory.equippedRightArm.prefab.GetComponent<ArmBehaviour>().spawnPoint;
             float hpLoss = 1.0f * currentHp / maxHp;
             int newMaxHp = GetMaxHp();
             currentHp = Mathf.RoundToInt(newMaxHp * hpLoss);
@@ -174,18 +172,16 @@ namespace _Scripts.Controller
             if (_groundedMecha && _mechaVelocity.y < 0 && !_dashing)
                 _mechaVelocity.y = 0f;
 
-            Vector3 cameraForward = gameCamera.transform.forward;
+            Vector3 currentRotation = transform.forward;
             Vector3 inputVector = _inputManager.GetPlayerMovement();
             _move = new Vector3(inputVector.x, 0f, inputVector.y);
-            _move = cameraForward * _move.z + gameCamera.transform.right * _move.x;
+            _move = currentRotation * _move.z + gameCamera.transform.right * _move.x;
             _move.y = 0;
-            transform.forward = new Vector3(cameraForward.x, 0f, cameraForward.z);
+            transform.forward = new Vector3(currentRotation.x, 0f, currentRotation.z);
             float weightModifier = currentWeight <= medianWeight ? 1 : 1.0f * medianWeight / currentWeight;
             float moveSpeed = inventory.equippedLegs.speed / 3.6f * weightModifier * Time.deltaTime;
             if (_dashing) moveSpeed *= ((BoostPart)inventory.equippedBonusPart).boostForce;
             _controller.Move(_move * moveSpeed);
-            _mechaVelocity.y += gravityValue * Time.deltaTime;
-            _controller.Move(_mechaVelocity * Time.deltaTime);
 
             mechaAnimator.SetBool(Moving, inputVector.magnitude != 0);
         }
@@ -199,13 +195,13 @@ namespace _Scripts.Controller
                 switch (inventory.equippedLeftArm.type)
                 {
                     case ArmType.PROJECTILE:
-                        UseProjectile(_leftArmSpawnPoint.position, true);
+                        UseProjectile(leftArmSpawnPoint.position, true);
                         break;
                     case ArmType.HITSCAN:
-                        UseHitscan(_leftArmSpawnPoint.position, true);
+                        UseHitscan(leftArmSpawnPoint.position, true);
                         break;
                     case ArmType.MELEE:
-                        UseMelee(_leftArmSpawnPoint.position, true);
+                        UseMelee(leftArmSpawnPoint.position, true);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -217,13 +213,13 @@ namespace _Scripts.Controller
                 switch (inventory.equippedRightArm.type)
                 {
                     case ArmType.PROJECTILE:
-                        UseProjectile(_rightArmSpawnPoint.position, false);
+                        UseProjectile(rightArmSpawnPoint.position, false);
                         break;
                     case ArmType.HITSCAN:
-                        UseHitscan(_rightArmSpawnPoint.position, false);
+                        UseHitscan(rightArmSpawnPoint.position, false);
                         break;
                     case ArmType.MELEE:
-                        UseMelee(_rightArmSpawnPoint.position, false);
+                        UseMelee(rightArmSpawnPoint.position, false);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -233,9 +229,18 @@ namespace _Scripts.Controller
 
         private void RotateTowardsCamera()
         {
-            Vector3 targetDirection = gameCamera.transform.position - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Vector3 forward = transform.forward;
+            Vector3 directionToCamera = gameCamera.transform.forward - forward;
+            directionToCamera.y = 0.0f;
+            Quaternion targetRotation = Quaternion.LookRotation(gameCamera.transform.forward, Vector3.up);
+            float angleToCamera = Vector3.Angle(forward, directionToCamera) - 180f;
+            float curveTime = Mathf.Clamp01(angleToCamera / maxRotationSpeed);
+            float rotationSpeed = maxRotationSpeed * rotationCurve.Evaluate(curveTime);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
         }
 
         private void OnLeftAction(object sender, EventArgs e)
