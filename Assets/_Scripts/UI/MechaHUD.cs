@@ -34,7 +34,7 @@ namespace _Scripts.UI
                 boostBar.fillAmount = MechaController.Instance.currentBoost / MechaController.Instance.maxBoost;
                 boostText.text = Mathf.Round(boostBar.fillAmount * 100 * 10.0f) * 0.1f + "%";
             }
-
+            
             int currentWeight = MechaController.Instance.currentWeight;
             int medianWeight = MechaController.Instance.GetMedianWeight();
             weightText.text = currentWeight + "/" + medianWeight + " KG";

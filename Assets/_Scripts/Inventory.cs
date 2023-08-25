@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using _Scripts.MechaParts;
 using _Scripts.MechaParts.SO;
@@ -55,5 +56,93 @@ namespace _Scripts
             torsos.Add(defaultTorso);
             equippedTorso = defaultTorso;
         }
+
+        public void AddToInventory(MechPart part)
+        {
+            switch (part)
+            {
+                case Head head:
+                    heads.Add(head);
+                    break;
+                case Torso torso:
+                    torsos.Add(torso);
+                    break;
+                case Arm arm:
+                    arms.Add(arm);
+                    break;
+                case Legs leg:
+                    legs.Add(leg);
+                    break;
+                case BonusPart bonus:
+                    bonusParts.Add(bonus);
+                    break;
+            }
+        }
+
+        public List<string> GetListHeads()
+        {
+            List<string> toReturn = new List<string> { equippedHead.name.ToUpper() + " (EQUIPPED)"};
+            foreach (Head head in heads.Where(head => !toReturn.Contains(head.name.ToUpper())))
+            {
+                toReturn.Add(head.name.ToUpper());
+            }
+            return toReturn;
+        }
+        
+        public List<string> GetListTorsos()
+        {
+            List<string> toReturn = new List<string> { equippedTorso.name.ToUpper() + " (EQUIPPED)"};
+            foreach (Torso torso in torsos.Where(torso => !toReturn.Contains(torso.name.ToUpper())))
+            {
+                toReturn.Add(torso.name.ToUpper());
+            }
+            return toReturn;
+        }
+        
+        public List<string> GetListLeftArms()
+        {
+            List<string> toReturn = new List<string> { equippedLeftArm.name.ToUpper() + " (EQUIPPED)"};
+            foreach (Arm arm in arms.Where(arm => !toReturn.Contains(arm.name.ToUpper()) && arm != equippedRightArm))
+            {
+                toReturn.Add(arm.name.ToUpper());
+            }
+            return toReturn;
+        }
+        
+        public List<string> GetListRightArms()
+        {
+            List<string> toReturn = new List<string> { equippedRightArm.name.ToUpper() + " (EQUIPPED)"};
+            foreach (Arm arm in arms.Where(arm => !toReturn.Contains(arm.name.ToUpper()) && arm != equippedLeftArm))
+            {
+                toReturn.Add(arm.name.ToUpper());
+            }
+            return toReturn;
+        }
+        
+        public List<string> GetListLegs()
+        {
+            List<string> toReturn = new List<string> { equippedLegs.name.ToUpper() + " (EQUIPPED)"};
+            foreach (Legs leg in legs.Where(leg => !toReturn.Contains(leg.name.ToUpper())))
+            {
+                toReturn.Add(leg.name.ToUpper());
+            }
+            return toReturn;
+        }
+        
+        public List<string> GetListBonusParts()
+        {
+            List<string> toReturn = new List<string> ();
+            
+            if (equippedBonusPart != null) toReturn.Add(equippedBonusPart.name.ToUpper() + " (EQUIPPED)");
+            
+            toReturn.Add("NO EQUIPMENT");
+            
+            foreach (BonusPart part in bonusParts.Where(part => !toReturn.Contains(part.name.ToUpper())))
+            {
+                toReturn.Add(part.name.ToUpper());
+            }
+            return toReturn;
+        }
+        
     }
 }
