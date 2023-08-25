@@ -20,6 +20,7 @@ namespace _Scripts.Controller
         [SerializeField] private int medianWeight;
         [SerializeField] private int meleeAttackRange;
 
+        [SerializeField] private float rotationSpeed = 1;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Animator mechaAnimator;
 
@@ -105,6 +106,7 @@ namespace _Scripts.Controller
         private void Update()
         {
             if (!GameManager.Instance.IsInsideMecha) return;
+            RotateTowardsCamera();
             HandleMovement();
             HandleAttack();
 
@@ -225,6 +227,13 @@ namespace _Scripts.Controller
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        private void RotateTowardsCamera()
+        {
+            Vector3 targetDirection = gameCamera.transform.position - transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
         private void OnLeftAction(object sender, EventArgs e)
