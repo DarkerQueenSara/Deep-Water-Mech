@@ -340,12 +340,15 @@ namespace _Scripts.Controller
         {
             if (!GameManager.Instance.IsInsideMecha) return;
             if (!_groundedMecha) return;
+            
+            float weightModifier = currentWeight <= medianWeight ? 1 : 1.0f * medianWeight / currentWeight;
+            
             if (_dashing)
                 _mechaVelocity.y = Mathf.Sqrt(inventory.equippedLegs.jumpPower *
                                               ((BoostPart)inventory.equippedBonusPart).boostJumpForce *
-                                              (medianWeight / currentWeight) * -2f * gravityValue);
+                                              weightModifier * -2f * gravityValue);
             else
-                _mechaVelocity.y = Mathf.Sqrt(inventory.equippedLegs.jumpPower * (medianWeight / currentWeight) * -2f *
+                _mechaVelocity.y = Mathf.Sqrt(inventory.equippedLegs.jumpPower * weightModifier * -2f *
                                               gravityValue);
         }
 
