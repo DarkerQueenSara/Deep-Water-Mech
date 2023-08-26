@@ -291,6 +291,10 @@ namespace _Scripts.UI
         private void Close()
         {
             MechaController.Instance.UpdateMech();
+            PlayerController.Instance.HUDClosed();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Debug.Log("HUD closed");
             gameObject.SetActive(false);
         }
     }
