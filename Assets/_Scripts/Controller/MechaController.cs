@@ -31,8 +31,8 @@ namespace _Scripts.Controller
         private Inventory inventory;
 
         [Header("Mech Parts")] [SerializeField]
-        private InteractablePart[] leftArmsList;
-
+        private GameObject partsParent;
+        [SerializeField] private InteractablePart[] leftArmsList;
         [SerializeField] private InteractablePart[] rightArmsList;
         [SerializeField] private InteractablePart[] leftLegsList;
         [SerializeField] private InteractablePart[] rightLegsList;
@@ -60,6 +60,12 @@ namespace _Scripts.Controller
         private static readonly int Sprinting = Animator.StringToHash("Sprinting");
         private static readonly int ShootLeft = Animator.StringToHash("ShootLeft");
         private static readonly int ShootRight = Animator.StringToHash("ShootRight");
+        private static readonly int PunchLeft = Animator.StringToHash("PunchLeft");
+        private static readonly int PunchRight = Animator.StringToHash("PunchRight");
+        private static readonly int SlashLeft = Animator.StringToHash("SlashLeft");
+        private static readonly int SlashRight = Animator.StringToHash("SlashRight");
+        private static readonly int InAir = Animator.StringToHash("InAir");
+        private static readonly int Jump = Animator.StringToHash("Jump");
 
         private void Awake()
         {
@@ -149,7 +155,6 @@ namespace _Scripts.Controller
             int newMaxHp = GetMaxHp();
             maxHp = newMaxHp;
             currentWeight = GetWeight();
-            CalculateCurrentHealth();
             Debug.Log("The mech weighs " + currentWeight + "kg, and has " + currentHp + "/" + maxHp + " HP.");
 
             leftArmPart = FindInteractablePartByMechPart(inventory.equippedLeftArm, leftArmsList);
@@ -158,6 +163,18 @@ namespace _Scripts.Controller
             rightLegPart = FindInteractablePartByMechPart(inventory.equippedLegs, rightLegsList);
             torsoPart = FindInteractablePartByMechPart(inventory.equippedTorso, torsosList);
             bonusPart = FindInteractablePartByMechPart(inventory.equippedBonusPart, bonusPartsList);
+            
+            foreach (Transform child in partsParent.transform)
+                child.gameObject.SetActive(false);
+            
+            leftArmPart.gameObject.SetActive(true);
+            rightArmPart.gameObject.SetActive(true);
+            leftLegPart.gameObject.SetActive(true);
+            rightLegPart.gameObject.SetActive(true);
+            torsoPart.gameObject.SetActive(true); 
+            bonusPart.gameObject.SetActive(true);
+            
+            CalculateCurrentHealth();
         }
 
         private InteractablePart FindInteractablePartByMechPart(MechPart targetMechPart, IEnumerable<InteractablePart> partsList)
@@ -263,6 +280,7 @@ namespace _Scripts.Controller
             _controller.Move(_mechaVelocity * Time.deltaTime);
 
             mechaAnimator.SetBool(Moving, inputVector.magnitude != 0 || _angleToCamera < -5f);
+            mechaAnimator.SetBool(InAir, !_groundedMecha);
         }
 
         private void HandleAttack()
@@ -392,8 +410,16 @@ namespace _Scripts.Controller
             }
             //display muzzle at spawnPoint
 
-            if (left) _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
-            else _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+            if (left)
+            {
+                _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
+                mechaAnimator.SetTrigger(SlashLeft);
+            }
+            else
+            {
+                _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+                mechaAnimator.SetTrigger(SlashRight);
+            }
         }
 
         private void UseMelee(Vector3 spawnPoint, bool left)
@@ -416,8 +442,16 @@ namespace _Scripts.Controller
                 }
             }
 
-            if (left) _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
-            else _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+            if (left)
+            {
+                _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
+                mechaAnimator.SetTrigger(PunchLeft);
+            }
+            else
+            {
+                _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+                mechaAnimator.SetTrigger(PunchRight);
+            }
         }
 
         private void OnJumpAction(object sender, EventArgs e)
@@ -434,6 +468,8 @@ namespace _Scripts.Controller
             else
                 _mechaVelocity.y = Mathf.Sqrt(inventory.equippedLegs.jumpPower * weightModifier * -2f *
                                               gravityValue);
+            
+            mechaAnimator.SetTrigger(Jump);
         }
 
         private void OnJumpActionReleased(object sender, EventArgs e)
