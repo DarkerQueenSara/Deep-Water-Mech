@@ -35,9 +35,17 @@ namespace _Scripts.Levels
 
         private void OnCollisionEnter(Collision other)
         {
-            if (playerMask.HasLayer(other.gameObject.layer))
+            if (playerMask.HasLayer(other.gameObject.layer) || other.gameObject.CompareTag("Mecha"))
             {
                if (!_spawned) SpawnEnemies();   
+            }
+        }
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            if (playerMask.HasLayer(other.gameObject.layer) || other.gameObject.CompareTag("Mecha"))
+            {
+                if (!_spawned) SpawnEnemies();   
             }
         }
 

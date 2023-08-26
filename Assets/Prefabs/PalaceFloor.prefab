@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8170177025983388892}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InvisibleWallsHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,8 @@ GameObject:
   - component: {fileID: 5165813783705667608}
   - component: {fileID: 2407486640344171670}
   - component: {fileID: 5586433573716371740}
-  m_Layer: 0
+  - component: {fileID: 6809351245665329204}
+  m_Layer: 11
   m_Name: WestWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +100,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6809351245665329204
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4182510003742936478}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &4633991632274642560
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +138,8 @@ GameObject:
   - component: {fileID: 6236893515175686375}
   - component: {fileID: 3493621782199959257}
   - component: {fileID: 180395828365115763}
-  m_Layer: 0
+  - component: {fileID: 8648883251944074563}
+  m_Layer: 11
   m_Name: EastWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,6 +190,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &8648883251944074563
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4633991632274642560}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &4821310141368365567
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,7 +228,8 @@ GameObject:
   - component: {fileID: 2007213156843702496}
   - component: {fileID: 5019064036936969572}
   - component: {fileID: 100634279285760348}
-  m_Layer: 0
+  - component: {fileID: 1216030106320293089}
+  m_Layer: 11
   m_Name: NorthWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,6 +280,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1216030106320293089
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4821310141368365567}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &6614777186142733590
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +318,8 @@ GameObject:
   - component: {fileID: 1901712808932868384}
   - component: {fileID: 7058126627493131288}
   - component: {fileID: 1172727257762829843}
-  m_Layer: 0
+  - component: {fileID: 2662209214005983556}
+  m_Layer: 11
   m_Name: SouthWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,6 +370,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2662209214005983556
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6614777186142733590}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &7217078944065881200
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +410,9 @@ GameObject:
   - component: {fileID: 2595227695370735721}
   - component: {fileID: 3390619494864239672}
   - component: {fileID: 6569578382254788847}
-  m_Layer: 0
+  - component: {fileID: 5783941428201995738}
+  - component: {fileID: 2167287783934297483}
+  m_Layer: 11
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -419,13 +533,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 192
   obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2496
   portalPrefab: {fileID: 4600819081802558526, guid: fb29ff16b85e1a6478911ae88139b7c0,
     type: 3}
-  enemyPrefabs: []
+  enemyPrefabs:
+  - {fileID: 271473285422990506, guid: 9fd0237075ffaea499f166d530b078de, type: 3}
+  - {fileID: 2291771198155318963, guid: 2ed96c20c5b643847bedb3bbe160f7fe, type: 3}
+--- !u!54 &5783941428201995738
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7217078944065881200}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!65 &2167287783934297483
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7217078944065881200}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 10, z: 1}
+  m_Center: {x: 0.00000005960464, y: 0, z: -0.00000008940696}
 --- !u!1 &8347219220853597230
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +634,8 @@ GameObject:
   - component: {fileID: 4369170405759472690}
   - component: {fileID: 8674356152937371137}
   - component: {fileID: 8091126250147249803}
-  m_Layer: 0
+  - component: {fileID: 285513952926538806}
+  m_Layer: 11
   m_Name: BottomWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,6 +686,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &285513952926538806
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735263510340555258}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8806678738965738056
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +724,8 @@ GameObject:
   - component: {fileID: 1329587422601896804}
   - component: {fileID: 2355143600155020047}
   - component: {fileID: 6746123877765237624}
-  m_Layer: 0
+  - component: {fileID: 3339167885600794749}
+  m_Layer: 11
   m_Name: TopWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -583,6 +776,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &3339167885600794749
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8806678738965738056}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1001 &371378304083748969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -595,6 +815,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoneCoral (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8319777628858865567, guid: 84541ad7db4d3344298e1456e0eb90eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8664390225074556197, guid: 84541ad7db4d3344298e1456e0eb90eb,
         type: 3}
@@ -684,6 +909,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoneCoral (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8319777628858865567, guid: 84541ad7db4d3344298e1456e0eb90eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8664390225074556197, guid: 84541ad7db4d3344298e1456e0eb90eb,
         type: 3}
@@ -839,6 +1069,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VaseTall
       objectReference: {fileID: 0}
+    - target: {fileID: 9214206726266425711, guid: 1d552ec815b4e9b4ab0432573fd56b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -927,6 +1162,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VaseTall (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9214206726266425711, guid: 1d552ec815b4e9b4ab0432573fd56b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1017,6 +1257,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VaseTall (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9214206726266425711, guid: 1d552ec815b4e9b4ab0432573fd56b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1105,6 +1350,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FeatherBush (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2bbee82c4b08bb04788076ba2683d53e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1257,6 +1507,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FeatherBush (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2bbee82c4b08bb04788076ba2683d53e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1342,6 +1597,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoneCoral
+      objectReference: {fileID: 0}
+    - target: {fileID: 8319777628858865567, guid: 84541ad7db4d3344298e1456e0eb90eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8664390225074556197, guid: 84541ad7db4d3344298e1456e0eb90eb,
         type: 3}
@@ -1497,6 +1757,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VaseTall (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 9214206726266425711, guid: 1d552ec815b4e9b4ab0432573fd56b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1585,6 +1850,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VaseTall (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9214206726266425711, guid: 1d552ec815b4e9b4ab0432573fd56b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1675,6 +1945,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FeatherBush
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2bbee82c4b08bb04788076ba2683d53e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1760,6 +2035,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoneCoral (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8319777628858865567, guid: 84541ad7db4d3344298e1456e0eb90eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8664390225074556197, guid: 84541ad7db4d3344298e1456e0eb90eb,
         type: 3}
@@ -1914,6 +2194,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FeatherBush (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2bbee82c4b08bb04788076ba2683d53e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
