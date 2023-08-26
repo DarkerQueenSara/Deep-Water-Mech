@@ -12,20 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ef2988ad2e4e0cb01a7b2d46f71877, type: 3}
   m_Name: PlayerInventory
   m_EditorClassIdentifier: 
-  heads: []
-  arms: []
-  bonusParts: []
-  legs: []
-  torsos: []
-  equippedHead: {fileID: 0}
-  equippedLeftArm: {fileID: 0}
-  equippedRightArm: {fileID: 0}
-  equippedBonusPart: {fileID: 0}
-  equippedLegs: {fileID: 0}
-  equippedTorso: {fileID: 0}
+  heads:
+  - {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
+  arms:
+  - {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
+  - {fileID: 11400000, guid: 75c24425f51005246bba0283e73c95f9, type: 2}
+  bonusParts:
+  - {fileID: 11400000, guid: e42eb1212afc16d4db6f41deac23a3dd, type: 2}
+  legs:
+  - {fileID: 11400000, guid: f213e765de7fe264d9f7a455751668d0, type: 2}
+  torsos:
+  - {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}
+  equippedHead: {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
+  equippedLeftArm: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
+  equippedRightArm: {fileID: 11400000, guid: 75c24425f51005246bba0283e73c95f9, type: 2}
+  equippedBonusPart: {fileID: 11400000, guid: e42eb1212afc16d4db6f41deac23a3dd, type: 2}
+  equippedLegs: {fileID: 11400000, guid: f213e765de7fe264d9f7a455751668d0, type: 2}
+  equippedTorso: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}
   defaultHead: {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
   defaultLeftArm: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
-  defaultRightArm: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
+  defaultRightArm: {fileID: 11400000, guid: 75c24425f51005246bba0283e73c95f9, type: 2}
   defaultBonusPart: {fileID: 11400000, guid: e42eb1212afc16d4db6f41deac23a3dd, type: 2}
   defaultLegs: {fileID: 11400000, guid: f213e765de7fe264d9f7a455751668d0, type: 2}
   defaultTorso: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}

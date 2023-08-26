@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e699d733e8064610a1fa9bf1d6caff4c, type: 3}
-  m_Name: TestArm
+  m_Name: TestRightArm
   m_EditorClassIdentifier: 
-  partName: TestArm
+  partName: TestRightArm
   hp: 50
   weight: 50
-  prefab: {fileID: 4971222329228314571, guid: 6359798e5b4406a4b9e7553764cf669f, type: 3}
   damage: 50
   cooldown: 2
   type: 0

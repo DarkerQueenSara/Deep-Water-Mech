@@ -7,6 +7,5 @@ namespace _Scripts.MechaParts.SO
         public string partName;
         public int hp;
         public int weight;
-        public GameObject prefab;
     }
 }

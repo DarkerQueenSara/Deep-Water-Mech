@@ -31,8 +31,14 @@ namespace _Scripts.Controller
         private Inventory inventory;
 
         [Header("Mech Parts")] [SerializeField]
-        private InteractablePart leftArmPart;
+        private InteractablePart[] leftArmsList;
+        [SerializeField] private InteractablePart[] rightArmsList;
+        [SerializeField] private InteractablePart[] leftLegsList;
+        [SerializeField] private InteractablePart[] rightLegsList;
+        [SerializeField] private InteractablePart[] torsosList;
+        [SerializeField] private InteractablePart[] bonusPartsList;
 
+        [SerializeField] private InteractablePart leftArmPart;
         [SerializeField] private InteractablePart rightArmPart;
         [SerializeField] private InteractablePart leftLegPart;
         [SerializeField] private InteractablePart rightLegPart;
@@ -135,6 +141,22 @@ namespace _Scripts.Controller
             currentWeight = GetWeight();
             CalculateCurrentHealth();
             Debug.Log("The mech weighs " + currentWeight + "kg, and has " + currentHp + "/" + maxHp + " HP.");
+
+            leftArmPart = FindInteractablePartByMechPart(inventory.equippedLeftArm, leftArmsList);
+            rightArmPart = FindInteractablePartByMechPart(inventory.equippedRightArm, rightArmsList);
+            leftLegPart = FindInteractablePartByMechPart(inventory.equippedLegs, leftLegsList);
+            rightLegPart = FindInteractablePartByMechPart(inventory.equippedLegs, rightLegsList);
+            torsoPart = FindInteractablePartByMechPart(inventory.equippedTorso, torsosList);
+            bonusPart = FindInteractablePartByMechPart(inventory.equippedBonusPart, bonusPartsList);
+        }
+
+        private InteractablePart FindInteractablePartByMechPart(MechPart targetMechPart, IEnumerable<InteractablePart> partsList)
+        {
+            foreach (InteractablePart interactablePart in partsList)
+                if (interactablePart.mechPart == targetMechPart)
+                    return interactablePart;
+
+            return null;
         }
 
         public void DamagePart(int damage)

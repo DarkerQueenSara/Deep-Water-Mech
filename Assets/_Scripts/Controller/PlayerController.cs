@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
+using _Scripts.UI;
+using Cinemachine;
 using UnityEngine;
 
 namespace _Scripts.Controller
@@ -25,6 +27,8 @@ namespace _Scripts.Controller
         [SerializeField] private LayerMask mechaLayerMask;
         [SerializeField] private Animator playerAnimator;
         [SerializeField] private Inventory inventory;
+        [SerializeField] private MechSwapHUD mechSwapHUD;
+        [SerializeField] private CinemachineInputProvider cinemachineInputProvider;
 
         private CharacterController _controller;
         private InputManager _inputManager;
@@ -127,6 +131,12 @@ namespace _Scripts.Controller
             if (GameManager.Instance.IsInsideMecha || _menuOpen) return;
             if (_leftPressed && _interactablePartSelected != null) _interactablePartSelected.RepairPart();
         }
+        
+        public void HUDClosed()
+        {
+            _menuOpen = false;
+            cinemachineInputProvider.enabled = true;
+        }
 
         private void OnLeftAction(object sender, EventArgs e)
         {
@@ -155,7 +165,10 @@ namespace _Scripts.Controller
                     interactDistance, mechaLayerMask))
             {
                 _menuOpen = true;
-                //TODO abrir menu aqui
+                cinemachineInputProvider.enabled = false;
+                mechSwapHUD.gameObject.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
 
@@ -196,5 +209,6 @@ namespace _Scripts.Controller
                 GameManager.Instance.EnterMecha();
             }
         }
+
     }
 }
