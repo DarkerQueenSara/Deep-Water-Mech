@@ -1,5 +1,5 @@
-﻿using System;
-using _Scripts.Managers.SO;
+﻿using _Scripts.Managers.SO;
+using Audio;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +16,8 @@ namespace _Scripts.UI
 
         public TextMeshProUGUI resultsText;
 
+        private AudioManager _audioManager;
+
         private void Start()
         {
             retryButton.onClick.AddListener(RetryGame);
@@ -28,15 +30,20 @@ namespace _Scripts.UI
             resultsText.text = success + "\n"
                 + "YOU REACHED LEVEL " + resultsHolder.levelReached + "\n"
                 + "YOU HAD " + $"{minutes:0}:{seconds:00}" + " LEFT";
+            
+            _audioManager = GetComponent<AudioManager>();
+            _audioManager.Play("MenuMusic");
         }
 
-        private static void RetryGame()
+        private void RetryGame()
         {
+            _audioManager.Play("ButtonPress");
             SceneManager.LoadScene(1);
         }
 
-        private static void Credits()
+        private void Credits()
         {
+            _audioManager.Play("ButtonPress");
             SceneManager.LoadScene(3);
         }
     }

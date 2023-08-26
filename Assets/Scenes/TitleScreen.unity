@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 361898699}
   - component: {fileID: 361898698}
   - component: {fileID: 361898702}
+  - component: {fileID: 361898703}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -665,6 +666,31 @@ MonoBehaviour:
   exitButton: {fileID: 1201739799}
   titleScreen: {fileID: 2103434283}
   tutorialScreen: {fileID: 891726601}
+--- !u!114 &361898703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361898697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f3021410de84c46870b132e1bdb942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: MenuMusic
+    clip: {fileID: 8300000, guid: 628705092c8c9ea41824435beb29019c, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: ButtonPress
+    clip: {fileID: 8300000, guid: 5ba9120355c42d644965388542641441, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &576449250
 GameObject:
   m_ObjectHideFlags: 0
