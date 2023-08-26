@@ -1,4 +1,5 @@
 using System;
+using _Scripts.Controller;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -18,14 +19,16 @@ namespace _Scripts.Enemies
 
         [Header("Attacking")] 
         [SerializeField] private float timeBetweenAttacks;
+        [SerializeField] private bool isRanged;
         [SerializeField] private GameObject projectile;
+        [SerializeField] private int damage;
 
         [Header("States")] 
         [SerializeField] private float sightRange;
         [SerializeField] private float attackRange;
 
         private float _currentHealth;
-        private bool walkPointSet, alreadyAttacked, playerInSightRange, playerInAttackRange;
+        private bool _walkPointSet, _alreadyAttacked, _playerInSightRange, _playerInAttackRange;
 
         private void Awake()
         {
@@ -34,20 +37,20 @@ namespace _Scripts.Enemies
 
         private void Update()
         {
-            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
-            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
-            if (!playerInSightRange && !playerInAttackRange) Patrolling();
-            if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-            if (playerInSightRange && playerInAttackRange) AttackPlayer();
+            _playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+            _playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+            if (!_playerInSightRange && !_playerInAttackRange) Patrolling();
+            if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
+            if (_playerInSightRange && _playerInAttackRange) AttackPlayer();
         }
 
         private void Patrolling()
         {
-            if (!walkPointSet) SearchWalkPoint();
-            if (walkPointSet) agent.SetDestination(walkPoint);
+            if (!_walkPointSet) SearchWalkPoint();
+            if (_walkPointSet) agent.SetDestination(walkPoint);
 
             Vector3 dstToWalkPoint = transform.position - walkPoint;
-            if (dstToWalkPoint.magnitude < 1f) walkPointSet = false;
+            if (dstToWalkPoint.magnitude < 1f) _walkPointSet = false;
         }
 
         private void SearchWalkPoint()
@@ -57,7 +60,7 @@ namespace _Scripts.Enemies
             Vector3 position = transform.position;
             walkPoint = new Vector3(position.x + rndX, position.y, position.z + rndZ);
             if (Physics.Raycast(walkPoint, -transform.up, 2f, groundLayer))
-                walkPointSet = true;
+                _walkPointSet = true;
         }
 
         private void ChasePlayer()
@@ -69,21 +72,28 @@ namespace _Scripts.Enemies
         {
             agent.SetDestination(transform.position);
             transform.LookAt(player);
-            if (!alreadyAttacked)
+            if (!_alreadyAttacked)
             {
                 // Attack
-                Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-                rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+                if (isRanged)
+                {
+                    Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+                    rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+                    rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+                }
+                else
+                {
+                    MechaController.Instance.DamagePart(damage);
+                }
                 
-                alreadyAttacked = true;
+                _alreadyAttacked = true;
                 Invoke(nameof(ResetAttack), timeBetweenAttacks);
             }
         }
 
         private void ResetAttack()
         {
-            alreadyAttacked = false;
+            _alreadyAttacked = false;
         }
 
         public void TakeDamage(int damage)
