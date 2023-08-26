@@ -5412,7 +5412,7 @@ GameObject:
   - component: {fileID: 8512096189500485920}
   m_Layer: 7
   m_Name: Mech
-  m_TagString: Untagged
+  m_TagString: Mecha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5519,6 +5519,7 @@ MonoBehaviour:
     type: 3}
   mechaAnimator: {fileID: 2484197585899267975}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
+  partsParent: {fileID: 1862316530284998041}
   leftArmsList:
   - {fileID: 4475180211476663786}
   - {fileID: 2400288758004982031}
