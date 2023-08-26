@@ -1,3 +1,4 @@
+using Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -38,7 +39,7 @@ namespace _Scripts.UI
         /// <summary>
         /// The audio manager
         /// </summary>
-        //private AudioManager _audioManager;
+        private AudioManager _audioManager;
 
         /// <summary>
         /// Starts this instance.
@@ -49,15 +50,16 @@ namespace _Scripts.UI
             tutorialButton.onClick.AddListener(ShowTutorial);
             backButton.onClick.AddListener(ShowTitleScreen);
             exitButton.onClick.AddListener(ExitGame);
-            //_audioManager = GetComponent<AudioManager>();
-            //_audioManager.Play("MenuMusic");
+            _audioManager = GetComponent<AudioManager>();
+            _audioManager.Play("MenuMusic");
         }
 
         /// <summary>
         /// Starts the game.
         /// </summary>
-        private static void StartGame()
+        private void StartGame()
         {
+            _audioManager.Play("ButtonPress");
             SceneManager.LoadScene(1);
         }
 
@@ -67,6 +69,7 @@ namespace _Scripts.UI
         private void ShowTutorial()
         {
             //We hide the title screen and display the tutorial
+            _audioManager.Play("ButtonPress");
             titleScreen.SetActive(false);
             tutorialScreen.SetActive(true);
         }
@@ -77,6 +80,7 @@ namespace _Scripts.UI
         private void ShowTitleScreen()
         {
             //We hide the tutorial and display the title screen
+            _audioManager.Play("ButtonPress");
             tutorialScreen.SetActive(false);
             titleScreen.SetActive(true);
         }
@@ -84,8 +88,9 @@ namespace _Scripts.UI
         /// <summary>
         /// Exits the game.
         /// </summary>
-        private static void ExitGame()
+        private void ExitGame()
         {
+            _audioManager.Play("ButtonPress");
             Application.Quit();
         }
     }

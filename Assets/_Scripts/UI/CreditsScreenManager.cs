@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,19 +19,25 @@ public class CreditsScreenManager : MonoBehaviour
     /// </summary>
     public Button exitButton;
 
+    private AudioManager _audioManager;
+
     private void Start()
     {
         backButton.onClick.AddListener(BackToTitle);
         exitButton.onClick.AddListener(ExitGame);
+        _audioManager = GetComponent<AudioManager>();
+        _audioManager.Play("MenuMusic");
     }
 
-    private static void BackToTitle()
+    private void BackToTitle()
     {
+        _audioManager.Play("ButtonPress");
         SceneManager.LoadScene(0);
     }
 
-    private static void ExitGame()
+    private void ExitGame()
     {
+        _audioManager.Play("ButtonPress");
         Application.Quit();
     }
 }
