@@ -4,6 +4,7 @@ using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
 using _Scripts.MechaParts.SO;
+using Audio;
 using Extensions;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -67,6 +68,8 @@ namespace _Scripts.Controller
         private static readonly int InAir = Animator.StringToHash("InAir");
         private static readonly int Jump = Animator.StringToHash("Jump");
 
+        private AudioManager _audioManager;
+        
         private void Awake()
         {
             if (Instance != null)
@@ -96,8 +99,7 @@ namespace _Scripts.Controller
             _inputManager.OnDashActionReleased += OnDashActionReleased;
             _controller = GetComponent<CharacterController>();
 
-            //TODO remove this later as it should happen in the game manager
-            inventory.InitiateInventory();
+            _audioManager = GetComponent<AudioManager>();
 
             _leftArmCooldownLeft = 0;
             _rightArmCooldownLeft = 0;
@@ -141,12 +143,14 @@ namespace _Scripts.Controller
                     Math.Clamp(currentBoost - ((BoostPart)inventory.equippedBonusPart).boostConsumption * Time.deltaTime, 0,
                         maxBoost);
                 mechaAnimator.SetBool(Sprinting, true);
+                _audioManager.Play("Boost");
             }
             else
             {
                 currentBoost = Math.Clamp(currentBoost + ((BoostPart)inventory.equippedBonusPart).boostRecovery * Time.deltaTime,
                     0, maxBoost);
                 mechaAnimator.SetBool(Sprinting, false);
+                _audioManager.Stop("Boost");
             }
         }
 
@@ -206,6 +210,7 @@ namespace _Scripts.Controller
             }
 
             CalculateCurrentHealth();
+            _audioManager.Play("Hit");
         }
 
         public void CalculateCurrentHealth()
@@ -391,6 +396,9 @@ namespace _Scripts.Controller
                 _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
                 mechaAnimator.SetTrigger(ShootRight);
             }
+            
+            _audioManager.Play("ProjectileAttack");
+
         }
 
         private void UseHitscan(Vector3 spawnPoint, bool left)
@@ -420,6 +428,9 @@ namespace _Scripts.Controller
                 _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
                 mechaAnimator.SetTrigger(SlashRight);
             }
+            
+            _audioManager.Play("HitscanAttack");
+
         }
 
         private void UseMelee(Vector3 spawnPoint, bool left)
@@ -452,6 +463,9 @@ namespace _Scripts.Controller
                 _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
                 mechaAnimator.SetTrigger(PunchRight);
             }
+            
+            _audioManager.Play("MeleeAttack");
+
         }
 
         private void OnJumpAction(object sender, EventArgs e)

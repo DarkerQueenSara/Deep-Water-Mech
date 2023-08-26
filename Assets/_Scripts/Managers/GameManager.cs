@@ -1,5 +1,6 @@
 using System;
 using _Scripts.Controller;
+using Audio;
 using UnityEngine;
 
 namespace _Scripts.Managers
@@ -18,6 +19,8 @@ namespace _Scripts.Managers
         [SerializeField] public Inventory inventory;
 
         private CharacterController _playerController;
+
+        private AudioManager _audioManager;
         
         private void Awake()
         {
@@ -36,6 +39,8 @@ namespace _Scripts.Managers
         private void Start()
         {
             _playerController = player.GetComponent<CharacterController>();
+            _audioManager = GetComponent<AudioManager>();
+            _audioManager.Play("GameMusic");
         }
 
         public void EnterMecha()

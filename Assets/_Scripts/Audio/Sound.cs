@@ -30,6 +30,8 @@ namespace Audio
         /// </summary>
         public bool loop;
 
+        public float spatialBlend = 0.0f;
+
         /// <summary>
         /// The Unity AudioSource (generated via code in the AudioManager)
         /// </summary>
@@ -47,6 +49,7 @@ namespace Audio
             audioSource.volume = volume;
             audioSource.pitch = pitch;
             audioSource.loop = loop;
+            audioSource.spatialBlend = spatialBlend;
             this.source = audioSource;
         }
 
