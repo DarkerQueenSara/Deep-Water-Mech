@@ -1,3 +1,5 @@
+using System;
+using _Scripts.Managers.SO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +33,8 @@ namespace _Scripts.Levels
 
         [HideInInspector] public int currentHeight;
 
+        [SerializeField] private ResultsHolder resultsHolder;
+        
         private void Start()
         {
             timeLeft = timeLimit;
@@ -41,7 +45,7 @@ namespace _Scripts.Levels
             timeLeft -= Time.deltaTime;
             if (timeLeft <= 0)
             {
-               //TODO end game
+               EndGame(false);
             }
         }
         
@@ -51,15 +55,18 @@ namespace _Scripts.Levels
             currentLevel++;
             if (currentLevel > maxLevel)
             {
-                EndGame();
+                EndGame(true);
                 return;
             }
             currentHeight -= heightInterval;
             Instantiate(platformPrefab, new Vector3(0, currentHeight, 0), Quaternion.identity);
         }
 
-        private static void EndGame()
+        private void EndGame(bool won)
         {
+            resultsHolder.won = won;
+            resultsHolder.timeLeft = Mathf.Clamp(timeLeft, 0, timeLimit);
+            resultsHolder.levelReached = Mathf.Clamp(currentLevel, 0, maxLevel);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
