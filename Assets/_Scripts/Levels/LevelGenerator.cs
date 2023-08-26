@@ -7,6 +7,9 @@ namespace _Scripts.Levels
     {
         public static LevelGenerator Instance { get; private set; }
 
+        [SerializeField] private int timeLimit = 30 * 60;
+        [HideInInspector] public float timeLeft;
+        
         private void Awake()
         {
             if (Instance != null)
@@ -27,6 +30,20 @@ namespace _Scripts.Levels
         [HideInInspector] public int currentLevel = 1;
 
         [HideInInspector] public int currentHeight;
+
+        private void Start()
+        {
+            timeLeft = timeLimit;
+        }
+
+        private void Update()
+        {
+            timeLeft -= Time.deltaTime;
+            if (timeLeft <= 0)
+            {
+               //TODO end game
+            }
+        }
         
         [ContextMenu("Generate New Level")]
         public void GenerateNewLevel()
