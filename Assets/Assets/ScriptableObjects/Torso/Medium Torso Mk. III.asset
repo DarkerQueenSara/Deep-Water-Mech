@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7233beeb9644e7b88a1d824f962dab, type: 3}
   m_Name: Medium Torso Mk. III
   m_EditorClassIdentifier: 
-  partName: Medium Torso Mk. III
+  partName: M-Torso Mk. III
   hp: 380
   weight: 140
   type: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7233beeb9644e7b88a1d824f962dab, type: 3}
   m_Name: Heavy Torso Mk. III
   m_EditorClassIdentifier: 
-  partName: Heavy Torso Mk. III
+  partName: H-Torso Mk. III
   hp: 460
   weight: 220
   type: 0

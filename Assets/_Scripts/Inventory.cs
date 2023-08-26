@@ -79,6 +79,12 @@ namespace _Scripts
             }
         }
 
+        public bool Contains(MechPart part)
+        {
+            return heads.Contains(part) || arms.Contains(part) || torsos.Contains(part) || legs.Contains(part) ||
+                   bonusParts.Contains(part);
+        }
+
         public List<string> GetListHeads()
         {
             List<string> toReturn = new List<string> { equippedHead.name.ToUpper() + " (EQUIPPED)"};
