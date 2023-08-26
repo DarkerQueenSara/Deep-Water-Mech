@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using _Scripts.Controller;
 using _Scripts.MechaParts.SO;
@@ -201,16 +200,16 @@ namespace _Scripts.UI
                 switch (part)
                 {
                     case BoostPart boostPart:
-                        currentBonusEffectText.text = "BONUS EFFECT: BOOST";
-                        currentBonusExplanationText.text = "ALLOWS THE MECH TO USE A  BOOST\n"
+                        newBonusEffectText.text = "BONUS EFFECT: BOOST";
+                        newBonusExplanationText.text = "ALLOWS THE MECH TO USE A  BOOST\n"
                                                            + "BOOST FORCE: " + boostPart.boostForce + "\n"
                                                            + "JUMP FORCE: " + boostPart.boostJumpForce + "\n"
                                                            + "BOOST CONSUMPTION: " + boostPart.boostConsumption + " U/S\n"
                                                            + "BOOST RECOVERY: " + boostPart.boostRecovery + " U/S";
                         break;
                     case LighteningPart lighteningPart:
-                        currentBonusEffectText.text = "BONUS EFFECT: LIGHTENING";
-                        currentBonusExplanationText.text =
+                        newBonusEffectText.text = "BONUS EFFECT: LIGHTENING";
+                        newBonusExplanationText.text =
                             "INCREASES WEIGHT LIMIT BY: " + lighteningPart.weightLimitReduction;
                         break;
                 }
