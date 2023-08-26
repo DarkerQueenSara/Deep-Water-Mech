@@ -29,9 +29,9 @@ MonoBehaviour:
   equippedBonusPart: {fileID: 11400000, guid: e42eb1212afc16d4db6f41deac23a3dd, type: 2}
   equippedLegs: {fileID: 11400000, guid: f213e765de7fe264d9f7a455751668d0, type: 2}
   equippedTorso: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}
-  defaultHead: {fileID: 11400000, guid: 26399c7c908819b48b1b8ff44d1c3d37, type: 2}
-  defaultLeftArm: {fileID: 11400000, guid: d9d1363aa087e19418d4c38bf361dd97, type: 2}
-  defaultRightArm: {fileID: 11400000, guid: 75c24425f51005246bba0283e73c95f9, type: 2}
-  defaultBonusPart: {fileID: 11400000, guid: e42eb1212afc16d4db6f41deac23a3dd, type: 2}
-  defaultLegs: {fileID: 11400000, guid: f213e765de7fe264d9f7a455751668d0, type: 2}
-  defaultTorso: {fileID: 11400000, guid: 1d6acce574731104a8746c7ae4deb09b, type: 2}
+  defaultHead: {fileID: 11400000, guid: db3cc2a3edf705b488426437be14cb8a, type: 2}
+  defaultLeftArm: {fileID: 11400000, guid: 93e679bf94d5f9e4e9db8b70e1ab5980, type: 2}
+  defaultRightArm: {fileID: 11400000, guid: 4fca27f458cadf4448b1273882f95dd7, type: 2}
+  defaultBonusPart: {fileID: 0}
+  defaultLegs: {fileID: 11400000, guid: a5565805371217945853f605d41f98bb, type: 2}
+  defaultTorso: {fileID: 11400000, guid: 22b334ebf56b9d449b154642e781cc80, type: 2}
