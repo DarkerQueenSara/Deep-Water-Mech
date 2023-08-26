@@ -82,7 +82,7 @@ namespace _Scripts
         public List<string> GetListHeads()
         {
             List<string> toReturn = new List<string> { equippedHead.name.ToUpper() + " (EQUIPPED)"};
-            foreach (Head head in heads.Where(head => !toReturn.Contains(head.name.ToUpper())))
+            foreach (Head head in heads.Where(head => !toReturn.Contains(head.name.ToUpper()) && !toReturn.Contains(head.name.ToUpper() + " (EQUIPPED)")))
             {
                 toReturn.Add(head.name.ToUpper());
             }
@@ -92,7 +92,7 @@ namespace _Scripts
         public List<string> GetListTorsos()
         {
             List<string> toReturn = new List<string> { equippedTorso.name.ToUpper() + " (EQUIPPED)"};
-            foreach (Torso torso in torsos.Where(torso => !toReturn.Contains(torso.name.ToUpper())))
+            foreach (Torso torso in torsos.Where(torso => !toReturn.Contains(torso.name.ToUpper()) && !toReturn.Contains(torso.name.ToUpper() + " (EQUIPPED)")))
             {
                 toReturn.Add(torso.name.ToUpper());
             }
@@ -102,7 +102,7 @@ namespace _Scripts
         public List<string> GetListLeftArms()
         {
             List<string> toReturn = new List<string> { equippedLeftArm.name.ToUpper() + " (EQUIPPED)"};
-            foreach (Arm arm in arms.Where(arm => !toReturn.Contains(arm.name.ToUpper()) && arm != equippedRightArm))
+            foreach (Arm arm in arms.Where(arm => !toReturn.Contains(arm.name.ToUpper()) && !toReturn.Contains(arm.name.ToUpper() + " (EQUIPPED)") && arm != equippedRightArm))
             {
                 toReturn.Add(arm.name.ToUpper());
             }
@@ -112,7 +112,7 @@ namespace _Scripts
         public List<string> GetListRightArms()
         {
             List<string> toReturn = new List<string> { equippedRightArm.name.ToUpper() + " (EQUIPPED)"};
-            foreach (Arm arm in arms.Where(arm => !toReturn.Contains(arm.name.ToUpper()) && arm != equippedLeftArm))
+            foreach (Arm arm in arms.Where(arm => !toReturn.Contains(arm.name.ToUpper()) && !toReturn.Contains(arm.name.ToUpper() + " (EQUIPPED)") && arm != equippedLeftArm))
             {
                 toReturn.Add(arm.name.ToUpper());
             }
@@ -122,7 +122,7 @@ namespace _Scripts
         public List<string> GetListLegs()
         {
             List<string> toReturn = new List<string> { equippedLegs.name.ToUpper() + " (EQUIPPED)"};
-            foreach (Legs leg in legs.Where(leg => !toReturn.Contains(leg.name.ToUpper())))
+            foreach (Legs leg in legs.Where(leg => !toReturn.Contains(leg.name.ToUpper()) && !toReturn.Contains(leg.name.ToUpper() + " (EQUIPPED)") ))
             {
                 toReturn.Add(leg.name.ToUpper());
             }
@@ -137,7 +137,7 @@ namespace _Scripts
             
             toReturn.Add("NO EQUIPMENT");
             
-            foreach (BonusPart part in bonusParts.Where(part => !toReturn.Contains(part.name.ToUpper())))
+            foreach (BonusPart part in bonusParts.Where(part => !toReturn.Contains(part.name.ToUpper()) && !toReturn.Contains(part.name.ToUpper() + " (EQUIPPED)") ))
             {
                 toReturn.Add(part.name.ToUpper());
             }
