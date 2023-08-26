@@ -17,7 +17,7 @@ namespace _Scripts.Controller
         [SerializeField] private LayerMask raycastLayerMask;
         [SerializeField] private LayerMask hittableLayerMask;
 
-        [SerializeField] private int medianWeight;
+        public int medianWeight;
         [SerializeField] private int meleeAttackRange;
 
         [SerializeField] private AnimationCurve rotationCurve;
@@ -161,7 +161,11 @@ namespace _Scripts.Controller
 
         public int GetMedianWeight()
         {
-            //TODO have a bonus part that increases this value and return value accordinglys
+            BonusPart part = inventory.equippedBonusPart;
+            if (part != null && part is LighteningPart lPart)
+            {
+                return medianWeight - lPart.weightLimitReduction;
+            }
             return medianWeight;
         }
 
