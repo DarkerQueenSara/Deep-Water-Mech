@@ -9,7 +9,6 @@ namespace _Scripts.UI
     public class ProgressBarUI : MonoBehaviour
     {
         [SerializeField] private Image barImage;
-        [SerializeField] private TextMeshProUGUI textPartName;
         [SerializeField] private GameObject hasProgressGameObject;
         
         private IHasProgress _hasProgress;
@@ -20,7 +19,7 @@ namespace _Scripts.UI
             if (_hasProgress == null) return;
             _hasProgress.OnProgressChanged += HasProgress_OnProgressChanged;
             barImage.fillAmount = 0;
-            SetActive(false);
+            SetActive(true);
         }
 
         private void OnDestroy()
@@ -32,7 +31,6 @@ namespace _Scripts.UI
         private void HasProgress_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
         {
             barImage.fillAmount = e.ProgressNormalized;
-            textPartName.text = e.partName;
             SetActive(e.ProgressNormalized is not (0 or 1f));
         }
 

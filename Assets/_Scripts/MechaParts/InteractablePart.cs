@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using _Scripts.Controller;
 using _Scripts.Counters;
 using _Scripts.MechaParts.SO;
 using UnityEngine;
@@ -15,6 +17,9 @@ namespace _Scripts.MechaParts
         [SerializeField] private GameObject selectedGO;
         [SerializeField] private Inventory inventory;
         [SerializeField] private float repairRate;
+        [SerializeField] private float repairWait = 1;
+        
+        private Coroutine _repairCoroutine;
 
         private void Awake()
         {
@@ -25,6 +30,27 @@ namespace _Scripts.MechaParts
         {
             if (selectedGO != null) selectedGO.SetActive(active);
         }
+        
+        public void StartRepair()
+        {
+            _repairCoroutine ??= StartCoroutine(RepairOverTime());
+        }
+        
+        public void StopRepair()
+        {
+            if (_repairCoroutine == null) return;
+            StopCoroutine(_repairCoroutine);
+            _repairCoroutine = null;
+        }
+
+        private IEnumerator RepairOverTime()
+        {
+            while (true)
+            {
+                RepairPart();
+                yield return new WaitForSeconds(repairWait);
+            }
+        }
 
         public void RepairPart()
         {
@@ -33,12 +59,14 @@ namespace _Scripts.MechaParts
                 currentHp = mechPart.hp;
                 return;
             }
-            currentHp += (int) (repairRate * Time.deltaTime);
+
+            currentHp += Mathf.CeilToInt(repairRate);
+            currentHp = Mathf.Min(currentHp, mechPart.hp);
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
             {
-                ProgressNormalized = (float) currentHp / mechPart.hp,
-                partName = mechPart.partName
+                ProgressNormalized = (float)currentHp / mechPart.hp,
             });
+            MechaController.Instance.CalculateCurrentHealth();
         }
     }
 }

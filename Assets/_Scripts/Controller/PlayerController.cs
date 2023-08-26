@@ -115,13 +115,21 @@ namespace _Scripts.Controller
                 }
                 else
                 {
-                    if (_interactablePartSelected != null) _interactablePartSelected.SetSelected(false);
+                    if (_interactablePartSelected != null)
+                    {
+                        _interactablePartSelected.StopRepair();
+                        _interactablePartSelected.SetSelected(false);
+                    }
                     _interactablePartSelected = null;
                 }
             }
             else
             {
-                if (_interactablePartSelected != null) _interactablePartSelected.SetSelected(false);
+                if (_interactablePartSelected != null)
+                {
+                    _interactablePartSelected.StopRepair();
+                    _interactablePartSelected.SetSelected(false);
+                }
                 _interactablePartSelected = null;
             }
         }
@@ -129,7 +137,7 @@ namespace _Scripts.Controller
         private void HandleFixPart()
         {
             if (GameManager.Instance.IsInsideMecha || _menuOpen) return;
-            if (_leftPressed && _interactablePartSelected != null) _interactablePartSelected.RepairPart();
+            // if (_leftPressed && _interactablePartSelected != null) _interactablePartSelected.RepairPart();
         }
         
         public void HUDClosed()
@@ -149,13 +157,13 @@ namespace _Scripts.Controller
             }
             else
             {
-                _leftPressed = true;
+                if (_interactablePartSelected != null) _interactablePartSelected.StartRepair();
             }
         }
 
         private void OnLeftActionReleased(object sender, EventArgs e)
         {
-            _leftPressed = false;
+            if (_interactablePartSelected != null) _interactablePartSelected.StopRepair();
         }
 
         private void OnRightAction(object sender, EventArgs e)

@@ -9,7 +9,6 @@ namespace _Scripts.Counters
         public class OnProgressChangedEventArgs : EventArgs
         {
             public float ProgressNormalized;
-            public string partName;
         }
     }
 }

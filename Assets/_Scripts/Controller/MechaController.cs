@@ -32,6 +32,7 @@ namespace _Scripts.Controller
 
         [Header("Mech Parts")] [SerializeField]
         private InteractablePart[] leftArmsList;
+
         [SerializeField] private InteractablePart[] rightArmsList;
         [SerializeField] private InteractablePart[] leftLegsList;
         [SerializeField] private InteractablePart[] rightLegsList;
@@ -50,12 +51,15 @@ namespace _Scripts.Controller
 
         [SerializeField] private Transform leftArmSpawnPoint;
 
-        private static readonly int Moving = Animator.StringToHash("Moving");
         private CharacterController _controller;
         private InputManager _inputManager;
         private Vector3 _mechaVelocity, _move, _lastPos;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         private float _leftArmCooldownLeft, _rightArmCooldownLeft, _angleToCamera;
+        private static readonly int Moving = Animator.StringToHash("Moving");
+        private static readonly int Sprinting = Animator.StringToHash("Sprinting");
+        private static readonly int ShootLeft = Animator.StringToHash("ShootLeft");
+        private static readonly int ShootRight = Animator.StringToHash("ShootRight");
 
         private void Awake()
         {
@@ -126,12 +130,18 @@ namespace _Scripts.Controller
             _lastPos = transform.position;
 
             if (_dashing && currentSpeed > 0)
+            {
                 currentBoost =
                     Math.Clamp(currentBoost - ((BoostPart)inventory.equippedBonusPart).boostConsumption * Time.deltaTime, 0,
                         maxBoost);
+                mechaAnimator.SetBool(Sprinting, true);
+            }
             else
+            {
                 currentBoost = Math.Clamp(currentBoost + ((BoostPart)inventory.equippedBonusPart).boostRecovery * Time.deltaTime,
                     0, maxBoost);
+                mechaAnimator.SetBool(Sprinting, false);
+            }
         }
 
         public void UpdateMech()
@@ -353,8 +363,16 @@ namespace _Scripts.Controller
             projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
             projectile.projectileDamage = left ? inventory.equippedLeftArm.damage : inventory.equippedRightArm.damage;
 
-            if (left) _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
-            else _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+            if (left)
+            {
+                _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
+                mechaAnimator.SetTrigger(ShootLeft);
+            }
+            else
+            {
+                _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+                mechaAnimator.SetTrigger(ShootRight);
+            }
         }
 
         private void UseHitscan(Vector3 spawnPoint, bool left)
