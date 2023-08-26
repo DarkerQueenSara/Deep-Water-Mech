@@ -60,11 +60,15 @@ namespace _Scripts.UI
         private Arm _selectedLeftArm, _selectedRightArm;
         private Legs _selectedLegs;
         private BonusPart _selectedBonusPart;
-        
+
+        private void Start()
+        {
+            confirmButton.onClick.AddListener(Confirm);
+            closeMenuButton.onClick.AddListener(Close);
+        }
         
         private void OnEnable()
         {
-            inventory.InitiateInventory();
             RefreshInfo();
         }
 
@@ -146,6 +150,7 @@ namespace _Scripts.UI
             int currentWeight = _selectedHead.weight + _selectedTorso.weight + _selectedLeftArm.weight +
                                 _selectedRightArm.weight + _selectedLegs.weight;
             currentWeight = _selectedBonusPart != null ? currentWeight + _selectedBonusPart.weight : currentWeight;
+            
             //TODO rever isto 
             int medianWeight = MechaController.Instance.GetMedianWeight();
             newWeightText.text = currentWeight + "/" + medianWeight + " KG";
