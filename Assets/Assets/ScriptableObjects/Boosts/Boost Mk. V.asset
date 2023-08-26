@@ -20,3 +20,4 @@ MonoBehaviour:
   boostControlLoss: 0.75
   boostConsumption: 12
   boostRecovery: 6
+  type: 1
