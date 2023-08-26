@@ -1,5 +1,6 @@
 using System;
 using _Scripts.Counters;
+using _Scripts.Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +16,17 @@ namespace _Scripts.UI
 
         private void Start()
         {
+            GameManager.Instance.EnteredMecha += OnEnteredMecha;
             _hasProgress = hasProgressGameObject.GetComponent<IHasProgress>();
             if (_hasProgress == null) return;
             _hasProgress.OnProgressChanged += HasProgress_OnProgressChanged;
             barImage.fillAmount = 0;
-            SetActive(true);
+            SetActive(false);
+        }
+
+        private void OnEnteredMecha(object sender, EventArgs e)
+        {
+            SetActive(false);
         }
 
         private void OnDestroy()

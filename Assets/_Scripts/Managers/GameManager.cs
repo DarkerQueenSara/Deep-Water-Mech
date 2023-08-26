@@ -8,6 +8,8 @@ namespace _Scripts.Managers
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        public event EventHandler ExitedMecha;
+        public event EventHandler EnteredMecha;
         public bool IsInsideMecha { get; set; }
 
         [SerializeField] private PlayerController player;
@@ -50,6 +52,7 @@ namespace _Scripts.Managers
             player.gameObject.SetActive(false);
             playerMesh.SetActive(false);
             playerCam.SetActive(false);
+            EnteredMecha?.Invoke(this, EventArgs.Empty);
         }
 
         public void ExitMecha()
@@ -62,6 +65,7 @@ namespace _Scripts.Managers
             playerMesh.SetActive(true);
             playerCam.SetActive(true);
             mechaCam.SetActive(false);
+            ExitedMecha?.Invoke(this, EventArgs.Empty);
         }
     }
 }

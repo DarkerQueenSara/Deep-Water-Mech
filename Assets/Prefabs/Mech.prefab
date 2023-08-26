@@ -142,7 +142,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!65 &6624664446930558380
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &2552249731738177967
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -916,7 +916,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &8545340103595152012
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2357,7 +2357,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &1423857942869063504
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2686,7 +2686,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &4013582690373722893
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3327,7 +3327,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &710165728211515056
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3524,7 +3524,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!65 &2935820318658924762
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3782,7 +3782,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!65 &3598560490303399022
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3946,7 +3946,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!65 &8059840615004090703
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4645,7 +4645,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &4466523299598875505
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5946,7 +5946,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!65 &5200551892048626226
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6241,7 +6241,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &3225952575014683800
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6469,7 +6469,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!65 &6529372738146193490
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7758,7 +7758,7 @@ MonoBehaviour:
   selectedGO: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
   repairRate: 1
-  repairWait: 1
+  repairWait: 0.2
 --- !u!136 &3122503691277170202
 CapsuleCollider:
   m_ObjectHideFlags: 0

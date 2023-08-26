@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using _Scripts.Controller;
 using _Scripts.Counters;
+using _Scripts.Managers;
 using _Scripts.MechaParts.SO;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,24 +19,38 @@ namespace _Scripts.MechaParts
         [SerializeField] private Inventory inventory;
         [SerializeField] private float repairRate;
         [SerializeField] private float repairWait = 1;
-        
+
         private Coroutine _repairCoroutine;
+        private bool _flag = true;
 
         private void Awake()
         {
             currentHp = mechPart.hp;
         }
 
+        private void Start()
+        {
+            GameManager.Instance.ExitedMecha += OnExitedMecha;
+        }
+
+        private void OnExitedMecha(object sender, EventArgs e)
+        {
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                ProgressNormalized = (float)currentHp / mechPart.hp,
+            });
+        }
+
         public void SetSelected(bool active)
         {
             if (selectedGO != null) selectedGO.SetActive(active);
         }
-        
+
         public void StartRepair()
         {
             _repairCoroutine ??= StartCoroutine(RepairOverTime());
         }
-        
+
         public void StopRepair()
         {
             if (_repairCoroutine == null) return;
