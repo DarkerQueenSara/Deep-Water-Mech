@@ -26,6 +26,11 @@ namespace _Scripts.MechaParts
             if (selectedGO != null) selectedGO.SetActive(active);
         }
 
+        public void DamagePart(int damage)
+        {
+            currentHp -= damage;
+        }
+
         public void RepairPart()
         {
             if (currentHp >= mechPart.hp)

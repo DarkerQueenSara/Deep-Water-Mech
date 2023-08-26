@@ -8,7 +8,6 @@ namespace _Scripts.UI
 {
     public class ProgressBarUI : MonoBehaviour
     {
-        [SerializeField] private GameObject canvas;
         [SerializeField] private Image barImage;
         [SerializeField] private TextMeshProUGUI textPartName;
         [SerializeField] private GameObject hasProgressGameObject;
@@ -21,7 +20,7 @@ namespace _Scripts.UI
             if (_hasProgress == null) return;
             _hasProgress.OnProgressChanged += HasProgress_OnProgressChanged;
             barImage.fillAmount = 0;
-            canvas.SetActive(false);
+            SetActive(false);
         }
 
         private void OnDestroy()
@@ -34,9 +33,9 @@ namespace _Scripts.UI
         {
             barImage.fillAmount = e.ProgressNormalized;
             textPartName.text = e.partName;
-            canvas.SetActive(e.ProgressNormalized is not (0 or 1f));
+            SetActive(e.ProgressNormalized is not (0 or 1f));
         }
 
-        private void SetActive(bool value) => canvas.SetActive(value);
+        private void SetActive(bool value) => gameObject.SetActive(value);
     }
 }

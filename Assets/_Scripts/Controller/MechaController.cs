@@ -1,25 +1,27 @@
 using System;
+using System.Collections.Generic;
 using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
 using _Scripts.MechaParts.SO;
 using Extensions;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Scripts.Controller
 {
     public class MechaController : MonoBehaviour
     {
         public static MechaController Instance { get; private set; }
+        public int medianWeight;
+        [HideInInspector] public float currentBoost, currentSpeed;
+        [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
 
         [SerializeField] private float gravityValue = -9.81f;
         [SerializeField] private Camera gameCamera;
         [SerializeField] private LayerMask raycastLayerMask;
         [SerializeField] private LayerMask hittableLayerMask;
-
-        public int medianWeight;
         [SerializeField] private int meleeAttackRange;
-
         [SerializeField] private AnimationCurve rotationCurve;
         [SerializeField] private float maxRotationSpeed = 180f;
         [SerializeField] private GameObject projectilePrefab;
@@ -28,22 +30,26 @@ namespace _Scripts.Controller
         [Header("Inventory SO")] [SerializeField]
         private Inventory inventory;
 
-        [Header("Mech Parts Positions")] 
-        [SerializeField] private Transform leftArmTransform;
-        [SerializeField] private Transform rightArmTransform;
+        [Header("Mech Parts")] [SerializeField]
+        private InteractablePart leftArmPart;
 
-        [Header("Mech Projectiles Spawns")]
-        [SerializeField] private Transform rightArmSpawnPoint;
+        [SerializeField] private InteractablePart rightArmPart;
+        [SerializeField] private InteractablePart leftLegPart;
+        [SerializeField] private InteractablePart rightLegPart;
+        [SerializeField] private InteractablePart torsoPart;
+        [SerializeField] private InteractablePart bonusPart;
+
+        [Header("Mech Projectiles Spawns")] [SerializeField]
+        private Transform rightArmSpawnPoint;
+
         [SerializeField] private Transform leftArmSpawnPoint;
 
+        private static readonly int Moving = Animator.StringToHash("Moving");
         private CharacterController _controller;
         private InputManager _inputManager;
         private Vector3 _mechaVelocity, _move, _lastPos;
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
-        [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
-        [HideInInspector] public float currentBoost, currentSpeed;
         private float _leftArmCooldownLeft, _rightArmCooldownLeft, _angleToCamera;
-        private static readonly int Moving = Animator.StringToHash("Moving");
 
         private void Awake()
         {
@@ -112,7 +118,7 @@ namespace _Scripts.Controller
 
             currentSpeed = Vector3.Distance(_lastPos, transform.position) / Time.deltaTime * 3.6f;
             _lastPos = transform.position;
-            
+
             if (_dashing && currentSpeed > 0)
                 currentBoost =
                     Math.Clamp(currentBoost - ((BoostPart)inventory.equippedBonusPart).boostConsumption * Time.deltaTime, 0,
@@ -120,26 +126,62 @@ namespace _Scripts.Controller
             else
                 currentBoost = Math.Clamp(currentBoost + ((BoostPart)inventory.equippedBonusPart).boostRecovery * Time.deltaTime,
                     0, maxBoost);
-
         }
 
         public void UpdateMech()
         {
-            //Assemble the mech
-            
-            // Instantiate(inventory.equippedLeftArm.prefab, transform.position, Quaternion.identity, transform);
-            // Instantiate(RightArm.prefab, rightArmTransform.position, Quaternion.identity);
-            // Instantiate(Torso.prefab, torsoTransform.position, Quaternion.identity);
-            // Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
-            // if (BonusPart != null)
-            //    Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
-
-            float hpLoss = 1.0f * currentHp / maxHp;
             int newMaxHp = GetMaxHp();
-            currentHp = Mathf.RoundToInt(newMaxHp * hpLoss);
             maxHp = newMaxHp;
             currentWeight = GetWeight();
+            CalculateCurrentHealth();
             Debug.Log("The mech weighs " + currentWeight + "kg, and has " + currentHp + "/" + maxHp + " HP.");
+        }
+
+        public void DamagePart(int damage)
+        {
+            InteractablePart[] bodyParts = { leftArmPart, rightArmPart, leftLegPart, rightLegPart, torsoPart };
+            if (bonusPart != null)
+            {
+                System.Array.Resize(ref bodyParts, bodyParts.Length + 1);
+                bodyParts[^1] = bonusPart;
+            }
+
+            int numComponents = bodyParts.Length;
+            int componentsTakingDamage = Random.Range(1, numComponents + 1);
+            int damagePerComponent = damage / componentsTakingDamage;
+            for (int i = 0; i < componentsTakingDamage; i++)
+            {
+                int randomIndex = Random.Range(0, numComponents);
+                InteractablePart part = bodyParts[randomIndex];
+                part.currentHp = Mathf.Max(part.currentHp - damagePerComponent, 0);
+            }
+
+            CalculateCurrentHealth();
+        }
+
+        public void CalculateCurrentHealth()
+        {
+            float hpLossLeftArm = 1.0f * leftArmPart.currentHp / leftArmPart.mechPart.hp;
+            float hpLossRightArm = 1.0f * rightArmPart.currentHp / rightArmPart.mechPart.hp;
+            float hpLossLeftLeg = 1.0f * leftLegPart.currentHp / leftLegPart.mechPart.hp;
+            float hpLossRightLeg = 1.0f * rightLegPart.currentHp / rightLegPart.mechPart.hp;
+            float hpLossTorso = 1.0f * torsoPart.currentHp / torsoPart.mechPart.hp;
+
+            if (bonusPart != null)
+            {
+                float hpLossBonusPart = 1.0f * bonusPart.currentHp / bonusPart.mechPart.hp;
+                bonusPart.currentHp = Mathf.RoundToInt(inventory.equippedBonusPart.hp * hpLossBonusPart);
+            }
+
+            leftArmPart.currentHp = Mathf.RoundToInt(inventory.equippedLeftArm.hp * hpLossLeftArm);
+            rightArmPart.currentHp = Mathf.RoundToInt(inventory.equippedRightArm.hp * hpLossRightArm);
+            leftLegPart.currentHp = Mathf.RoundToInt(inventory.equippedLegs.hp * hpLossLeftLeg);
+            rightLegPart.currentHp = Mathf.RoundToInt(inventory.equippedLegs.hp * hpLossRightLeg);
+            torsoPart.currentHp = Mathf.RoundToInt(inventory.equippedTorso.hp * hpLossTorso);
+
+            currentHp = leftArmPart.currentHp + rightArmPart.currentHp + leftLegPart.currentHp + rightLegPart.currentHp +
+                        torsoPart.currentHp;
+            currentHp += bonusPart != null ? bonusPart.currentHp : 0;
         }
 
         private int GetWeight()
@@ -152,9 +194,8 @@ namespace _Scripts.Controller
 
         private int GetMaxHp()
         {
-            int aux = inventory.equippedHead.hp + inventory.equippedTorso.hp + inventory.equippedLeftArm.hp +
-                      inventory.equippedRightArm.hp +
-                      inventory.equippedLegs.hp;
+            int aux = inventory.equippedTorso.hp + inventory.equippedLeftArm.hp +
+                      inventory.equippedRightArm.hp + inventory.equippedLegs.hp + inventory.equippedLegs.hp;
             aux = inventory.equippedBonusPart != null ? aux + inventory.equippedBonusPart.hp : aux;
             return aux;
         }
@@ -166,6 +207,7 @@ namespace _Scripts.Controller
             {
                 return medianWeight - lPart.weightLimitReduction;
             }
+
             return medianWeight;
         }
 
@@ -342,9 +384,9 @@ namespace _Scripts.Controller
         {
             if (!GameManager.Instance.IsInsideMecha) return;
             if (!_groundedMecha) return;
-            
+
             float weightModifier = currentWeight <= medianWeight ? 1 : 1.0f * medianWeight / currentWeight;
-            
+
             if (_dashing)
                 _mechaVelocity.y = Mathf.Sqrt(inventory.equippedLegs.jumpPower *
                                               ((BoostPart)inventory.equippedBonusPart).boostJumpForce *
