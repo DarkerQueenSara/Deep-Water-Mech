@@ -51,7 +51,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2301062955848592110
 Transform:
   m_ObjectHideFlags: 0
@@ -189,5 +189,9 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   interactLayerMask:
     serializedVersion: 2
+    m_Bits: 512
+  mechaLayerMask:
+    serializedVersion: 2
     m_Bits: 128
   playerAnimator: {fileID: 0}
+  inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}

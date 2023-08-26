@@ -186,7 +186,6 @@ namespace _Scripts.Controller
             _controller.Move(_mechaVelocity * Time.deltaTime);
 
             mechaAnimator.SetBool(Moving, inputVector.magnitude != 0 || _angleToCamera < -5f);
-            Debug.Log(_angleToCamera);
         }
 
         private void HandleAttack()
