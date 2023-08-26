@@ -1,5 +1,6 @@
 using System;
 using _Scripts.Controller;
+using _Scripts.Levels;
 using _Scripts.MechaParts.SO;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace _Scripts.UI
         [SerializeField] private TextMeshProUGUI weightText;
         [SerializeField] private TextMeshProUGUI speedText;
 
+        [SerializeField] private TextMeshProUGUI timerText;
+        
         [SerializeField] private Inventory inventory;
 
         private void Update()
@@ -41,6 +44,14 @@ namespace _Scripts.UI
             weightText.color = currentWeight <= medianWeight ? Color.white : Color.red;
 
             speedText.text = Mathf.RoundToInt(MechaController.Instance.currentSpeed) + " KPH";
+
+            float timer = LevelGenerator.Instance.timeLeft;
+            int minutes = Mathf.FloorToInt(timer / 60F);
+            int seconds = Mathf.FloorToInt(timer - minutes * 60);
+
+            string niceTime = $"{minutes:0}:{seconds:00}";
+            
+            timerText.text = niceTime;
 
         }
     }

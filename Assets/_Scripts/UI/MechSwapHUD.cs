@@ -128,7 +128,23 @@ namespace _Scripts.UI
 
             if (inventory.equippedBonusPart != null)
             {
-                //TODO voltar a isto quando os bonus estiverem mais definidos
+                BonusPart part = inventory.equippedBonusPart;
+                switch (part)
+                {
+                    case BoostPart boostPart:
+                        currentBonusEffectText.text = "BONUS EFFECT: BOOST";
+                        currentBonusExplanationText.text = "ALLOWS THE MECH TO USE A  BOOST\n"
+                                                           + "BOOST FORCE: " + boostPart.boostForce + "\n"
+                                                           + "JUMP FORCE: " + boostPart.boostJumpForce + "\n"
+                                                           + "BOOST CONSUMPTION: " + boostPart.boostConsumption + " U/S\n"
+                                                           + "BOOST RECOVERY: " + boostPart.boostRecovery + " U/S";
+                        break;
+                    case LighteningPart lighteningPart:
+                        currentBonusEffectText.text = "BONUS EFFECT: LIGHTENING";
+                        currentBonusExplanationText.text =
+                            "INCREASES WEIGHT LIMIT BY: " + lighteningPart.weightLimitReduction;
+                        break;
+                }
             }
 
             RefreshNewStats();
@@ -151,8 +167,11 @@ namespace _Scripts.UI
                                 _selectedRightArm.weight + _selectedLegs.weight;
             currentWeight = _selectedBonusPart != null ? currentWeight + _selectedBonusPart.weight : currentWeight;
             
-            //TODO rever isto 
-            int medianWeight = MechaController.Instance.GetMedianWeight();
+            int medianWeight = MechaController.Instance.medianWeight;
+            if (_selectedBonusPart != null && _selectedBonusPart is LighteningPart lPart)
+            {
+                medianWeight -= lPart.weightLimitReduction;
+            }
             newWeightText.text = currentWeight + "/" + medianWeight + " KG";
             newWeightText.color = currentWeight <= medianWeight ? Color.white : Color.red;
             
@@ -176,7 +195,26 @@ namespace _Scripts.UI
             //Set the jump force text
             newJumpText.text = _selectedLegs.jumpPower + " JUMP POWER"; 
             
-            //TODO bonus text
+            if (_selectedBonusPart != null)
+            {
+                BonusPart part = _selectedBonusPart;
+                switch (part)
+                {
+                    case BoostPart boostPart:
+                        currentBonusEffectText.text = "BONUS EFFECT: BOOST";
+                        currentBonusExplanationText.text = "ALLOWS THE MECH TO USE A  BOOST\n"
+                                                           + "BOOST FORCE: " + boostPart.boostForce + "\n"
+                                                           + "JUMP FORCE: " + boostPart.boostJumpForce + "\n"
+                                                           + "BOOST CONSUMPTION: " + boostPart.boostConsumption + " U/S\n"
+                                                           + "BOOST RECOVERY: " + boostPart.boostRecovery + " U/S";
+                        break;
+                    case LighteningPart lighteningPart:
+                        currentBonusEffectText.text = "BONUS EFFECT: LIGHTENING";
+                        currentBonusExplanationText.text =
+                            "INCREASES WEIGHT LIMIT BY: " + lighteningPart.weightLimitReduction;
+                        break;
+                }
+            }
         }
 
         public void DropdownSelectHead(int index)
@@ -226,6 +264,12 @@ namespace _Scripts.UI
         
         public void DropdownSelectBonus(int index)
         {
+            if (bonusPartsDropdown.options[index].text == "NO EQUIPMENT")
+            {
+                _selectedBonusPart = null;
+                return;
+            }
+            
             foreach (BonusPart bonus in inventory.bonusParts.Where(bonus => bonusPartsDropdown.options[index].text == bonus.name))
             {
                 _selectedBonusPart = bonus;

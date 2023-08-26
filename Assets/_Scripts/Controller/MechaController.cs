@@ -17,7 +17,7 @@ namespace _Scripts.Controller
         [SerializeField] private LayerMask raycastLayerMask;
         [SerializeField] private LayerMask hittableLayerMask;
 
-        [SerializeField] private int medianWeight;
+        public int medianWeight;
         [SerializeField] private int meleeAttackRange;
 
         [SerializeField] private AnimationCurve rotationCurve;
@@ -133,7 +133,6 @@ namespace _Scripts.Controller
             // Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
             // if (BonusPart != null)
             //    Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
-            //
 
             float hpLoss = 1.0f * currentHp / maxHp;
             int newMaxHp = GetMaxHp();
@@ -162,7 +161,11 @@ namespace _Scripts.Controller
 
         public int GetMedianWeight()
         {
-            //TODO have a bonus part that increases this value and return value accordinglys
+            BonusPart part = inventory.equippedBonusPart;
+            if (part != null && part is LighteningPart lPart)
+            {
+                return medianWeight - lPart.weightLimitReduction;
+            }
             return medianWeight;
         }
 
