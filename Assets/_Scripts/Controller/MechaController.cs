@@ -42,7 +42,7 @@ namespace _Scripts.Controller
         private bool _groundedMecha, _leftFiring, _rightFiring, _dashing;
         [HideInInspector] public int maxHp, currentHp, currentWeight, maxBoost;
         [HideInInspector] public float currentBoost, currentSpeed;
-        private float _leftArmCooldownLeft, _rightArmCooldownLeft;
+        private float _leftArmCooldownLeft, _rightArmCooldownLeft, _angleToCamera;
         private static readonly int Moving = Animator.StringToHash("Moving");
 
         private void Awake()
@@ -182,8 +182,11 @@ namespace _Scripts.Controller
             float moveSpeed = inventory.equippedLegs.speed / 3.6f * weightModifier * Time.deltaTime;
             if (_dashing) moveSpeed *= ((BoostPart)inventory.equippedBonusPart).boostForce;
             _controller.Move(_move * moveSpeed);
+            _mechaVelocity.y += gravityValue * Time.deltaTime;
+            _controller.Move(_mechaVelocity * Time.deltaTime);
 
-            mechaAnimator.SetBool(Moving, inputVector.magnitude != 0);
+            mechaAnimator.SetBool(Moving, inputVector.magnitude != 0 || _angleToCamera < -5f);
+            Debug.Log(_angleToCamera);
         }
 
         private void HandleAttack()
@@ -233,8 +236,8 @@ namespace _Scripts.Controller
             Vector3 directionToCamera = gameCamera.transform.forward - forward;
             directionToCamera.y = 0.0f;
             Quaternion targetRotation = Quaternion.LookRotation(gameCamera.transform.forward, Vector3.up);
-            float angleToCamera = Vector3.Angle(forward, directionToCamera) - 180f;
-            float curveTime = Mathf.Clamp01(angleToCamera / maxRotationSpeed);
+            _angleToCamera = Vector3.Angle(forward, directionToCamera) - 180f;
+            float curveTime = Mathf.Clamp01(_angleToCamera / maxRotationSpeed);
             float rotationSpeed = maxRotationSpeed * rotationCurve.Evaluate(curveTime);
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
