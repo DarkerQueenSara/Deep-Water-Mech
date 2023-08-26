@@ -133,7 +133,6 @@ namespace _Scripts.Controller
             // Instantiate(Legs.prefab, legsTransform.position, Quaternion.identity);
             // if (BonusPart != null)
             //    Instantiate(BonusPart.prefab, bonusPartTransform.position, Quaternion.identity);
-            //
 
             float hpLoss = 1.0f * currentHp / maxHp;
             int newMaxHp = GetMaxHp();
