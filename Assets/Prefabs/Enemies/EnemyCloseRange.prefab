@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 676134218934229487}
   - component: {fileID: 8579758582065988355}
   - component: {fileID: 1711217631440618663}
+  - component: {fileID: -5346819458776286087}
   m_Layer: 8
   m_Name: EnemyCloseRange
   m_TagString: Untagged
@@ -239,6 +240,54 @@ MonoBehaviour:
   attackRange: 12
   droppedItemPrefab: {fileID: 3528619857156938644, guid: c1a75296d869f634e94942c246619a8d,
     type: 3}
+--- !u!114 &-5346819458776286087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271473285422990506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f3021410de84c46870b132e1bdb942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Hit
+    clip: {fileID: 8300000, guid: ef45cacb2e026514fa07d2aa2bfed5ef, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: MeleeAttack
+    clip: {fileID: 8300000, guid: a33d99dd97466c4459fed26319bd5590, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: ProjectileAttack
+    clip: {fileID: 8300000, guid: 492da12f28add0745a4630e696fdac99, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: HitscanAttack
+    clip: {fileID: 8300000, guid: bdcea102566a1744fa977810053be054, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: Boost
+    clip: {fileID: 8300000, guid: dc036c6d25d32724d835d4a2589d2812, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 1
+    spatialBlend: 1
+    source: {fileID: 0}
 --- !u!1 &302676898459606096
 GameObject:
   m_ObjectHideFlags: 0

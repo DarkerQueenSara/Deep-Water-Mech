@@ -1,6 +1,6 @@
-using System;
 using _Scripts.Controller;
 using _Scripts.Levels;
+using _Scripts.Managers;
 using _Scripts.MechaParts.SO;
 using TMPro;
 using UnityEngine;
@@ -23,6 +23,8 @@ namespace _Scripts.UI
         
         [SerializeField] private Inventory inventory;
 
+        [SerializeField] private Image crosshair;
+        
         private void Update()
         {
             healthBar.fillAmount = 1.0f * MechaController.Instance.currentHp / MechaController.Instance.maxHp;
@@ -53,6 +55,7 @@ namespace _Scripts.UI
             
             timerText.text = niceTime;
 
+            crosshair.gameObject.SetActive(GameManager.Instance.IsInsideMecha && MechaController.Instance.HasCrosshair());
         }
     }
 }

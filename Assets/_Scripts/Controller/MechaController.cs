@@ -509,5 +509,10 @@ namespace _Scripts.Controller
             if (!GameManager.Instance.IsInsideMecha) return;
             _dashing = false;
         }
+
+        public bool HasCrosshair()
+        {
+            return inventory.equippedHead.type == HeadType.CROSSHAIR;
+        }
     }
 }
