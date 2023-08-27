@@ -1,6 +1,7 @@
 using System.Linq;
 using _Scripts.Controller;
 using _Scripts.MechaParts.SO;
+using Audio;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,10 +61,13 @@ namespace _Scripts.UI
         private Legs _selectedLegs;
         private BonusPart _selectedBonusPart;
 
+        private AudioManager _audioManager;
+
         private void Start()
         {
             confirmButton.onClick.AddListener(Confirm);
             closeMenuButton.onClick.AddListener(Close);
+            _audioManager = GetComponent<AudioManager>();
         }
         
         private void OnEnable()
@@ -279,6 +283,7 @@ namespace _Scripts.UI
 
         private void Confirm()
         {
+            _audioManager.Play("ConfirmButton");
             inventory.equippedHead = _selectedHead;
             inventory.equippedTorso = _selectedTorso;
             inventory.equippedLeftArm = _selectedLeftArm;
@@ -290,6 +295,7 @@ namespace _Scripts.UI
 
         private void Close()
         {
+            _audioManager.Play("CloseButton");
             MechaController.Instance.UpdateMech();
             PlayerController.Instance.HUDClosed();
             Cursor.lockState = CursorLockMode.Locked;
