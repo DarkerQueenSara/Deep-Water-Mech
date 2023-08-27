@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _Scripts.Enemies;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
 using _Scripts.UI;
@@ -112,6 +113,11 @@ namespace _Scripts.Controller
                 {
                     _interactablePartSelected = interactablePart;
                     interactablePart.SetSelected(true);
+                }
+                else if (hitInfo.collider.TryGetComponent(out EnemyDrop enemyDrop))
+                {
+                    inventory.AddToInventory(enemyDrop.mechPart);
+                    Destroy(enemyDrop.gameObject);
                 }
                 else
                 {
