@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &49765669
 RectTransform:
   m_ObjectHideFlags: 0
@@ -684,12 +684,14 @@ MonoBehaviour:
     volume: 0.2
     pitch: 1
     loop: 1
+    spatialBlend: 0
     source: {fileID: 0}
   - name: ButtonPress
     clip: {fileID: 8300000, guid: 5ba9120355c42d644965388542641441, type: 3}
     volume: 0.2
     pitch: 1
     loop: 0
+    spatialBlend: 0
     source: {fileID: 0}
 --- !u!1 &576449250
 GameObject:
@@ -890,7 +892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &763418169
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1005,7 +1007,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 00f6cd78e84829b4b9a86235a8fa860a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e4437082adbb93f458b9738ab277f1c3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1238,7 +1240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &942940711
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1313,7 +1315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1140222327
 RectTransform:
   m_ObjectHideFlags: 0

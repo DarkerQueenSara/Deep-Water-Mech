@@ -1,5 +1,7 @@
 using System;
 using _Scripts.Controller;
+using _Scripts.Managers;
+using _Scripts.MechaParts.SO;
 using Audio;
 using UnityEngine;
 using UnityEngine.AI;
@@ -29,6 +31,9 @@ namespace _Scripts.Enemies
 
         [Header("States")] [SerializeField] private float sightRange;
         [SerializeField] private float attackRange;
+
+        [Header("Drop Items")] 
+        [SerializeField] private GameObject droppedItemPrefab;
 
         private float _currentHealth;
         private bool _walkPointSet, _alreadyAttacked, _playerInSightRange, _playerInAttackRange;
@@ -111,8 +116,7 @@ namespace _Scripts.Enemies
                 }
                 else
                 {
-                    _audioManager.Play("MeleeAttack");
-                    //TODO MechaController.Instance.DamagePart(damage);
+                    MechaController.Instance.DamagePart(damage);
                 }
 
                 animator.SetTrigger(rnd == 0 ? AttackLeft : AttackRight);
@@ -126,9 +130,9 @@ namespace _Scripts.Enemies
             _alreadyAttacked = false;
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damageTaken)
         {
-            _currentHealth -= damage;
+            _currentHealth -= damageTaken;
             _audioManager.Play("Hit");
             if (_currentHealth <= 0)
             {
@@ -137,7 +141,12 @@ namespace _Scripts.Enemies
             }
         }
 
-        private void Die() => Destroy(gameObject);
+        public void Die()
+        {
+            EnemyDrop drop = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity).GetComponent<EnemyDrop>();
+            drop.mechPart = PartsManager.Instance.GetRandomPart();
+            Destroy(gameObject);
+        }
 
         private void OnDrawGizmosSelected()
         {

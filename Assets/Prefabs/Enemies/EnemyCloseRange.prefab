@@ -238,6 +238,8 @@ MonoBehaviour:
   projectileSpawnPointRight: {fileID: 3783718000730514154}
   sightRange: 41.5
   attackRange: 12
+  droppedItemPrefab: {fileID: 6780532530276859531, guid: 8d482ce0496a17545aa388a53b44200f,
+    type: 3}
 --- !u!114 &-5346819458776286087
 MonoBehaviour:
   m_ObjectHideFlags: 0
