@@ -23,7 +23,7 @@ namespace _Scripts.UI
         
         [SerializeField] private Inventory inventory;
 
-        [SerializeField] private Image crosshair;
+        [SerializeField] private GameObject crosshair;
         
         private void Update()
         {
@@ -55,7 +55,7 @@ namespace _Scripts.UI
             
             timerText.text = niceTime;
 
-            crosshair.gameObject.SetActive(GameManager.Instance.IsInsideMecha && MechaController.Instance.HasCrosshair());
+            crosshair.SetActive(GameManager.Instance.IsInsideMecha && MechaController.Instance.HasCrosshair());
         }
     }
 }

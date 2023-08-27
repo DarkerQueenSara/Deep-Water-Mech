@@ -149,6 +149,11 @@ namespace _Scripts.UI
                         break;
                 }
             }
+            else
+            {
+                currentBonusEffectText.text = "";
+                currentBonusExplanationText.text = "";
+            }
 
             RefreshNewStats();
 
@@ -185,13 +190,13 @@ namespace _Scripts.UI
             
             //Set the left arm text
             newLeftArmTypeText.text = _selectedLeftArm.type.ToString();
-            newLeftArmDamageText.text = _selectedLeftArm.damage.ToString();
-            newLeftArmCooldownText.text = _selectedLeftArm.cooldown.ToString("F1");
+            newLeftArmDamageText.text = _selectedLeftArm.damage + " DAMAGE";;
+            newLeftArmCooldownText.text = _selectedLeftArm.cooldown.ToString("F1") + " SECONDS COOLDOWN";
             
             //Set the right arm text
             newRightArmTypeText.text = _selectedRightArm.type.ToString();
-            newRightArmDamageText.text = _selectedRightArm.damage.ToString();
-            newRightArmCooldownText.text = _selectedRightArm.cooldown.ToString("F1");
+            newRightArmDamageText.text = _selectedRightArm.damage + " DAMAGE";;
+            newRightArmCooldownText.text = _selectedRightArm.cooldown.ToString("F1") + " SECONDS COOLDOWN";
 
             //Set the speed text
             newSpeedText.text = _selectedLegs.speed + " KPH";
@@ -218,51 +223,67 @@ namespace _Scripts.UI
                         break;
                 }
             }
+            else
+            {
+                newBonusEffectText.text = "";
+                newBonusExplanationText.text = "";
+            }
         }
 
         public void DropdownSelectHead(int index)
         {
-            foreach (Head head in inventory.heads.Where(head => headsDropdown.options[index].text == head.name))
+            foreach (Head head in inventory.heads.Where(head => headsDropdown.options[index].text == head.name 
+                                                                || headsDropdown.options[index].text == head.name.ToUpper() 
+                                                                || headsDropdown.options[index].text == head.name.ToUpper() + " (EQUIPPED)" ))
             {
                 _selectedHead = head;
                 break;
             }
+            RefreshNewStats();
         }
         
         public void DropdownSelectTorso(int index)
         {
-            foreach (Torso torso in inventory.torsos.Where(torso => torsosDropdown.options[index].text == torso.name))
-            {
+            foreach (Torso torso in inventory.torsos.Where(torso => torsosDropdown.options[index].text == torso.name 
+                                                                    || torsosDropdown.options[index].text == torso.name.ToUpper() 
+                                                                    || torsosDropdown.options[index].text == torso.name.ToUpper() + " (EQUIPPED)" )){
                 _selectedTorso = torso;
                 break;
             }
+            RefreshNewStats();
         }
         
         public void DropdownSelectLeftArm(int index)
         {
-            foreach (Arm arm in inventory.arms.Where(arm => leftArmsDropdown.options[index].text == arm.name))
-            {
+            foreach (Arm arm in inventory.arms.Where(arm => leftArmsDropdown.options[index].text == arm.name 
+                                                            || leftArmsDropdown.options[index].text == arm.name.ToUpper() 
+                                                            || leftArmsDropdown.options[index].text == arm.name.ToUpper() + " (EQUIPPED)" )){
                 _selectedLeftArm = arm;
                 break;
             }
+            RefreshNewStats();
         }
         
         public void DropdownSelectRightArm(int index)
         {
-            foreach (Arm arm in inventory.arms.Where(arm => rightArmsDropdown.options[index].text == arm.name))
-            {
+            foreach (Arm arm in inventory.arms.Where(arm => rightArmsDropdown.options[index].text == arm.name 
+                                                            || rightArmsDropdown.options[index].text == arm.name.ToUpper() 
+                                                            || rightArmsDropdown.options[index].text == arm.name.ToUpper() + " (EQUIPPED)" )){
                 _selectedRightArm = arm;
                 break;
             }
+            RefreshNewStats();
         }
         
         public void DropdownSelectLegs(int index)
         {
-            foreach (Legs legs in inventory.legs.Where(legs => legsDropdown.options[index].text == legs.name))
-            {
+            foreach (Legs legs in inventory.legs.Where(legs => legsDropdown.options[index].text == legs.name 
+                                                               || legsDropdown.options[index].text == legs.name.ToUpper() 
+                                                               || legsDropdown.options[index].text == legs.name.ToUpper() + " (EQUIPPED)" )){
                 _selectedLegs = legs;
                 break;
             }
+            RefreshNewStats();
         }
         
         public void DropdownSelectBonus(int index)
@@ -273,11 +294,14 @@ namespace _Scripts.UI
                 return;
             }
             
-            foreach (BonusPart bonus in inventory.bonusParts.Where(bonus => bonusPartsDropdown.options[index].text == bonus.name))
+            foreach (BonusPart bonus in inventory.bonusParts.Where(bonus => bonusPartsDropdown.options[index].text == bonus.name 
+                                                                            || bonusPartsDropdown.options[index].text == bonus.name.ToUpper() 
+                                                                            || bonusPartsDropdown.options[index].text == bonus.name.ToUpper() + " (EQUIPPED)" ))
             {
                 _selectedBonusPart = bonus;
                 break;
             }
+            RefreshNewStats();
         }
         
 

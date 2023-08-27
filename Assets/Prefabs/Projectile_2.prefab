@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9048334705114850297}
   - component: {fileID: 1858949566251134932}
   - component: {fileID: 7718803321782992456}
+  - component: {fileID: 1240405583321003242}
   m_Layer: 0
   m_Name: Projectile_2
   m_TagString: Untagged
@@ -133,3 +134,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1240405583321003242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227688668484809046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d7f58b6ccb458797b7ed9da54db2f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
+  wallsLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  bulletLifetime: 5
+  projectileDamage: 10
+  projectileSpeed: 20
+  body: {fileID: 0}

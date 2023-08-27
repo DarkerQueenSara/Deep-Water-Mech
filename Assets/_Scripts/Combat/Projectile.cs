@@ -1,4 +1,6 @@
 ﻿using System;
+using _Scripts.Controller;
+using _Scripts.Enemies;
 using Extensions;
 using UnityEngine;
 
@@ -9,7 +11,9 @@ namespace _Scripts.Combat
         /// <summary>
         /// The player layer
         /// </summary>
-        public LayerMask hittables;
+        public LayerMask playerMask;
+        public LayerMask enemyMask;
+        
         /// <summary>
         /// The walls layer
         /// </summary>
@@ -60,9 +64,14 @@ namespace _Scripts.Combat
         /// <param name="col">The col.</param>
         private void OnTriggerEnter(Collider col)
         {
-            if (hittables.HasLayer(col.gameObject.layer))
+            if (enemyMask.HasLayer(col.gameObject.layer))
             {
-                
+                col.gameObject.GetComponent<BasicEnemy>().TakeDamage(projectileDamage);
+            }
+
+            if (playerMask.HasLayer(col.gameObject.layer))
+            {
+                MechaController.Instance.DamagePart(projectileDamage);
             }
             if (wallsLayer.HasLayer(col.gameObject.layer))
             {

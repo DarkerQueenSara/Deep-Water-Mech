@@ -626,7 +626,7 @@ MonoBehaviour:
   speedText: {fileID: 4879618169535049845}
   timerText: {fileID: 8906507816132748461}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
-  crosshair: {fileID: 4610563342125498435}
+  crosshair: {fileID: 4192709753309895562}
 --- !u!1 &5722009989837017533
 GameObject:
   m_ObjectHideFlags: 0

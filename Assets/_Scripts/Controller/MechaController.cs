@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Combat;
+using _Scripts.Enemies;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
 using _Scripts.MechaParts.SO;
@@ -451,7 +452,7 @@ namespace _Scripts.Controller
                 if (hittableLayerMask.HasLayer(col.gameObject.layer))
                 {
                     int damage = left ? inventory.equippedLeftArm.damage : inventory.equippedRightArm.damage;
-                    col.gameObject.GetComponent<Hittable>().DoDamage(damage);
+                    col.gameObject.GetComponent<BasicEnemy>().TakeDamage(damage);
                 }
             }
 

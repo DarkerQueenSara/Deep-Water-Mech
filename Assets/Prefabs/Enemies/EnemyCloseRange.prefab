@@ -225,7 +225,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  maxHealth: 125
+  maxHealth: 100
   animator: {fileID: 229803715112716258}
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 35

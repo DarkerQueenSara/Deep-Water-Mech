@@ -24,6 +24,11 @@ namespace _Scripts.Levels
 
         private List<GameObject> _spawnedEnemies = new List<GameObject>();
 
+        private void Start()
+        {
+            _spawned = false;
+        }
+
         private void Update()
         {
             if (_spawned)
@@ -59,7 +64,7 @@ namespace _Scripts.Levels
             while (enemiesSpawned < enemiesToSpawn && c < 1000)
             {
                 Vector2 posToSpawn = Random.insideUnitCircle * 75;
-                Vector3 actualPos = new Vector3(posToSpawn.x, transform.position.y + 0.5f, posToSpawn.y);
+                Vector3 actualPos = new Vector3(posToSpawn.x, LevelGenerator.Instance.currentHeight + 0.5f, posToSpawn.y);
 
                 if (Physics.OverlapSphere(posToSpawn, 3, obstacleLayerMask).Length == 0)
                 {

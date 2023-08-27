@@ -134,6 +134,7 @@ namespace _Scripts.Enemies
         {
             _currentHealth -= damageTaken;
             _audioManager.Play("Hit");
+            Debug.Log(gameObject.name + " was hit for " + damageTaken +" and has " + _currentHealth + " left.");
             if (_currentHealth <= 0)
             {
                 animator.SetBool(IsDead, true);
