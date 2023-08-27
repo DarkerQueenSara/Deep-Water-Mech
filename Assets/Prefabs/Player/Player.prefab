@@ -182,7 +182,7 @@ MonoBehaviour:
   playerSpeed: 2
   jumpHeight: 2
   gravityValue: 0
-  interactDistance: 2
+  interactDistance: 4
   heightLerpSpeed: 0.01
   moveLerpSpeed: 1
   swimRate: 2
@@ -195,3 +195,5 @@ MonoBehaviour:
     m_Bits: 128
   playerAnimator: {fileID: 0}
   inventory: {fileID: 11400000, guid: 25ce82498204c0844979a7050a882dc9, type: 2}
+  mechSwapHUD: {fileID: 0}
+  cinemachineInputProvider: {fileID: 0}
