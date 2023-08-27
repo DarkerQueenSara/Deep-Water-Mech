@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7233beeb9644e7b88a1d824f962dab, type: 3}
-  m_Name: TestTorso
+  m_Script: {fileID: 11500000, guid: e699d733e8064610a1fa9bf1d6caff4c, type: 3}
+  m_Name: H-Arm Mk. IX
   m_EditorClassIdentifier: 
-  partName: TestTorso
-  hp: 50
-  weight: 50
-  prefab: {fileID: 0}
-  type: 0
+  partName: H-Arm Mk. IX
+  hp: 60
+  weight: 70
+  damage: 15
+  cooldown: 0.2
+  type: 1

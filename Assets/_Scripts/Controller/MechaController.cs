@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Scripts.Combat;
 using _Scripts.Managers;
 using _Scripts.MechaParts;
@@ -147,8 +148,13 @@ namespace _Scripts.Controller
             }
             else
             {
-                currentBoost = Math.Clamp(currentBoost + ((BoostPart)inventory.equippedBonusPart).boostRecovery * Time.deltaTime,
-                    0, maxBoost);
+                if (inventory.equippedBonusPart != null && inventory.equippedBonusPart is BoostPart part)
+                {
+                    currentBoost = Math.Clamp(
+                        currentBoost + part.boostRecovery * Time.deltaTime,
+                        0, maxBoost);
+                }
+
                 mechaAnimator.SetBool(Sprinting, false);
                 _audioManager.Stop("Boost");
             }
@@ -175,19 +181,15 @@ namespace _Scripts.Controller
             rightArmPart.gameObject.SetActive(true);
             leftLegPart.gameObject.SetActive(true);
             rightLegPart.gameObject.SetActive(true);
-            torsoPart.gameObject.SetActive(true); 
-            bonusPart.gameObject.SetActive(true);
+            torsoPart.gameObject.SetActive(true);
+            if (bonusPart != null) bonusPart.gameObject.SetActive(true);
             
             CalculateCurrentHealth();
         }
 
         private InteractablePart FindInteractablePartByMechPart(MechPart targetMechPart, IEnumerable<InteractablePart> partsList)
         {
-            foreach (InteractablePart interactablePart in partsList)
-                if (interactablePart.mechPart == targetMechPart)
-                    return interactablePart;
-
-            return null;
+            return partsList.FirstOrDefault(interactablePart => interactablePart.mechPart == targetMechPart);
         }
 
         public void DamagePart(int damage)
