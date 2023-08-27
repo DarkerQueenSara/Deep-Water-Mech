@@ -1,5 +1,6 @@
 using System;
 using _Scripts.Controller;
+using Audio;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -36,6 +37,8 @@ namespace _Scripts.Enemies
         private static readonly int AttackLeft = Animator.StringToHash("AttackLeft");
         private static readonly int AttackRight = Animator.StringToHash("AttackRight");
 
+        private AudioManager _audioManager;
+
         private void Awake()
         {
             _currentHealth = maxHealth;
@@ -44,6 +47,7 @@ namespace _Scripts.Enemies
         private void Start()
         {
             if (player == null) player = GameObject.FindGameObjectWithTag("Mecha").transform;
+            _audioManager = GetComponent<AudioManager>();
         }
 
         private void Update()
@@ -103,9 +107,11 @@ namespace _Scripts.Enemies
                         .GetComponent<Rigidbody>();
                     rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
                     rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+                    _audioManager.Play("ProjectileAttack");
                 }
                 else
                 {
+                    _audioManager.Play("MeleeAttack");
                     //TODO MechaController.Instance.DamagePart(damage);
                 }
 
@@ -123,6 +129,7 @@ namespace _Scripts.Enemies
         public void TakeDamage(int damage)
         {
             _currentHealth -= damage;
+            _audioManager.Play("Hit");
             if (_currentHealth <= 0)
             {
                 animator.SetBool(IsDead, true);

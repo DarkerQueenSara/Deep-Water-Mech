@@ -979,6 +979,7 @@ GameObject:
   - component: {fileID: 559155474578557892}
   - component: {fileID: 1367534805848455984}
   - component: {fileID: 243916620731964700}
+  - component: {fileID: 745015539707771299}
   m_Layer: 8
   m_Name: EnemyLongRange
   m_TagString: Untagged
@@ -1083,6 +1084,54 @@ MonoBehaviour:
   projectileSpawnPointRight: {fileID: 8637425747955263145}
   sightRange: 53.1
   attackRange: 25.11
+--- !u!114 &745015539707771299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2291771198155318963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f3021410de84c46870b132e1bdb942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Hit
+    clip: {fileID: 8300000, guid: ef45cacb2e026514fa07d2aa2bfed5ef, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: MeleeAttack
+    clip: {fileID: 8300000, guid: a33d99dd97466c4459fed26319bd5590, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: ProjectileAttack
+    clip: {fileID: 8300000, guid: 492da12f28add0745a4630e696fdac99, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: HitscanAttack
+    clip: {fileID: 8300000, guid: bdcea102566a1744fa977810053be054, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    spatialBlend: 1
+    source: {fileID: 0}
+  - name: Boost
+    clip: {fileID: 8300000, guid: dc036c6d25d32724d835d4a2589d2812, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 1
+    spatialBlend: 1
+    source: {fileID: 0}
 --- !u!1 &2301402989108466991
 GameObject:
   m_ObjectHideFlags: 0
