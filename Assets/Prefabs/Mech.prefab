@@ -22215,14 +22215,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4176976136726522662}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.70807564, y: -0, z: -0, w: 0.70613664}
   m_LocalPosition: {x: -2.0954514, y: 5.3464384, z: -0.23161364}
   m_LocalScale: {x: 64.27838, y: 64.27838, z: 64.27838}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2562482149679852141}
   m_Father: {fileID: 3587226184260668917}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90.156, y: 0, z: 0}
 --- !u!137 &744827679564408227
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -32761,6 +32761,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5887864311134965445}
+  - {fileID: 5087068719773241199}
+  - {fileID: 6292169384131859845}
   - {fileID: 1146873985759067764}
   - {fileID: 3587226184260668917}
   - {fileID: 4379105645501702338}
@@ -32815,7 +32817,7 @@ MonoBehaviour:
   gameCamera: {fileID: 0}
   raycastLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 9
   hittableLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -32960,8 +32962,8 @@ MonoBehaviour:
   rightLegPart: {fileID: 0}
   torsoPart: {fileID: 0}
   bonusPart: {fileID: 0}
-  rightArmSpawnPoint: {fileID: 861252171415714217}
-  leftArmSpawnPoint: {fileID: 2155436919920086588}
+  rightArmSpawnPoint: {fileID: 5087068719773241199}
+  leftArmSpawnPoint: {fileID: 6292169384131859845}
 --- !u!114 &5514168156590285407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34919,6 +34921,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barImage: {fileID: 462330694111128642}
   hasProgressGameObject: {fileID: 3978098294165138953}
+--- !u!1 &6833044202733662962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6292169384131859845}
+  m_Layer: 7
+  m_Name: LeftSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6292169384131859845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6833044202733662962}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.11, y: 5.232, z: 3.631}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2750853829307549295}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6838122132368201819
 GameObject:
   m_ObjectHideFlags: 0
@@ -45730,6 +45763,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &9105946397150427351
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5087068719773241199}
+  m_Layer: 7
+  m_Name: RightSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5087068719773241199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9105946397150427351}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.14, y: 5.232, z: 3.631}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2750853829307549295}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9120016528138650123
 GameObject:
   m_ObjectHideFlags: 0

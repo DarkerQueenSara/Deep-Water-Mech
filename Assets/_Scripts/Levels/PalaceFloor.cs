@@ -34,7 +34,11 @@ namespace _Scripts.Levels
             if (_spawned)
             {
                 bool allKilled = _spawnedEnemies.Count == _spawnedEnemies.Count(enemy => enemy == null);
-                if (allKilled) SpawnLevelEnd();
+                if (allKilled)
+                {
+                    Debug.Log("All enemies killed, spawning level end.");
+                    SpawnLevelEnd();
+                }
             }
         }
 

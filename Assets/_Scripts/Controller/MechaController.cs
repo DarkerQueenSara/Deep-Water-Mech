@@ -381,27 +381,32 @@ namespace _Scripts.Controller
                     return;
             }
 
-            Ray ray = gameCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
-            Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, raycastLayerMask) ? hit.point : ray.GetPoint(75);
-            Vector3 direction = targetPoint - spawnPoint;
-            Projectile projectile = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity).GetComponent<Projectile>();
-            projectile.gameObject.transform.forward = direction.normalized;
-            projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
-            projectile.projectileDamage = left ? inventory.equippedLeftArm.damage : inventory.equippedRightArm.damage;
+            Ray ray = gameCamera.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0.0f));
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
-            if (left)
+            if (groundPlane.Raycast(ray, out float rayDistance))
             {
-                _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
-                mechaAnimator.SetTrigger(ShootLeft);
-            }
-            else
-            {
-                _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
-                mechaAnimator.SetTrigger(ShootRight);
-            }
-            
-            _audioManager.Play("ProjectileAttack");
+                Vector3 targetPoint = ray.GetPoint(rayDistance);
 
+                Vector3 direction = targetPoint - spawnPoint;
+                Projectile projectile = Instantiate(projectilePrefab, spawnPoint, Quaternion.identity).GetComponent<Projectile>();
+                projectile.gameObject.transform.forward = direction.normalized;
+                projectile.body.AddForce(direction.normalized * projectile.projectileSpeed, ForceMode.Impulse);
+                projectile.projectileDamage = left ? inventory.equippedLeftArm.damage : inventory.equippedRightArm.damage;
+
+                if (left)
+                {
+                    _leftArmCooldownLeft = inventory.equippedLeftArm.cooldown;
+                    mechaAnimator.SetTrigger(ShootLeft);
+                }
+                else
+                {
+                    _rightArmCooldownLeft = inventory.equippedRightArm.cooldown;
+                    mechaAnimator.SetTrigger(ShootRight);
+                }
+
+                _audioManager.Play("ProjectileAttack");
+            }
         }
 
         private void UseHitscan(Vector3 spawnPoint, bool left)
